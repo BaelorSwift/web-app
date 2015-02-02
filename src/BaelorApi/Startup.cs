@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNet.Builder;
+﻿using BaelorApi.Models.Database;
+using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Routing;
+using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -55,6 +57,9 @@ namespace BaelorApi
 		{
 			// Add the MVC Framework
 			services.AddMvc();
+
+			services.AddEntityFramework().AddSqlServer()
+				.AddDbContext<DatabaseContext>(o => o.UseSqlServer(Configuration.Get("Data:DefaultConnection:ConnectionString")));
 
 			// Add the Web Api Framework 
 			services.AddWebApiConventions();

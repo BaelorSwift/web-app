@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
-using System.Web.Http;
 using System.Net;
 using System.Linq;
+using System.Web.Http;
 using BaelorApi.Models.Api;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
@@ -15,7 +15,9 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			"baelor",
 			"baelor swift",
 			"swifty",
-			"bae"
+			"bae",
+			"heather",
+			"macphearson"
 		};
 
 		/// <summary>
