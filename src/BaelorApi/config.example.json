@@ -1,0 +1,7 @@
+﻿{
+	"Data": {
+		"DefaultConnection": {
+			"ConnectionString": "[insert-connection-string-here]"
+		}
+	}
+}

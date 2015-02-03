@@ -1,8 +1,8 @@
 ﻿using BaelorApi.Models.Database;
+using BaelorApi.Models.Repositories;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Routing;
-using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -58,8 +58,12 @@ namespace BaelorApi
 			// Add the MVC Framework
 			services.AddMvc();
 
-			services.AddEntityFramework().AddSqlServer()
-				.AddDbContext<DatabaseContext>(o => o.UseSqlServer(Configuration.Get("Data:DefaultConnection:ConnectionString")));
+			// Add the Entity Framework
+			services.AddEntityFramework().AddSqlServer().AddDbContext<DatabaseContext>();
+
+			// Add Entity Framework related repository's and context's to the scope
+			services.AddScoped<IAlbumRepository, AlbumRepository>();
+			services.AddScoped<DatabaseContext, DatabaseContext>();
 
 			// Add the Web Api Framework 
 			services.AddWebApiConventions();
