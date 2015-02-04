@@ -14,7 +14,10 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.GenericServerError, "generic_server_error" },
 
 			// Album Stuff
-			{ ErrorStatus.InvalidAlbumSlug, "invalid_album_slug" }
+			{ ErrorStatus.InvalidAlbumSlug, "invalid_album_slug" },
+
+			// Song Stuff
+			{ ErrorStatus.InvalidSongSlug, "invalid_song_slug" }
 		};
 
 		/// <summary>
