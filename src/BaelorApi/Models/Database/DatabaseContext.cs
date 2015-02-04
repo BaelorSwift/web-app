@@ -3,6 +3,7 @@ using Microsoft.Data.Entity.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.Entity.Metadata;
 
 namespace BaelorApi.Models.Database
 {
@@ -10,11 +11,18 @@ namespace BaelorApi.Models.Database
 	{
 		public DbSet<Album> Albums { get; set; }
 
+		public DbSet<Song> Songs { get; set; }
+
 		protected override void OnConfiguring(DbContextOptions options)
 		{
 			options.UseSqlServer(Startup.Configuration.Get("Data:DefaultConnection:ConnectionString"));
+		}
 
-			//base.OnConfiguring(options);
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Album>().OneToMany<Song>(a => a.Songs, s => s.Album).ForeignKey(s => s.AlbumId);
+
+			base.OnModelCreating(modelBuilder);
 		}
 
 		#region [ Overrides & Audit ]

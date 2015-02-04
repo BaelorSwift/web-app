@@ -5,8 +5,8 @@ using System.Linq;
 
 namespace BaelorApi.Models.Repositories
 {
-	public class AlbumRepository
-		: IAlbumRepository
+	public class SongRepository
+		: ISongRepository
 	{
 		/// <summary>
 		/// Gets the <see cref="DatabaseContext"/> used by the repository.
@@ -14,25 +14,25 @@ namespace BaelorApi.Models.Repositories
 		private readonly DatabaseContext _db;
 
 		/// <summary>
-		/// Creates a new <see cref="AlbumRepository"/>.
+		/// Creates a new <see cref="SongRepository"/>.
 		/// </summary>
 		/// <param name="db">An initalized <see cref="DatabaseContext"/> used for database connection management.</param>
-		public AlbumRepository(DatabaseContext db)
+		public SongRepository(DatabaseContext db)
 		{
 			_db = db;
 		}
 
-		public IEnumerable<Album> GetAll
+		public IEnumerable<Song> GetAll
 		{
 			get
 			{
-				return _db.Albums.Include(a => a.Songs).AsEnumerable();
+				return _db.Songs.Include(s => s.Album).AsEnumerable();
 			}
 		}
 
-		public Album Add(Album item)
+		public Song Add(Song item)
 		{
-			_db.Albums.Add(item);
+			_db.Songs.Add(item);
 
 			if (_db.SaveChanges() > 0)
 				return item;
@@ -40,27 +40,27 @@ namespace BaelorApi.Models.Repositories
 			return null;
 		}
 
-		public Album GetById(Guid id)
+		public Song GetById(Guid id)
 		{
-			return _db.Albums.Include(a => a.Songs).FirstOrDefault(a => a.Id == id);
+			return _db.Songs.Include(s => s.Album).FirstOrDefault(a => a.Id == id);
 		}
 
-		public Album GetBySlug(string slug)
+		public Song GetBySlug(string slug)
 		{
-			return _db.Albums.Include(a => a.Songs).FirstOrDefault(a => a.Slug == slug);
+			return _db.Songs.Include(s => s.Album).FirstOrDefault(a => a.Slug == slug);
 		}
 
-		public Album Update(Guid id, Album item)
+		public Song Update(Guid id, Song item)
 		{
 			throw new NotImplementedException();
 		}
 
 		public bool TryDelete(Guid id)
 		{
-			var album = _db.Albums.FirstOrDefault(c => c.Id == id);
-			if (album != null)
+			var Song = _db.Songs.FirstOrDefault(c => c.Id == id);
+			if (Song != null)
 			{
-				_db.Albums.Remove(album);
+				_db.Songs.Remove(Song);
 				return _db.SaveChanges() > 0;
 			}
 			return false;

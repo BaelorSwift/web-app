@@ -18,15 +18,38 @@ namespace BaelorApi.Migrations
                 builder.Entity("BaelorApi.Models.Database.Album", b =>
                     {
                         b.Property<DateTime>("CreatedAt");
+                        b.Property<string>("Genres");
                         b.Property<Guid>("Id")
                             .GenerateValuesOnAdd();
                         b.Property<string>("Label");
-                        b.Property<uint>("LengthSeconds");
+                        b.Property<int>("LengthSeconds");
                         b.Property<string>("Name");
+                        b.Property<string>("Producers");
                         b.Property<DateTime>("ReleasedAt");
                         b.Property<string>("Slug");
                         b.Property<DateTime>("UpdatedAt");
                         b.Key("Id");
+                    });
+                
+                builder.Entity("BaelorApi.Models.Database.Song", b =>
+                    {
+                        b.Property<Guid>("AlbumId");
+                        b.Property<DateTime>("CreatedAt");
+                        b.Property<Guid>("Id")
+                            .GenerateValuesOnAdd();
+                        b.Property<int>("Index");
+                        b.Property<int>("LengthSeconds");
+                        b.Property<string>("Producers");
+                        b.Property<string>("Slug");
+                        b.Property<string>("Title");
+                        b.Property<DateTime>("UpdatedAt");
+                        b.Property<string>("Writers");
+                        b.Key("Id");
+                    });
+                
+                builder.Entity("BaelorApi.Models.Database.Song", b =>
+                    {
+                        b.ForeignKey("BaelorApi.Models.Database.Album", "AlbumId");
                     });
                 
                 return builder.Model;

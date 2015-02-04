@@ -1,4 +1,5 @@
-﻿using BaelorApi.Models.Error.Enums;
+﻿using BaelorApi.Extentions;
+using BaelorApi.Models.Error.Enums;
 using Newtonsoft.Json;
 
 namespace BaelorApi.Models.Api.Error
@@ -10,8 +11,8 @@ namespace BaelorApi.Models.Api.Error
 		public ErrorBase(ErrorStatus statusCode)
 		{
 			StatusCode = statusCode;
-			Description = StatusCode.ToString(); // TODO: impliment error_desc functions
-		}
+			Description = StatusCode.GetDisplayDescription();
+        }
 
 		[JsonProperty("status_code")]
 		public ErrorStatus StatusCode { get; set; }

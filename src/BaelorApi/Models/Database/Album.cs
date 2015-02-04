@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BaelorApi.Models.Database
 {
@@ -11,12 +12,14 @@ namespace BaelorApi.Models.Database
 
 		public DateTime ReleasedAt { get; set; }
 
-		public string[] Genres { get; set; }
-
 		public int LengthSeconds { get; set; }
 
 		public string Label { get; set; }
 
-		public string[] Producers { get; set; }
+		public string Genres { get; set; }
+
+		public string Producers { get; set; }
+
+		public ICollection<Song> Songs { get; set; }
 	}
 }

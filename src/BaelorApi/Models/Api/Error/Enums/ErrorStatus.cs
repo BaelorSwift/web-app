@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
-
-namespace BaelorApi.Models.Error.Enums
+﻿namespace BaelorApi.Models.Error.Enums
 {
 	public enum ErrorStatus : uint
 	{
-		//[Description("generic_server_error")]
-		GenericServerError = 0x1000
+		GenericServerError = 0x1069,
+		InvalidAlbumSlug = 0x106A,
+		InvalidSongSlug = 0x106B
 	}
 }

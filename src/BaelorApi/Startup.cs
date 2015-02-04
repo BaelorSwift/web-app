@@ -63,6 +63,7 @@ namespace BaelorApi
 
 			// Add Entity Framework related repository's and context's to the scope
 			services.AddScoped<IAlbumRepository, AlbumRepository>();
+			services.AddScoped<ISongRepository, SongRepository>();
 			services.AddScoped<DatabaseContext, DatabaseContext>();
 
 			// Add the Web Api Framework 
