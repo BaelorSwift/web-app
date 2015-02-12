@@ -58,26 +58,6 @@ namespace BaelorApi.Migrations
                         b.Key("Id");
                     });
                 
-                builder.Entity("BaelorApi.Models.Database.User", b =>
-                    {
-                        b.Property<string>("ApiKey");
-                        b.Property<DateTime>("CreatedAt");
-                        b.Property<string>("Email");
-                        b.Property<Guid>("Id")
-                            .GenerateValuesOnAdd();
-                        b.Property<string>("PasswordHash");
-                        b.Property<int>("PasswordIterations");
-                        b.Property<string>("PasswordSalt");
-                        b.Property<DateTime>("UpdatedAt");
-                        b.Property<string>("Username");
-                        b.Key("Id");
-                    });
-                
-                builder.Entity("BaelorApi.Models.Database.Album", b =>
-                    {
-                        b.ForeignKey("BaelorApi.Models.Database.Image", "ImageId");
-                    });
-                
                 builder.Entity("BaelorApi.Models.Database.Song", b =>
                     {
                         b.ForeignKey("BaelorApi.Models.Database.Album", "AlbumId");
