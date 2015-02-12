@@ -1,7 +1,7 @@
 ﻿{
 	"Data": {
 		"DefaultConnection": {
-			"ConnectionString": "[insert-connection-string-here]"
+			"ConnectionString": "[sql-connection-string]"
 		}
 	}
 }
