@@ -15,6 +15,8 @@ namespace BaelorApi.Models.Database
 
 		public DbSet<Image> Images { get; set; }
 
+		public DbSet<User> Users { get; set; }
+
 		protected override void OnConfiguring(DbContextOptions options)
 		{
 			options.UseSqlServer(Startup.Configuration.Get("Data:DefaultConnection:ConnectionString"));
