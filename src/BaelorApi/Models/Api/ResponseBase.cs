@@ -13,5 +13,14 @@ namespace BaelorApi.Models.Api
 
 		[JsonProperty("success")]
 		public bool Success { get; set; } = true;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return JsonConvert.SerializeObject(this);
+		}
 	}
 }

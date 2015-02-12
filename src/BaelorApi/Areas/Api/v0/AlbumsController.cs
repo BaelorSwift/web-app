@@ -29,65 +29,6 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		public AlbumsController(IAlbumRepository albumRepository)
 		{
 			_albumRepository = albumRepository;
-
-			#region [ Populate Albums ]
-
-			//_albumRepository.Add(new Album
-			//{
-			//	Genres = "Country",
-			//	Producers = "Scott Borchetta,Nathan Chapman,Robert Ellis Orrall",
-			//	Label = "Big Machine",
-			//	LengthSeconds = 2306,
-			//	Name = "Taylor Swift",
-			//	ReleasedAt = new DateTime(2006, 10, 24),
-			//	Slug = "Taylor Swift".ToSlug()
-			//});
-
-			//_albumRepository.Add(new Album
-			//{
-			//	Genres = "Country,Country Pop",
-			//	Producers = "Scott Borchetta,Nathan Chapman,Taylor Swift",
-			//	Label = "Big Machine",
-			//	LengthSeconds = 3213,
-			//	Name = "Fearless",
-			//	ReleasedAt = new DateTime(2008, 11, 11),
-			//	Slug = "Fearless".ToSlug()
-			//});
-
-			//_albumRepository.Add(new Album
-			//{
-			//	Genres = "Country Pop",
-			//	Producers = "Nathan Chapman,Taylor Swift",
-			//	Label = "Big Machine",
-			//	LengthSeconds = 4049,
-			//	Name = "Speak Now",
-			//	ReleasedAt = new DateTime(2010, 10, 25),
-			//	Slug = "Speak Now".ToSlug()
-			//});
-
-			//_albumRepository.Add(new Album
-			//{
-			//	Genres = "Country,Pop Rock",
-			//	Producers = "Scott Borchetta,Jeff Bhasker,Nathan Chapman,Dann Huff,Jacknife Lee,Max Martin,Shellback,Taylor Swift,Butch Walker,Dan Wilson",
-			//	Label = "Big Machine",
-			//	LengthSeconds = 3911,
-			//	Name = "Red",
-			//	ReleasedAt = new DateTime(2012, 10, 22),
-			//	Slug = "Red".ToSlug()
-			//});
-
-			//_albumRepository.Add(new Album
-			//{
-			//	Genres = "Pop,Synthpop",
-			//	Producers = "Max Martin,Taylor Swift,Jack Antonoff,Nathan Chapman,Imogen Heap,Greg Kurstin,Mattman & Robin,Ali Payami,Shellback,Ryan Tedder,Noel Zancanella",
-			//	Label = "Big Machine",
-			//	LengthSeconds = 2921,
-			//	Name = "1989",
-			//	ReleasedAt = new DateTime(2014, 10, 27),
-			//	Slug = "1989".ToSlug()
-			//});
-
-			#endregion
 		}
 
 		/// <summary>

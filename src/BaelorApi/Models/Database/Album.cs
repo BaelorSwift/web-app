@@ -21,5 +21,9 @@ namespace BaelorApi.Models.Database
 		public string Producers { get; set; }
 
 		public ICollection<Song> Songs { get; set; }
+
+		public Guid ImageId { get; set; }
+
+		public Image Image { get; set; }
 	}
 }

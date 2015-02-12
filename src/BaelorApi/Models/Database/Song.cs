@@ -6,6 +6,9 @@ namespace BaelorApi.Models.Database
 	public class Song
 		: Audit
 	{
+		/// <summary>
+		/// 
+		/// </summary>
 		public int Index { get; set; }
 
 		public string Slug { get; set; }

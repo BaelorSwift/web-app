@@ -20,13 +20,15 @@
 
 		"EntityFramework": "7.0.0-beta1",
 		"EntityFramework.SqlServer": "7.0.0-beta1",
-		"EntityFramework.Commands": "7.0.0-beta1"
+		"EntityFramework.Commands": "7.0.0-beta1",
+
+		"ImageResizer": "3.4.3"
 	},
 	"commands": {
 		"ef": "EntityFramework.Commands"
 	},
 	"frameworks": {
-		"aspnet50": { },
-		"aspnetcore50": { }
+		"aspnet50": { }
+		//"aspnetcore50": { }
 	}
 }

@@ -15,9 +15,14 @@ namespace BaelorApi.Extentions
 
 			// Album Stuff
 			{ ErrorStatus.InvalidAlbumSlug, "invalid_album_slug" },
+			{ ErrorStatus.AlbumAlreadyExists, "album_already_exists" },
 
 			// Song Stuff
-			{ ErrorStatus.InvalidSongSlug, "invalid_song_slug" }
+			{ ErrorStatus.InvalidSongSlug, "invalid_song_slug" },
+			{ ErrorStatus.SongAlreadyExists, "song_already_exists" },
+
+			// Image Stuff
+			{ ErrorStatus.InvalidImageId, "invalid_image_id" }
 		};
 
 		/// <summary>

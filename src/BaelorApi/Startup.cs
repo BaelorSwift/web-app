@@ -7,6 +7,9 @@ using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace BaelorApi
 {
@@ -64,6 +67,7 @@ namespace BaelorApi
 			// Add Entity Framework related repository's and context's to the scope
 			services.AddScoped<IAlbumRepository, AlbumRepository>();
 			services.AddScoped<ISongRepository, SongRepository>();
+			services.AddScoped<IImageRepository, ImageRepository>();
 			services.AddScoped<DatabaseContext, DatabaseContext>();
 
 			// Add the Web Api Framework 
