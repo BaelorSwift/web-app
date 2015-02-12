@@ -22,7 +22,18 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.SongAlreadyExists, "song_already_exists" },
 
 			// Image Stuff
-			{ ErrorStatus.InvalidImageId, "invalid_image_id" }
+			{ ErrorStatus.InvalidImageId, "invalid_image_id" },
+
+			// Data Validation
+			{ ErrorStatus.DataValidationFailed, "data_validation_failed" },
+
+			// Authentication
+			{ ErrorStatus.RequestRequiredAuthentication, "request_requires_authentication" },
+			{ ErrorStatus.InvalidApiKey, "invalid_api_key" },
+			{ ErrorStatus.RevokedApiKey, "revoked_api_key" },
+
+			// Rate Limit
+			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" }
 		};
 
 		/// <summary>

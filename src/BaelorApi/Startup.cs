@@ -68,6 +68,7 @@ namespace BaelorApi
 			services.AddScoped<IAlbumRepository, AlbumRepository>();
 			services.AddScoped<ISongRepository, SongRepository>();
 			services.AddScoped<IImageRepository, ImageRepository>();
+			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<DatabaseContext, DatabaseContext>();
 
 			// Add the Web Api Framework 

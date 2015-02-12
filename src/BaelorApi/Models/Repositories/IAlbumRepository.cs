@@ -3,7 +3,7 @@
 namespace BaelorApi.Models.Repositories
 {
 	public interface IAlbumRepository
-		: IRepository<Album>
+		: IDatabaseRepository<Album>
 	{
 		/// <summary>
 		/// Gets an item in the repository with the specified Slug.

@@ -15,6 +15,8 @@ namespace BaelorApi.Models.Database
 
 		public DbSet<Image> Images { get; set; }
 
+		public DbSet<User> Users { get; set; }
+		
 		protected override void OnConfiguring(DbContextOptions options)
 		{
 			options.UseSqlServer(Startup.Configuration.Get("Data:DefaultConnection:ConnectionString"));
@@ -24,7 +26,7 @@ namespace BaelorApi.Models.Database
 		{
 			modelBuilder.Entity<Album>().OneToMany<Song>(a => a.Songs, s => s.Album).ForeignKey(s => s.AlbumId);
 			modelBuilder.Entity<Album>().OneToOne<Image>(a => a.Image).ForeignKey<Album>(a => a.ImageId);
-
+			
 			base.OnModelCreating(modelBuilder);
 		}
 

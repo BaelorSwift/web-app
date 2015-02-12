@@ -26,7 +26,7 @@ namespace BaelorApi.Models.Repositories
 		{
 			get
 			{
-				return _db.Songs.Include(s => s.Album).Include(s => s.Album.Image).AsEnumerable();
+				return _db.Songs.Include(s => s.Album).AsEnumerable();
 			}
 		}
 
@@ -42,12 +42,12 @@ namespace BaelorApi.Models.Repositories
 
 		public Song GetById(Guid id)
 		{
-			return _db.Songs.Include(s => s.Album).Include(s => s.Album.Image).FirstOrDefault(a => a.Id == id);
+			return _db.Songs.Include(s => s.Album).FirstOrDefault(a => a.Id == id);
 		}
 
 		public Song GetBySlug(string slug)
 		{
-			return _db.Songs.Include(s => s.Album).Include(s => s.Album.Image).FirstOrDefault(a => a.Slug == slug);
+			return _db.Songs.Include(s => s.Album).FirstOrDefault(a => a.Slug == slug);
 		}
 
 		public Song Update(Guid id, Song item)

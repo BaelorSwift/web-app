@@ -7,13 +7,13 @@ using System;
 namespace BaelorApi.Migrations
 {
     [ContextType(typeof(DatabaseContext))]
-    public partial class AddedImageDataAndAlbumCoverSupport : IMigrationMetadata
+    public partial class InitialMigration : IMigrationMetadata
     {
         string IMigrationMetadata.MigrationId
         {
             get
             {
-                return "201502112246468_AddedImageDataAndAlbumCoverSupport";
+                return "201502122145539_InitialMigration";
             }
         }
         
@@ -72,6 +72,28 @@ namespace BaelorApi.Migrations
                         b.Property<DateTime>("UpdatedAt");
                         b.Property<string>("Writers");
                         b.Key("Id");
+                    });
+                
+                builder.Entity("BaelorApi.Models.Database.User", b =>
+                    {
+                        b.Property<string>("ApiKey");
+                        b.Property<DateTime>("CreatedAt");
+                        b.Property<string>("EmailAddress");
+                        b.Property<Guid>("Id")
+                            .GenerateValuesOnAdd();
+                        b.Property<bool>("IsAdmin");
+                        b.Property<bool>("IsRevoked");
+                        b.Property<string>("PasswordHash");
+                        b.Property<int>("PasswordIterations");
+                        b.Property<string>("PasswordSalt");
+                        b.Property<DateTime>("UpdatedAt");
+                        b.Property<string>("Username");
+                        b.Key("Id");
+                    });
+                
+                builder.Entity("BaelorApi.Models.Database.Album", b =>
+                    {
+                        b.ForeignKey("BaelorApi.Models.Database.Image", "ImageId");
                     });
                 
                 builder.Entity("BaelorApi.Models.Database.Song", b =>
