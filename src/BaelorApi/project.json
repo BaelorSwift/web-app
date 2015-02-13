@@ -32,7 +32,7 @@
 		"EntityFramework.SqlServer": "7.0.0-beta1",
 		"EntityFramework.Commands": "7.0.0-beta1",
 
-		"StackExchange.Redis": "1.0.243"
+		"StackExchange.Redis": "1.0.394"
 	},
 	"commands": {
 		"ef": "EntityFramework.Commands"
