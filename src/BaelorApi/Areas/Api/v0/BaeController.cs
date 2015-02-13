@@ -3,9 +3,11 @@ using System.Net;
 using System.Linq;
 using System.Web.Http;
 using BaelorApi.Models.Api;
+using BaelorApi.Attributes;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
+	[ExceptionHandler]
 	[Route("api/v0/[controller]")]
 	public class BaeController : ApiController
 	{

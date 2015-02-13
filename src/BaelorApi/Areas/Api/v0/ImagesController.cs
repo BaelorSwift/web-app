@@ -7,13 +7,13 @@ using BaelorApi.Models.Api.Error;
 using BaelorApi.Models.Error.Enums;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Net.Http;
 using System.Text;
-using Microsoft.AspNet.Mvc.HeaderValueAbstractions;
+using BaelorApi.Attributes;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
+	[ExceptionHandler]
 	[Route("api/v0/[controller]")]
 	public class ImagesController : ApiController
 	{
@@ -51,10 +51,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				response.Content = new StringContent(responseBase.ToString(), Encoding.UTF8, "application/json");
 				return response;
 			}
-
-			var xox = Directory.GetCurrentDirectory();
-			var fi = new FileInfo(image.FilePath);
-
+			
 			response = Request.CreateResponse(HttpStatusCode.OK);
 			response.Content = new StreamContent(new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, image.FilePath), FileMode.Open));
 			response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");

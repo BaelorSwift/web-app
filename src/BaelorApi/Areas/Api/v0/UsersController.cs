@@ -11,10 +11,11 @@ using BaelorApi.Cryptography;
 using BaelorApi.Models.Database;
 using BaelorApi.Helpers;
 using BaelorApi.Models.Api;
+using BaelorApi.Attributes;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
-	//[ExceptionHandler]
+	[ExceptionHandler]
 	[Route("api/v0/[controller]")]
 	public class UsersController : ApiController
 	{

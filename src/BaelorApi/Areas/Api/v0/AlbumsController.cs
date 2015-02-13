@@ -7,13 +7,11 @@ using System.Collections.Generic;
 using BaelorApi.Models.Api.Response.Partials;
 using BaelorApi.Models.Api.Error;
 using BaelorApi.Models.Error.Enums;
-
-//using BaelorApi.Models.Database;
-//using System;
-//using BaelorApi.Extentions;
+using BaelorApi.Attributes;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
+	[ExceptionHandler]
 	[Route("api/v0/[controller]")]
 	public class AlbumsController : ApiController
 	{
