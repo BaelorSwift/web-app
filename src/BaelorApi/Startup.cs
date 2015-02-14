@@ -7,10 +7,6 @@ using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
-using StackExchange.Redis;
-using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace BaelorApi
 {
