@@ -34,7 +34,7 @@ IF NOT DEFINED NEXT_MANIFEST_PATH (
   SET NEXT_MANIFEST_PATH=%ARTIFACTS%\manifest
 
   IF NOT DEFINED PREVIOUS_MANIFEST_PATH (
-    SET PREVIOUS_MANIFEST_PATH=%ARTIFACTS%\manifest
+	SET PREVIOUS_MANIFEST_PATH=%ARTIFACTS%\manifest
   )
 )
 
@@ -68,14 +68,14 @@ echo Handling ASP.NET 5 Web Application deployment.
 
 :: Remove wwwroot if deploying to default location
 IF "%DEPLOYMENT_TARGET%" == "%WEBROOT_PATH%" (
-    FOR /F %%i IN ("%DEPLOYMENT_TARGET%") DO IF "%%~nxi"=="wwwroot" (
-    SET DEPLOYMENT_TARGET=%%~dpi
-    )
+	FOR /F %%i IN ("%DEPLOYMENT_TARGET%") DO IF "%%~nxi"=="wwwroot" (
+	SET DEPLOYMENT_TARGET=%%~dpi
+	)
 )
 
 :: Remove trailing slash if present
 IF "%DEPLOYMENT_TARGET:~-1%"=="\" (
-    SET DEPLOYMENT_TARGET=%DEPLOYMENT_TARGET:~0,-1%
+	SET DEPLOYMENT_TARGET=%DEPLOYMENT_TARGET:~0,-1%
 )
 
 :: 1. Install KRE
@@ -83,8 +83,8 @@ call :ExecuteCmd PowerShell -NoProfile -NoLogo -ExecutionPolicy unrestricted -Co
 IF !ERRORLEVEL! NEQ 0 goto error
 
 IF EXIST "%USERPROFILE%\.kre\run-once.cmd" (
-    CALL "%USERPROFILE%\.kre\run-once.cmd"
-    DEL "%USERPROFILE%\.kre\run-once.cmd"
+	CALL "%USERPROFILE%\.kre\run-once.cmd"
+	DEL "%USERPROFILE%\.kre\run-once.cmd"
 )
 
 :: 2. Run KPM Restore
@@ -130,8 +130,6 @@ exit /b 1
 :end
 endlocal
 
-IF EXIST "database-migrations.cmd" (
-    CALL "database-migrations.cmd"
-)
+CALL "D:\home\site\deployments\tools\database-migrations.cmd"
 
 echo Finished successfully.
