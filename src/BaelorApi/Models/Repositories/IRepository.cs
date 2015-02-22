@@ -29,9 +29,9 @@ namespace BaelorApi.Models.Repositories
 		/// Updates an item with a specified Id.
 		/// </summary>
 		/// <param name="id">The Id of the item to update.</param>
-		/// <param name="update">The updated item data.</param>
+		/// <param name="delta">The updated item data.</param>
 		/// <returns>The updated item, from the repository.</returns>
-		T Update(Guid id, T item);
+		T Update(Guid id, T delta);
 
 		/// <summary>
 		/// Deletes an item from the repository by it's Id.

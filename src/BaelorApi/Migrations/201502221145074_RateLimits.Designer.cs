@@ -7,9 +7,25 @@ using System;
 namespace BaelorApi.Migrations
 {
     [ContextType(typeof(DatabaseContext))]
-    public class DatabaseContextModelSnapshot : ModelSnapshot
+    public partial class RateLimits : IMigrationMetadata
     {
-        public override IModel Model
+        string IMigrationMetadata.MigrationId
+        {
+            get
+            {
+                return "201502221145074_RateLimits";
+            }
+        }
+        
+        string IMigrationMetadata.ProductVersion
+        {
+            get
+            {
+                return "7.0.0-beta1-11518";
+            }
+        }
+        
+        IModel IMigrationMetadata.TargetModel
         {
             get
             {

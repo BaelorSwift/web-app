@@ -60,9 +60,25 @@ namespace BaelorApi.Models.Repositories
 			return _db.Users.FirstOrDefault(a => a.ApiKey == apiKey);
 		}
 
-		public User Update(Guid id, User item)
+		public User Update(Guid id, User delta)
 		{
-			throw new NotImplementedException();
+			var item = _db.Users.FirstOrDefault(u => u.Id == id);
+			if (item == null)
+				return null;
+			
+			item.ApiKey = delta.ApiKey;
+			item.EmailAddress = delta.EmailAddress;
+			item.IsAdmin = delta.IsAdmin;
+			item.IsRevoked = delta.IsRevoked;
+			item.PasswordHash = delta.PasswordHash;
+			item.PasswordIterations = delta.PasswordIterations;
+			item.PasswordSalt = delta.PasswordSalt;
+			item.Username = delta.Username;
+
+			if (_db.SaveChanges() > 0)
+				return delta;
+
+			return null;
 		}
 
 		public bool TryDelete(Guid id)

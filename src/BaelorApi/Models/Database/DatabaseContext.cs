@@ -16,6 +16,8 @@ namespace BaelorApi.Models.Database
 		public DbSet<Image> Images { get; set; }
 
 		public DbSet<User> Users { get; set; }
+
+		public DbSet<RateLimit> RateLimits { get; set; }
 		
 		protected override void OnConfiguring(DbContextOptions options)
 		{
@@ -24,9 +26,21 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Album>().OneToMany<Song>(a => a.Songs, s => s.Album).ForeignKey(s => s.AlbumId);
-			modelBuilder.Entity<Album>().OneToOne<Image>(a => a.Image).ForeignKey<Album>(a => a.ImageId);
-			
+			// Album's have many Songs
+			modelBuilder.Entity<Album>()
+				.OneToMany<Song>(a => a.Songs, s => s.Album)
+				.ForeignKey(s => s.AlbumId);
+
+			// Album's have one Image
+			modelBuilder.Entity<Album>()
+				.OneToOne<Image>(a => a.Image)
+				.ForeignKey<Album>(a => a.ImageId);
+
+			// RateLimit's have one User
+			modelBuilder.Entity<RateLimit>()
+				.OneToOne<User>(r => r.User)
+				.ForeignKey<RateLimit>(r => r.UserId);
+
 			base.OnModelCreating(modelBuilder);
 		}
 

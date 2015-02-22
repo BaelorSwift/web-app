@@ -66,10 +66,23 @@ namespace BaelorApi
 			services.AddScoped<ISongRepository, SongRepository>();
 			services.AddScoped<IImageRepository, ImageRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IRateLimitRepository, RateLimitRepository>();
 			services.AddScoped<DatabaseContext, DatabaseContext>();
-			
+
 			// Add the Web Api Framework 
 			services.AddWebApiConventions();
+
+			#region [ DEBUG ]
+
+			//// Clear RateLimit data
+			//using (var dbContext = new DatabaseContext())
+			//{
+			//	var rateLimitRepo = new RateLimitRepository(dbContext);
+			//	foreach (var rateLimit in rateLimitRepo.GetAll)
+			//		rateLimitRepo.SetRquestCount(rateLimit.Id, 0);
+			//}
+
+			#endregion
 		}
 	}
 }
