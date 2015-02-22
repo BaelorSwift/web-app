@@ -43,9 +43,10 @@ namespace BaelorApi.Extentions
 		/// <param name="value">The <see cref="ErrorStatus"/> in question.</param>
 		public static string GetDisplayDescription(this ErrorStatus value)
 		{
-			return ErrorStatusFriendly.ContainsKey(value)
-				? ErrorStatusFriendly[value]
-				: value.ToString();
+			if (ErrorStatusFriendly.ContainsKey(value))
+				return ErrorStatusFriendly[value];
+
+			throw new KeyNotFoundException(value.ToString());
 		}
 	}
 }
