@@ -13,8 +13,9 @@ using BaelorApi.Attributes;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
-	[RequireAuthentication]
 	[ExceptionHandler]
+	[SetResponseHeaders]
+	[RequireAuthentication]
 	[Route("api/v0/[controller]")]
 	public class ImagesController : ApiController
 	{

@@ -25,10 +25,12 @@ namespace BaelorApi.Attributes
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
 			string[] authTokens;
-			context.HttpContext.Request.Headers.TryGetValue("Authorization", out authTokens);
+			context.HttpContext.Request.Headers
+				.TryGetValue("Authorization", out authTokens);
 
 			// Check if the header exists
-			if (authTokens == null || !authTokens.Any() || !authTokens.First().ToLowerInvariant().StartsWith("bearer"))
+			if (authTokens == null || !authTokens.Any() || 
+				!authTokens.First().ToLowerInvariant().StartsWith("bearer"))
 				throw new BaelorV0Exception(ErrorStatus.RequestRequiredAuthentication, HttpStatusCode.Forbidden);
 
 			// Extract token
@@ -47,7 +49,8 @@ namespace BaelorApi.Attributes
 					throw new BaelorV0Exception(ErrorStatus.RevokedApiKey, HttpStatusCode.Forbidden);
 
 				// Save user authentication
-				context.HttpContext.SetFeature<AuthenticationStorage>(new AuthenticationStorage(user));
+				context.HttpContext.SetFeature<AuthenticationStorage>(
+					new AuthenticationStorage(user));
 
 				// Get (or create?) a rate limit
 				var rateLimit = rateLimitRepo.GetByUserId(user.Id);
@@ -68,7 +71,8 @@ namespace BaelorApi.Attributes
 
 				// calculate utc reset
 				var now = DateTime.UtcNow;
-				var reset = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+				var reset = new DateTime(
+					now.Year, now.Month, now.Day, now.Hour, 0, 0);
 				reset = reset.AddHours(1);
 				
 				if (rateLimit.RateLimitReached)
@@ -77,9 +81,12 @@ namespace BaelorApi.Attributes
 					rateLimitRequestsMade = 
 						rateLimitRepo.IncrementRequestCount(rateLimit.Id);
 
-				context.HttpContext.Response.Headers.Add("X-RateLimit-Limit", new[] { rateLimitMax.ToString() });
-				context.HttpContext.Response.Headers.Add("X-RateLimit-Remaining", new[] { (rateLimitMax - rateLimitRequestsMade).ToString() });
-				context.HttpContext.Response.Headers.Add("X-RateLimit-Reset", new[] { reset.ToString() });
+				context.HttpContext.Response.Headers
+					.Add("X-RateLimit-Limit", new[] { rateLimitMax.ToString() });
+				context.HttpContext.Response.Headers
+					.Add("X-RateLimit-Remaining", new[] { (rateLimitMax - rateLimitRequestsMade).ToString() });
+				context.HttpContext.Response.Headers
+					.Add("X-RateLimit-Reset", new[] { reset.ToString() });
 
 				if (rateLimitExceeded)
 					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode) 429);

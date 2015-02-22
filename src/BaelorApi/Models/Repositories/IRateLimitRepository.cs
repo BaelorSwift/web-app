@@ -32,6 +32,6 @@ namespace BaelorApi.Models.Repositories
 		/// </summary>
 		/// <param name="id">The Id of the item in the repository.</param>
 		/// <param name="requestCount">The new request count to set on the item.</param>
-		void SetRquestCount(Guid id, int requestCount);
+		void SetRequestCount(Guid id, int requestCount);
 	}
 }

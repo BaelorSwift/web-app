@@ -70,7 +70,7 @@ namespace BaelorApi.Models.Repositories
 			return item.RequestsMade;
 		}
 
-		public void SetRquestCount(Guid id, int requestCount)
+		public void SetRequestCount(Guid id, int requestCount)
 		{
 			var item = _db.RateLimits.FirstOrDefault(r => r.Id == id);
 			if (item == null)

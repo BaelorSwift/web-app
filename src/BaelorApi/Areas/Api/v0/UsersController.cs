@@ -16,6 +16,7 @@ using BaelorApi.Attributes;
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
 	[ExceptionHandler]
+	[SetResponseHeaders]
 	[Route("api/v0/[controller]")]
 	public class UsersController : ApiController
 	{
