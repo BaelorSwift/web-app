@@ -31,11 +31,10 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.RequestRequiredAuthentication, "request_requires_authentication" },
 			{ ErrorStatus.InvalidApiKey, "invalid_api_key" },
 			{ ErrorStatus.RevokedApiKey, "revoked_api_key" },
+			{ ErrorStatus.InsufficientPrivileges, "insufficient_privileges" },
 
 			// Rate Limit
-			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" },
-
-			{ ErrorStatus.InsufficientPrivileges, "insufficient_privileges" }
+			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" }
 		};
 
 		/// <summary>
