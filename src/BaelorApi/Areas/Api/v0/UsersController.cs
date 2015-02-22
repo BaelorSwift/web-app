@@ -12,6 +12,7 @@ using BaelorApi.Models.Database;
 using BaelorApi.Helpers;
 using BaelorApi.Models.Api;
 using BaelorApi.Attributes;
+using BaelorApi.Models.Miscellaneous;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
@@ -34,6 +35,25 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			_userRepository = userRepository;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[RequireAuthentication]
+		public IActionResult Get()
+		{
+			var authentication = Context.GetFeature<AuthenticationStorage>();
+			var user = _userRepository.GetById(authentication.UserId);
+
+			return Content(HttpStatusCode.OK, new ResponseBase
+			{
+				Success = true,
+				Error = null,
+				Result = Models.Api.Response.Partials.User.Create(user)
+			});
+		}
+		
 		/// <summary>
 		///		[POST] api/v0/user/
 		/// Creates a user from the post data.

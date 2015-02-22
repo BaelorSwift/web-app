@@ -33,7 +33,9 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.RevokedApiKey, "revoked_api_key" },
 
 			// Rate Limit
-			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" }
+			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" },
+
+			{ ErrorStatus.InsufficientPrivileges, "insufficient_privileges" }
 		};
 
 		/// <summary>

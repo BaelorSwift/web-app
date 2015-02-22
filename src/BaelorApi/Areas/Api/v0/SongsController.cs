@@ -71,9 +71,11 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 
 		/// <summary>
 		///		[POST] api/v0/songs/
+		/// Adds a song by bae based on the POST'ed view model.
 		/// </summary>
-		/// <param name="viewModel"></param>
+		/// <param name="viewModel">The data of the song to create.</param>
 		[HttpPost]
+		[RequireAdminAuthentication]
 		public IActionResult Post([FromBody] CreateSongViewModel viewModel)
 		{
 			var album = _albumRepository.GetBySlug(viewModel.AlbumSlug);

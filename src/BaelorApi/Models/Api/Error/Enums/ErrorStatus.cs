@@ -12,6 +12,7 @@
 		RequestRequiredAuthentication = 0x1070,
 		InvalidApiKey = 0x1071,
 		RevokedApiKey = 0x1072,
-		RateLimitExceeded = 0x1073
+		RateLimitExceeded = 0x1073,
+		InsufficientPrivileges = 0x1074
 	}
 }

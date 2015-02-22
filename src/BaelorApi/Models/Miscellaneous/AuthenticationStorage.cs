@@ -19,6 +19,7 @@ namespace BaelorApi.Models.Miscellaneous
 			ApiKey = user.ApiKey;
 			Username = user.Username;
 			EmailAddress = user.EmailAddress;
+			IsAdmin = user.IsAdmin;
 			UserId = user.Id;
 		}
 
@@ -36,6 +37,11 @@ namespace BaelorApi.Models.Miscellaneous
 		/// Gets or Sets the Email Address of authenticated the <see cref="User"/>.
 		/// </summary>
 		public string EmailAddress { get; set; }
+
+		/// <summary>
+		/// Gets or Sets if the authenticated <see cref="User"/> has admin privileges.
+		/// </summary>
+		public bool IsAdmin { get; set; }
 
 		/// <summary>
 		/// Gets or Sets the Id of the authenticated <see cref="User"/>.
