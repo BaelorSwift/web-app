@@ -13,6 +13,7 @@ using BaelorApi.Helpers;
 using BaelorApi.Models.Api;
 using BaelorApi.Attributes;
 using BaelorApi.Models.Miscellaneous;
+using System.Diagnostics;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
@@ -99,6 +100,8 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				#endregion
 			}
 
+			DopeTrace.WriteLine("fuck");
+
 			#region [ Model Validation ]
 
 			var errors = ModelState.GetErrors("viewModel");
@@ -107,11 +110,15 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 
 			#endregion
 
+			DopeTrace.WriteLine("yo");
+
 			#region [ Password Hashing ]
 
 			var hash = Pbkdf2.ComputeHash(viewModel.Password);
 
 			#endregion
+
+			DopeTrace.WriteLine("tits");
 
 			#region [ Create User ]
 
@@ -129,6 +136,8 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			user = _userRepository.Add(user);
 
 			#endregion
+
+			DopeTrace.WriteLine("bro");
 
 			return Content(HttpStatusCode.OK, new ResponseBase
 			{
