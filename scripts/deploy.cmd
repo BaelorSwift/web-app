@@ -100,6 +100,10 @@ call %KUDU_SYNC_CMD% -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%
 IF !ERRORLEVEL! NEQ 0 goto error
 )
 
+:: 5. Run Entity Framework Migrations
+call cd "D:\home\site\repository\src\BaelorApi\"
+call k ef migration apply
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub
 IF DEFINED POST_DEPLOYMENT_ACTION call "%POST_DEPLOYMENT_ACTION%"
@@ -129,7 +133,5 @@ exit /b 1
 
 :end
 endlocal
-
-CALL "D:\home\site\deployments\tools\database-migrations.cmd"
 
 echo Finished successfully.
