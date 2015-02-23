@@ -63,6 +63,8 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		[HttpPost]
 		public IActionResult Post([FromBody] CreateUserViewModel viewModel)
 		{
+			DopeTrace.WriteLine("ehhh");
+
 			if (ModelState.IsValid)
 			{
 				#region [ Validate Password Strength ]
