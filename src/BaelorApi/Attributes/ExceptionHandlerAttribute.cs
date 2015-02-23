@@ -49,6 +49,9 @@ namespace BaelorApi.Attributes
 				Success = false,
 				Result = null,
 				Error = new ErrorBase(ErrorStatus.GenericServerError)
+				{
+					Details = context.Exception
+				}
 			});
 
 //#endif
