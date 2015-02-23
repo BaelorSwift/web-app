@@ -81,12 +81,18 @@ namespace BaelorApi.Attributes
 					rateLimitRequestsMade = 
 						rateLimitRepo.IncrementRequestCount(rateLimit.Id);
 
-				context.HttpContext.Response.Headers
-					.Add("X-RateLimit-Limit", new[] { rateLimitMax.ToString() });
-				context.HttpContext.Response.Headers
-					.Add("X-RateLimit-Remaining", new[] { (rateLimitMax - rateLimitRequestsMade).ToString() });
-				context.HttpContext.Response.Headers
-					.Add("X-RateLimit-Reset", new[] { reset.ToString() });
+				context.HttpContext.Response.Headers.Add("X-RateLimit-Limit", new[]
+				{
+					rateLimitMax.ToString()
+				});
+				context.HttpContext.Response.Headers.Add("X-RateLimit-Remaining", new[]
+				{
+					(rateLimitMax - rateLimitRequestsMade).ToString()
+				});
+				context.HttpContext.Response.Headers.Add("X-RateLimit-Reset", new[]
+				{
+					reset.ToString()
+				});
 
 				if (rateLimitExceeded)
 					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode) 429);

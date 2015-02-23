@@ -42,7 +42,7 @@ namespace BaelorApi.Areas.Api.v0
 			// Check if the header exists
 			if (authTokens == null || !authTokens.Any() || !authTokens.First().ToLowerInvariant().StartsWith("bearer"))
 				throw new BaelorV0Exception(ErrorStatus.RequestRequiredAuthentication, HttpStatusCode.Forbidden);
-			if (authTokens.First() != Startup.Configuration.Get("Data:AzureJobSecretIdetifier"))
+			if (string.Format("bearer {0}", authTokens.First()) != Startup.Configuration.Get("Data:AzureJobSecretIdetifier"))
 				throw new BaelorV0Exception(ErrorStatus.InvalidApiKey, HttpStatusCode.Forbidden);
 
 			// Reset bro
