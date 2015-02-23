@@ -23,5 +23,21 @@ namespace BaelorApi.Helpers
 			Trace.WriteLine(
 				string.Format("[{0}:{1}] {2} - {3}", filePath, memberName, lineNumber, data));
 		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="data"></param>
+		/// <param name="lineNumber"></param>
+		/// <param name="filePath"></param>
+		/// <param name="memberName"></param>
+		public static void TraceError(object data,
+			[CallerLineNumber] int lineNumber = 0,
+			[CallerFilePath] string filePath = "",
+			[CallerMemberName] string memberName = "")
+		{
+			Trace.TraceError(
+				string.Format("[{0}:{1}] {2} - {3}", filePath, memberName, lineNumber, data));
+		}
 	}
 }
