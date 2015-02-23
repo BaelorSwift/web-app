@@ -1,6 +1,8 @@
 ﻿{
 	"webroot": "wwwroot",
 	"version": "1.0-bae-*",
+	"authors": [ "Alex Forbes-Reed" ],
+	"description": "",
 	"exclude": [
 		"wwwroot"
 	],
@@ -40,5 +42,24 @@
 	"frameworks": {
 		"aspnet50": { }
 		//"aspnetcore50": { }
+	},
+	"compilationOptions": {
+		"define": [ ],
+		"allowUnsafe": false,
+		"warningsAsErrors": false,
+		"languageVersion": "experimental"
+	},
+	"configurations": {
+		"Debug": {
+			"compilationOptions": {
+				"define": [ "DEBUG", "TRACE" ]
+			}
+		},
+		"Release": {
+			"compilationOptions": {
+				"define": [ "RELEASE", "TRACE" ],
+				"optimize": true
+			}
+		}
 	}
 }

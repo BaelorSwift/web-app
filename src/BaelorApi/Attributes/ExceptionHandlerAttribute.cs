@@ -3,12 +3,14 @@ using BaelorApi.Models.Api;
 using BaelorApi.Models.Api.Error;
 using Microsoft.AspNet.Mvc;
 
-//#if !DEBUG
+#if !DEBUG
+
 using System.Net;
 using BaelorApi.Models.Error.Enums;
 using BaelorApi.Helpers;
 using System.Diagnostics;
-//#endif
+
+#endif
 
 namespace BaelorApi.Attributes
 {
@@ -23,8 +25,8 @@ namespace BaelorApi.Attributes
 		{
 			if (context.Exception is BaelorV0Exception)
 			{
-				var exception = (BaelorV0Exception)context.Exception;
-				context.HttpContext.Response.StatusCode = (int)exception.HttpStatusCode;
+				var exception = context.Exception as BaelorV0Exception;
+				context.HttpContext.Response.StatusCode = (int) exception.HttpStatusCode;
 				context.Result = new JsonResult(new ResponseBase
 				{
 					Success = false,
@@ -37,7 +39,7 @@ namespace BaelorApi.Attributes
 				return;
 			}
 
-//#if !DEBUG
+#if !DEBUG
 
 			// Log the error to the server, as it should not have happened.
 			DopeTrace.TraceError(context.Exception.ToString());
@@ -50,11 +52,11 @@ namespace BaelorApi.Attributes
 				Result = null,
 				Error = new ErrorBase(ErrorStatus.GenericServerError)
 				{
-					Details = context.Exception
+					//Details = context.Exception
 				}
 			});
 
-//#endif
+#endif
 		}
 	}
 }
