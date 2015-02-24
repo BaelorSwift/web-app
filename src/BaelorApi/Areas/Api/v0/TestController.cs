@@ -8,6 +8,7 @@ namespace BaelorApi.Areas.Api.v0
 {
 	[ExceptionHandler]
 	[SetResponseHeaders]
+	[RequireAuthentication]
 	[RequireAdminAuthentication]
 	[Route("api/v0/[controller]")]
 	public class TestController : ApiController
