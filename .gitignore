@@ -6,6 +6,9 @@
 *.user
 *.sln.docstates
 
+# Ignore bower libraries
+src/BaelorApi/wwwroot/lib/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
