@@ -2,9 +2,18 @@
 	"webroot": "wwwroot",
 	"version": "1.0-bae-*",
 	"authors": [ "Alex Forbes-Reed" ],
-	"description": "",
+	"description": "Taylor Swift API - After all, she is bae.",
 	"exclude": [
-		"wwwroot"
+		"wwwroot",
+		"node_modules",
+		"bower_components"
+	],
+	"bundleExclude": [
+		"node_modules",
+		"bower_components",
+		"**.kproj",
+		"**.user",
+		"**.vspscc"
 	],
 	"packExclude": [
 		"**.kproj",
@@ -12,13 +21,15 @@
 		"**.vspscc"
 	],
 	"dependencies": {
-		"Microsoft.AspNet.Mvc": "6.0.0-beta1",
-		"Microsoft.AspNet.Server.IIS": "1.0.0-beta1",
-		"Microsoft.AspNet.Diagnostics": "1.0.0-beta1",
-		"Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-beta1",
-		"Microsoft.Framework.ConfigurationModel.Json": "1.0.0-beta1",
-		"Microsoft.Framework.Logging": "1.0.0-beta1",
-		"Microsoft.Framework.Logging.Console": "1.0.0-beta1",
+		"Microsoft.AspNet.Mvc": "6.0.0-beta3",
+		"Microsoft.AspNet.Server.IIS": "1.0.0-beta3",
+		"Microsoft.AspNet.Diagnostics": "1.0.0-beta3",
+		"Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-beta3",
+		"Microsoft.Framework.ConfigurationModel": "1.0.0-beta3",
+		"Microsoft.Framework.ConfigurationModel.Json": "1.0.0-beta3",
+		"Microsoft.Framework.DependencyInjection": "1.0.0-beta3",
+		"Microsoft.Framework.Logging": "1.0.0-beta3",
+		"Microsoft.Framework.Logging.Console": "1.0.0-beta3",
 
 		"System.Security.Cryptography.Hashing": "4.0.0-beta",
 		"System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta",
@@ -30,9 +41,9 @@
 		"System.Security.Cryptography.X509Certificates": "4.0.0-beta",
 		"System.Security.Cryptography.RandomNumberGenerator": "4.0.0-beta",
 
-		"EntityFramework": "7.0.0-beta1",
-		"EntityFramework.SqlServer": "7.0.0-beta1",
-		"EntityFramework.Commands": "7.0.0-beta1",
+		"EntityFramework": "7.0.0-beta2",
+		"EntityFramework.SqlServer": "7.0.0-beta2",
+		"EntityFramework.Commands": "7.0.0-beta2",
 
 		"StackExchange.Redis": "1.0.394"
 	},
@@ -41,12 +52,15 @@
 	},
 	"frameworks": {
 		"aspnet50": { }
-		//"aspnetcore50": { }
 	},
 	"compilationOptions": {
 		"allowUnsafe": false,
 		"warningsAsErrors": false,
 		"languageVersion": "experimental"
+	},
+	"scripts": {
+		"postrestore": [ "npm install" ],
+		"prepare": [ "grunt bower:install" ]
 	},
 	"configurations": {
 		"Debugging": {

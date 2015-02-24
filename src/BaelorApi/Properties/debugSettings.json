@@ -1,3 +1,7 @@
 {
-  "Profiles": []
+  "profiles": [
+    {
+      "name": "IIS Express"
+    }
+  ]
 }

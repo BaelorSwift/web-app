@@ -2,7 +2,6 @@
 using BaelorApi.Models.Repositories;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Routing;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -45,8 +44,8 @@ namespace BaelorApi
 				routes.MapWebApiRoute("v0", "v0/{controller}/{id?}");
 			});
 
-			// Enable Default Welcome Page
-			app.UseWelcomePage();
+			// TODO: don't be lazy
+			app.UseErrorPage();
 		}
 
 		/// <summary>
