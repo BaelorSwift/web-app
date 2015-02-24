@@ -3,12 +3,11 @@ using BaelorApi.Models.Api;
 using BaelorApi.Models.Api.Error;
 using Microsoft.AspNet.Mvc;
 
-#if !DEBUG
+#if DEBUG
 
 using System.Net;
 using BaelorApi.Models.Error.Enums;
 using BaelorApi.Helpers;
-using System.Diagnostics;
 
 #endif
 
@@ -39,11 +38,10 @@ namespace BaelorApi.Attributes
 				return;
 			}
 
-#if !DEBUG
+#if DEBUG
 
 			// Log the error to the server, as it should not have happened.
 			DopeTrace.TraceError(context.Exception.ToString());
-			Trace.TraceError(context.Exception.ToString());
 
 			context.HttpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 			context.Result = new JsonResult(new ResponseBase

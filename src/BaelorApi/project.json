@@ -44,15 +44,21 @@
 		//"aspnetcore50": { }
 	},
 	"compilationOptions": {
-		"define": [ ],
 		"allowUnsafe": false,
 		"warningsAsErrors": false,
 		"languageVersion": "experimental"
 	},
 	"configurations": {
-		"Debug": {
+		"Debugging": {
 			"compilationOptions": {
 				"define": [ "DEBUG", "TRACE" ]
+			}
+		},
+		// This is hacky - server uses debug for some reason, so we spoof that to release.
+		"Debug": {
+			"compilationOptions": {
+				"define": [ "RELEASE", "TRACE" ],
+				"optimize": true
 			}
 		},
 		"Release": {

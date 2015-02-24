@@ -74,6 +74,8 @@ namespace BaelorApi
 
 			#region [ DEBUG ]
 
+#if DEBUG
+
 			//// Clear RateLimit data
 			//using (var dbContext = new DatabaseContext())
 			//{
@@ -81,6 +83,8 @@ namespace BaelorApi
 			//	foreach (var rateLimit in rateLimitRepo.GetAll)
 			//		rateLimitRepo.SetRquestCount(rateLimit.Id, 0);
 			//}
+
+#endif
 
 			#endregion
 		}
