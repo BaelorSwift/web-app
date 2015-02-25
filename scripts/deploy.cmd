@@ -34,7 +34,7 @@ IF NOT DEFINED NEXT_MANIFEST_PATH (
   SET NEXT_MANIFEST_PATH=%ARTIFACTS%\manifest
 
   IF NOT DEFINED PREVIOUS_MANIFEST_PATH (
-	SET PREVIOUS_MANIFEST_PATH=%ARTIFACTS%\manifest
+    SET PREVIOUS_MANIFEST_PATH=%ARTIFACTS%\manifest
   )
 )
 
@@ -68,51 +68,46 @@ echo Handling ASP.NET 5 Web Application deployment.
 
 :: Remove wwwroot if deploying to default location
 IF "%DEPLOYMENT_TARGET%" == "%WEBROOT_PATH%" (
-	FOR /F %%i IN ("%DEPLOYMENT_TARGET%") DO IF "%%~nxi"=="wwwroot" (
-	SET DEPLOYMENT_TARGET=%%~dpi
-	)
+    FOR /F %%i IN ("%DEPLOYMENT_TARGET%") DO IF "%%~nxi"=="wwwroot" (
+    SET DEPLOYMENT_TARGET=%%~dpi
+    )
 )
 
 :: Remove trailing slash if present
 IF "%DEPLOYMENT_TARGET:~-1%"=="\" (
-	SET DEPLOYMENT_TARGET=%DEPLOYMENT_TARGET:~0,-1%
+    SET DEPLOYMENT_TARGET=%DEPLOYMENT_TARGET:~0,-1%
 )
-
-echo "yolo 1"
 
 :: 1. Install KRE
 call :ExecuteCmd PowerShell -NoProfile -NoLogo -ExecutionPolicy unrestricted -Command "[System.Threading.Thread]::CurrentThread.CurrentCulture = ''; [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';& '%SCM_KVM_PS_PATH%' %*" install %SCM_KRE_VERSION% -%SCM_KRE_ARCH% -runtime %SCM_KRE_CLR% %SCM_KVM_INSTALL_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 IF EXIST "%USERPROFILE%\.kre\run-once.cmd" (
-	CALL "%USERPROFILE%\.kre\run-once.cmd"
-	DEL "%USERPROFILE%\.kre\run-once.cmd"
+    CALL "%USERPROFILE%\.kre\run-once.cmd"
+    DEL "%USERPROFILE%\.kre\run-once.cmd"
 )
-
-echo "yolo 2"
 
 :: 2. Run KPM Restore
 call kpm restore "%DEPLOYMENT_SOURCE%" %SCM_KPM_RESTORE_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
-echo "yolo 3"
-
 :: 3. Run KPM Pack
-call kpm pack "D:\home\site\repository\src\BaelorApi\project.json" --runtime "%USERPROFILE%\.kre\packages\KRE-%SCM_KRE_CLR%-%SCM_KRE_ARCH%.%SCM_KRE_VERSION%" --out "%DEPLOYMENT_TEMP%" %SCM_KPM_PACK_OPTIONS%
+call kpm pack "D:\home\site\repository\src\Baelor.Api\project.json" --runtime "%USERPROFILE%\.kre\packages\KRE-%SCM_KRE_CLR%-%SCM_KRE_ARCH%.%SCM_KRE_VERSION%" --out "%DEPLOYMENT_TEMP%" %SCM_KPM_PACK_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
-
-echo "yolo 4"
 
 :: 4. KuduSync
 call %KUDU_SYNC_CMD% -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-echo "yolo 5"
+:: 5. Database Migrations
+:: TODO
 
-:: 5. Run Entity Framework Migrations
+:: 6. Asset Management
 call cd "D:\home\site\approot\src\BaelorApi\"
-call k ef migration apply
+call npm install
+call grunt bower:install
+call grunt sass
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub
