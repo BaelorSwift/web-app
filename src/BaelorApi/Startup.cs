@@ -1,11 +1,14 @@
 ﻿using BaelorApi.Models.Database;
 using BaelorApi.Models.Repositories;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Diagnostics;
+using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
+using System;
 
 namespace BaelorApi
 {
@@ -32,7 +35,7 @@ namespace BaelorApi
 		/// Configure the application.
 		/// </summary>
 		/// <param name="app">The <see cref="IApplicationBuilder"/> to configure.</param>
-		public void Configure(IApplicationBuilder app, ILoggerFactory loggerfactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory)
 		{
 			// log pls
 			loggerfactory.AddConsole();
@@ -44,8 +47,22 @@ namespace BaelorApi
 				routes.MapWebApiRoute("v0", "v0/{controller}/{id?}");
 			});
 
-			// TODO: don't be lazy
-			app.UseErrorPage();
+			if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
+			{
+				app.UseBrowserLink();
+				app.UseErrorPage(ErrorPageOptions.ShowAll);
+				app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
+			}
+			else
+			{
+				// Add Error handling middleware which catches all application specific errors and
+				// send the request to the following path or controller action.
+				// TODO: Add error controller action
+				app.UseErrorHandler("/Home/Error");
+			}
+
+			// Enable Asset Pipeline
+			app.UseStaticFiles();
 		}
 
 		/// <summary>
