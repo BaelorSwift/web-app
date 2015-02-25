@@ -78,6 +78,8 @@ IF "%DEPLOYMENT_TARGET:~-1%"=="\" (
 	SET DEPLOYMENT_TARGET=%DEPLOYMENT_TARGET:~0,-1%
 )
 
+echo "yolo 1"
+
 :: 1. Install KRE
 call :ExecuteCmd PowerShell -NoProfile -NoLogo -ExecutionPolicy unrestricted -Command "[System.Threading.Thread]::CurrentThread.CurrentCulture = ''; [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';& '%SCM_KVM_PS_PATH%' %*" install %SCM_KRE_VERSION% -%SCM_KRE_ARCH% -runtime %SCM_KRE_CLR% %SCM_KVM_INSTALL_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
@@ -87,22 +89,39 @@ IF EXIST "%USERPROFILE%\.kre\run-once.cmd" (
 	DEL "%USERPROFILE%\.kre\run-once.cmd"
 )
 
+echo "yolo 2"
+
 :: 2. Run KPM Restore
 call kpm restore "%DEPLOYMENT_SOURCE%" %SCM_KPM_RESTORE_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
+:: 2.3 Wipe node_modules
+call rmdir "D:\home\site\repository\src\BaelorApi\node_modules" /s /q
+
+echo "yolo 3"
+
 :: 3. Run KPM Pack
 call kpm pack "D:\home\site\repository\src\BaelorApi\project.json" --runtime "%USERPROFILE%\.kre\packages\KRE-%SCM_KRE_CLR%-%SCM_KRE_ARCH%.%SCM_KRE_VERSION%" --out "%DEPLOYMENT_TEMP%" %SCM_KPM_PACK_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
+
+echo "yolo 4"
 
 :: 4. KuduSync
 call %KUDU_SYNC_CMD% -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
 IF !ERRORLEVEL! NEQ 0 goto error
 )
 
+echo "yolo 5"
+
 :: 5. Run Entity Framework Migrations
 call cd "D:\home\site\repository\src\BaelorApi\"
 call k ef migration apply
+
+echo "yolo 6"
+
+:: 6. Run npm install, again
+call cd "D:\home\site\repository\src\BaelorApi\"
+call npm install
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub

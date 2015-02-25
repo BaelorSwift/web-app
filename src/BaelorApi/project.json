@@ -43,9 +43,7 @@
 
 		"EntityFramework": "7.0.0-beta2",
 		"EntityFramework.SqlServer": "7.0.0-beta2",
-		"EntityFramework.Commands": "7.0.0-beta2",
-
-		"StackExchange.Redis": "1.0.394"
+		"EntityFramework.Commands": "7.0.0-beta2"
 	},
 	"commands": {
 		"ef": "EntityFramework.Commands"
@@ -59,8 +57,14 @@
 		"languageVersion": "experimental"
 	},
 	"scripts": {
-		"postrestore": [ "npm install", "npm dedupe" ],
-		"prepare": [ "grunt bower:install" ]
+		//"postrestore": [ "npm install", "npm dedupe" ],
+		//"prepare": [ "grunt bower:install" ]
+		"prebuild": "echo before building",
+		"postbuild": "echo after building",
+		"prepack": "echo before packing",
+		"postpack": "echo after packing",
+		"prerestore": "echo before restoring packages",
+		"postrestore": "echo after restoring packages"
 	},
 	"configurations": {
 		"Debugging": {
