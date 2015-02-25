@@ -6,8 +6,6 @@ using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Logging;
-using Microsoft.Framework.Logging.Console;
 using System;
 
 namespace BaelorApi
@@ -35,11 +33,8 @@ namespace BaelorApi
 		/// Configure the application.
 		/// </summary>
 		/// <param name="app">The <see cref="IApplicationBuilder"/> to configure.</param>
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			// log pls
-			loggerfactory.AddConsole();
-
 			// Enable the MVC framework
 			app.UseMvc(routes =>
 			{
@@ -49,7 +44,7 @@ namespace BaelorApi
 
 			if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
 			{
-				app.UseBrowserLink();
+				//app.UseBrowserLink();
 				app.UseErrorPage(ErrorPageOptions.ShowAll);
 				app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
 			}
