@@ -36,6 +36,9 @@ namespace BaelorApi
 		{
 			// log pls
 			loggerfactory.AddConsole();
+			loggerfactory.Create("test").WriteInformation(Configuration.Get("Data:ConnectionString"));
+			loggerfactory.Create("test").WriteInformation(Configuration.Get("Data:DefaultConnection:ConnectionString"));
+			loggerfactory.Create("test").WriteInformation(Configuration.Get("Data:AzureJobSecretIdetifier"));
 
 			// Enable the MVC framework
 			app.UseMvc(routes =>
