@@ -111,18 +111,8 @@ IF !ERRORLEVEL! NEQ 0 goto error
 echo "yolo 5"
 
 :: 5. Run Entity Framework Migrations
-call cd "D:\home\site\repository\src\BaelorApi\"
+call cd "D:\home\site\approot\src\BaelorApi\"
 call k ef migration apply
-
-echo "yolo 6"
-
-:: 6. Run npm install, again
-echo "Executing Node and Grunt asset management stuff. cool."
-call cd "D:\home\site\repository\src\BaelorApi\"
-call npm install
-call npm dedupe
-call grunt bower:install
-call grunt sass
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub
