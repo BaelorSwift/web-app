@@ -100,30 +100,16 @@ call %KUDU_SYNC_CMD% -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%
 IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 5. Move web.config
-echo Move web.config
-IF EXIST "D:\home\site\wwwroot\web.config" (
-  DEL /F /S /Q /A "D:\home\site\wwwroot\web.config"
+:: 5. Move Post-Deployment Actions
+IF EXIST "D:\home\site\deployments\tools\PostDeploymentActions" (
+  RD /S /Q "D:\home\site\deployments\tools\PostDeploymentActions"
 )
-call copy "D:\home\site\repository\scripts\web.config" "D:\home\site\wwwroot\web.config" /Y
-
-:: 6. Asset Management
-echo Asset Management
-call cd "D:\home\site\approot\src\BaelorApi\"
-call npm install
-call grunt bower:install
-call grunt sass
-call grunt typescript
+Xcopy "D:\home\site\repository\scripts\PostDeploymentActions\" "D:\home\site\deployments\tools\PostDeploymentActions" /s /h /e /k /f /c
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub
 IF DEFINED POST_DEPLOYMENT_ACTION call "%POST_DEPLOYMENT_ACTION%"
 IF !ERRORLEVEL! NEQ 0 goto error
-
-:: 6. Database Migrations
-echo Database Migrations
-call cd "D:\home\site\approot\src\BaelorApi\"
-call k ef migration apply
 
 goto end
 
