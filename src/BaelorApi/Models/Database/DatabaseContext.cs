@@ -21,7 +21,7 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnConfiguring(DbContextOptions options)
 		{
-			var x = Startup.Configuration.Get("Data:DefaultConnection:ConnectionString");
+			var x = Startup.Configuration.Get("Data:SqlServerConnection:ConnectionString");
 			options.UseSqlServer(x);
 		}
 

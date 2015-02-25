@@ -4,6 +4,7 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
+using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using System;
@@ -70,7 +71,8 @@ namespace BaelorApi
 			services.AddMvc();
 
 			// Add the Entity Framework
-			services.AddEntityFramework().AddSqlServer().AddDbContext<DatabaseContext>();
+			services.AddEntityFramework().AddSqlServer().AddDbContext<DatabaseContext>
+				(o => o.UseSqlServer(Configuration.Get("Data:SqlServerConnection:ConnectionString")));
 
 			// Add Entity Framework related repository's and context's to the scope
 			services.AddScoped<IAlbumRepository, AlbumRepository>();
