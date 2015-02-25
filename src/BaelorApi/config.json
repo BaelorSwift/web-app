@@ -1,7 +1,7 @@
 ﻿{
 	"Data": {
 		"DefaultConnection": {
-			"ConnectionString": "Server=tcp:vmy5iqiy4g.database.windows.net,1433;Database=baelor-api-sql;User ID=baelor-production@vmy5iqiy4g;Password=nQJuphE2JXaB9N82Uq6f7nxS;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"
+			"ConnectionString": "Data Source=(localdb)\\ProjectsV12;Initial Catalog=BaelorProduction;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False"
 		},
 		"AzureJobSecretIdetifier": "heroinaddict420"
 	}

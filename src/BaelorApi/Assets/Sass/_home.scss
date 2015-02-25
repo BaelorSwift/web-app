@@ -1,47 +1,84 @@
-﻿#baelor-splash {
+﻿#baelor-splash-section {
 	padding-top: 50px;
 	width: 100%;
 
-	video {
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-	}
+	.splash-box {
+		position: relative;
 
-	.mask {
-		width: 100%;
-		height: 100%;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		padding-top: 8%;
-		position: absolute;
-		background: rgba(189, 189, 189, 0.4);
+		video {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
 
-		.content {
-			font-family: 'Exo', sans-serif;
-			font-weight: 100;
-			text-align: center;
-			color: #fff;
+		.mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			height: 100%;
+			z-index: 100;
+			padding: 0;
+			margin: 0;
+			padding-top: 8%;
+			background: rgba(164, 164, 164, 0.40);
 
-			h1 {
-				font-family: 'Exo', sans-serif;
+			.content {
 				font-weight: 100;
-				font-size: 80px;
-			}
+				text-align: center;
+				color: #fff;
 
-			h2 {
-				font-family: 'Exo', sans-serif;
-				font-weight: 100;
-				font-size: 25px;
+				h1 {
+					font-family: $font-stack-header;
+					font-weight: 100;
+					font-size: 80px;
+				}
+
+				h2 {
+					font-family: $font-stack;
+					font-weight: 100;
+					font-size: 25px;
+				}
+
+				@media (max-width: $small-devices-width) {
+					h1 {
+						font-size: 55px;
+					}
+
+					h2 {
+						font-size: 20px;
+					}
+				}
+
+				@media (max-width: $extra-small-devices-width) {
+					h1 {
+						font-size: 30px;
+					}
+
+					h2 {
+						font-size: 16px;
+					}
+				}
 			}
 		}
 	}
 }
 
 .baelor-info-section {
-	color: #fff;
-	height: 350px;
+	padding-top: 60px;
+	padding-bottom: 90px;
+
+	.api-demo {
+		h3 {
+			font-family: $font-stack;
+			color: #fff;
+			font-weight: 300;
+		}
+	}
+}
+
+#top-banner-section {
+	background-color: $primary-red;
 }

@@ -5,9 +5,13 @@
 	"devDependencies": {
 		"grunt": "^0.4.5",
 		"grunt-bower-task": "^0.4.0",
-		"grunt-sass": "^0.18.0"
+		"grunt-sass": "^0.18.0",
+		"grunt-typescript": "^0.6.1",
+		"typescript": "^1.4.1"
 	},
 	"dependencies": {
-		"grunt-sass": "^0.18.0"
+		"grunt-sass": "^0.18.0",
+		"grunt-typescript": "^0.6.1",
+		"typescript": "^1.4.1"
 	}
 }

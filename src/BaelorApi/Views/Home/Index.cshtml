@@ -1,28 +1,77 @@
 ﻿@{
-	ViewBag.Title = "Baelor Api - ";
+	ViewBag.Title = "Baelor Api";
 }
 
-<div id="baelor-splash">
-	<video src="~/video/baelor-home.mp4" loop autoplay poster="~/images/baelor-cover.jpg"></video>
-
-	<div class="mask">
-		<div class="content">
-			<h1>Baelor Api</h1>
-			<h2>A fully <strong>RESTful</strong> API for Taylor Swift</h2>
+<section id="baelor-splash-section">
+	<div class="splash-box">
+		<div class="mask">
+			<div class="content">
+				<h1>Baelor Api</h1>
+				<h2>a fully <strong>RESTful</strong> api for Taylor Swift</h2>
+			</div>
+		</div>
+		<div>
+			<video src="~/video/baelor-home.mp4" loop autoplay poster="~/images/baelor-cover.jpg"></video>
 		</div>
 	</div>
-</div>
+</section>
 
-<div class="baelor-info-section" style="background-color: red;">
-	<div class="row">
-		<div class="col-md-4">
-			hi
-		</div>
-		<div class="col-md-4">
-			yo
-		</div>
-		<div class="col-md-4">
-			lo
+<section id="top-banner-section" class="baelor-info-section">
+	<div class="api-demo row">
+		<div class="col-md-8 col-md-offset-2">
+			<h3>
+				api example
+			</h3>
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon1">http://baelor.io/api/v0/</span>
+				<input type="text" class="form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
+				<span class="input-group-btn">
+					<button class="btn btn-success" type="button">Go!</button>
+				</span>
+			</div>
+
+			<div class="api-demo-response">
+				<pre>
+				<code class="json">
+{
+	"glossary": {
+		"title": "example glossary",
+		"GlossDiv": {
+			"title": "S",
+			"GlossList": {
+				"GlossEntry": {
+					"ID": "SGML",
+					"SortAs": "SGML",
+					"GlossTerm": "Standard Generalized Markup Language",
+					"Acronym": "SGML",
+					"Abbrev": "ISO 8879:1986",
+					"GlossDef": {
+						"para": "A meta-markup language, used to create markup languages such as DocBook.",
+						"GlossSeeAlso": [
+							"GML",
+							"XML"
+						]
+					},
+					"GlossSee": "markup"
+				}
+			}
+		}
+	}
+}
+					</code>
+				</pre>
+			</div>
 		</div>
 	</div>
-</div>
+</section>
+
+@section scripts {
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+	<script>
+	hljs.configure({
+		tabReplace: '    ',
+	});
+	hljs.initHighlightingOnLoad();
+	</script>
+	<script src="~/js/home.js"></script>
+}

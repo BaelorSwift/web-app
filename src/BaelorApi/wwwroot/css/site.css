@@ -1,37 +1,71 @@
-#baelor-splash {
+body {
+  font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+code {
+  font-family: Consolas; }
+
+a {
+  color: #e45a5a !important;
+  transition-property: color, text;
+  transition-duration: 0.2s;
+  transition-timing-function: linear, ease-in; }
+  a:hover {
+    color: #ff0000 !important; }
+
+#baelor-splash-section {
   padding-top: 50px;
   width: 100%; }
-  #baelor-splash video {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0; }
-  #baelor-splash .mask {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding-top: 8%;
-    position: absolute;
-    background: rgba(189, 189, 189, 0.4); }
-    #baelor-splash .mask .content {
-      font-family: 'Exo', sans-serif;
-      font-weight: 100;
-      text-align: center;
-      color: #fff; }
-      #baelor-splash .mask .content h1 {
-        font-family: 'Exo', sans-serif;
+  #baelor-splash-section .splash-box {
+    position: relative; }
+    #baelor-splash-section .splash-box video {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0; }
+    #baelor-splash-section .splash-box .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 100%;
+      z-index: 100;
+      padding: 0;
+      margin: 0;
+      padding-top: 8%;
+      background: rgba(164, 164, 164, 0.4); }
+      #baelor-splash-section .splash-box .mask .content {
         font-weight: 100;
-        font-size: 80px; }
-      #baelor-splash .mask .content h2 {
-        font-family: 'Exo', sans-serif;
-        font-weight: 100;
-        font-size: 25px; }
+        text-align: center;
+        color: #fff; }
+        #baelor-splash-section .splash-box .mask .content h1 {
+          font-family: 'Exo', "Helvetica Neue", Helvetica, Arial, sans-serif;
+          font-weight: 100;
+          font-size: 80px; }
+        #baelor-splash-section .splash-box .mask .content h2 {
+          font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+          font-weight: 100;
+          font-size: 25px; }
+        @media (max-width: 768px) {
+          #baelor-splash-section .splash-box .mask .content h1 {
+            font-size: 55px; }
+          #baelor-splash-section .splash-box .mask .content h2 {
+            font-size: 20px; } }
+        @media (max-width: 480px) {
+          #baelor-splash-section .splash-box .mask .content h1 {
+            font-size: 30px; }
+          #baelor-splash-section .splash-box .mask .content h2 {
+            font-size: 16px; } }
 
 .baelor-info-section {
-  color: #fff;
-  height: 350px; }
+  padding-top: 60px;
+  padding-bottom: 90px; }
+  .baelor-info-section .api-demo h3 {
+    font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #fff;
+    font-weight: 300; }
+
+#top-banner-section {
+  background-color: #e45a5a; }
 
 /*# sourceMappingURL=site.css.map */

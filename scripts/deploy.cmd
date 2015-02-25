@@ -92,7 +92,7 @@ call kpm restore "%DEPLOYMENT_SOURCE%" %SCM_KPM_RESTORE_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. Run KPM Pack
-call kpm pack "D:\home\site\repository\src\Baelor.Api\project.json" --runtime "%USERPROFILE%\.kre\packages\KRE-%SCM_KRE_CLR%-%SCM_KRE_ARCH%.%SCM_KRE_VERSION%" --out "%DEPLOYMENT_TEMP%" %SCM_KPM_PACK_OPTIONS%
+call kpm pack "D:\home\site\repository\src\BaelorApi\project.json" --runtime "%USERPROFILE%\.kre\packages\KRE-%SCM_KRE_CLR%-%SCM_KRE_ARCH%.%SCM_KRE_VERSION%" --out "%DEPLOYMENT_TEMP%" %SCM_KPM_PACK_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 4. KuduSync
@@ -101,7 +101,8 @@ IF !ERRORLEVEL! NEQ 0 goto error
 )
 
 :: 5. Database Migrations
-:: TODO
+call cd "D:\home\site\approot\src\BaelorApi\"
+call k ef migration apply
 
 :: 6. Asset Management
 call cd "D:\home\site\approot\src\BaelorApi\"

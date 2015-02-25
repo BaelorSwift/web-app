@@ -1,1 +1,31 @@
-﻿@import "_home.scss";
+﻿$primary-red: #e45a5a;
+$secondary-red: #ff0000;
+
+$font-stack: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-stack-header: 'Exo', "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$extra-small-devices-width: 480px;
+$small-devices-width: 768px;
+$medium-devices-width: 992px;
+$large-devices-width: 1200px;
+
+body {
+	font-family: $font-stack;
+}
+
+code {
+	font-family: Consolas;
+}
+
+a {
+	color: $primary-red !important;
+	transition-property: color, text;
+	transition-duration: 0.2s;
+	transition-timing-function: linear, ease-in;
+
+	&:hover {
+		color: $secondary-red !important;
+	}
+}
+
+@import "_home.scss";

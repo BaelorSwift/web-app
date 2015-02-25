@@ -15,7 +15,6 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 {
 	[ExceptionHandler]
 	[SetResponseHeaders]
-	[RequireAuthentication]
 	[Route("api/v0/[controller]")]
 	public class SongsController : ApiController
 	{
@@ -75,6 +74,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		/// </summary>
 		/// <param name="viewModel">The data of the song to create.</param>
 		[HttpPost]
+		[RequireAuthentication]
 		[RequireAdminAuthentication]
 		public IActionResult Post([FromBody] CreateSongViewModel viewModel)
 		{
