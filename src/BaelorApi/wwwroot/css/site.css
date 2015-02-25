@@ -68,7 +68,9 @@ a {
     color: #fff;
     font-weight: 300; }
   .baelor-info-section .api-demo p {
-    color: #fff; }
+    color: #fff;
+    padding-left: 10px;
+    padding-top: 5px; }
   .baelor-info-section .api-demo #api-demo-response {
     display: none;
     margin-top: 35px; }
