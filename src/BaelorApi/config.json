@@ -1,11 +1,8 @@
 ﻿{
 	"Data": {
-		"DefaultConnection": "Data Source=(localdb)\\ProjectsV12;Initial Catalog=BaelorDevelopment;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False",
+		"DefaultConnection": {
+			"ConnectionString": "Data Source=(localdb)\\ProjectsV12;Initial Catalog=BaelorDevelopment;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False"
+		},
 		"AzureJobSecretIdetifier": "heroinaddict420"
-	},
-	"EntityFramework": {
-		"DatabaseContext": {
-			"ConnectionStringKey": "Data:DefaultConnection"
-		}
 	}
 }
