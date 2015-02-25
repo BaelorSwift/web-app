@@ -24,41 +24,21 @@
 			</h3>
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon1">http://baelor.io/api/v0/</span>
-				<input type="text" class="form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
+				<input id="api-preview-path" type="text" class="form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
 				<span class="input-group-btn">
-					<button class="btn btn-success" type="button">Go!</button>
+					<button id="get-api-preview" class="btn btn-success" type="button">Shake it off!</button>
 				</span>
 			</div>
+			<p>
+				<sup>
+					*
+				</sup>
+				this does a simple GET request. The only endpoint that supports unauthenticated GET requests is v0/songs
+			</p>
 
-			<div class="api-demo-response">
-				<pre>
-				<code class="json">
-{
-	"glossary": {
-		"title": "example glossary",
-		"GlossDiv": {
-			"title": "S",
-			"GlossList": {
-				"GlossEntry": {
-					"ID": "SGML",
-					"SortAs": "SGML",
-					"GlossTerm": "Standard Generalized Markup Language",
-					"Acronym": "SGML",
-					"Abbrev": "ISO 8879:1986",
-					"GlossDef": {
-						"para": "A meta-markup language, used to create markup languages such as DocBook.",
-						"GlossSeeAlso": [
-							"GML",
-							"XML"
-						]
-					},
-					"GlossSee": "markup"
-				}
-			}
-		}
-	}
-}
-					</code>
+			<div id="api-demo-response">
+				<pre id="json-preview-pre">
+<code id="json-preview" class="json"></code>
 				</pre>
 			</div>
 		</div>
@@ -71,7 +51,6 @@
 	hljs.configure({
 		tabReplace: '    ',
 	});
-	hljs.initHighlightingOnLoad();
 	</script>
 	<script src="~/js/home.js"></script>
 }

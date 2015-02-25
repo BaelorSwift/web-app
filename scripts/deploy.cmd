@@ -100,11 +100,14 @@ call %KUDU_SYNC_CMD% -v 50 -f "%DEPLOYMENT_TEMP%" -t "%DEPLOYMENT_TARGET%" -n "%
 IF !ERRORLEVEL! NEQ 0 goto error
 )
 
-:: 5. Database Migrations
+:: 6. Database Migrations
 call cd "D:\home\site\approot\src\BaelorApi\"
 call k ef migration apply
 
-:: 6. Asset Management
+:: 7. Move web.config
+call copy "D:\home\site\repository\scripts\web.config" "D:\home\site\wwwroot\" /Y
+
+:: 8. Asset Management
 call cd "D:\home\site\approot\src\BaelorApi\"
 call npm install
 call grunt bower:install

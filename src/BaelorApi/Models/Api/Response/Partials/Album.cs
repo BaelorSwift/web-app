@@ -33,7 +33,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 		[JsonProperty("album_cover")]
 		public Image AlbumCover { get; set; }
 
-		public static Album Create(Database.Album album, bool includeSongs)
+		public static Album Create(Database.Album album, bool goingDeep)
 		{
 			return new Album
 			{
@@ -45,7 +45,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 				Name = album.Name,
 				Slug = album.Slug,
 				AlbumCover = Image.Create(album.Image),
-				Songs = includeSongs 
+				Songs = goingDeep
 					? album.Songs.Select(s => Song.Create(s, false)).OrderBy(s => s.Index).AsEnumerable().ToArray() 
 					: null
 			};

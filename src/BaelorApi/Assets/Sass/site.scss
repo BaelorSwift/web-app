@@ -17,6 +17,10 @@ code {
 	font-family: Consolas;
 }
 
+pre {
+	border-radius: 0;
+}
+
 a {
 	color: $primary-red !important;
 	transition-property: color, text;

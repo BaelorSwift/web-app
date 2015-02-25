@@ -4,6 +4,9 @@ body {
 code {
   font-family: Consolas; }
 
+pre {
+  border-radius: 0; }
+
 a {
   color: #e45a5a !important;
   transition-property: color, text;
@@ -64,6 +67,11 @@ a {
     font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #fff;
     font-weight: 300; }
+  .baelor-info-section .api-demo p {
+    color: #fff; }
+  .baelor-info-section .api-demo #api-demo-response {
+    display: none;
+    margin-top: 35px; }
 
 #top-banner-section {
   background-color: #e45a5a; }

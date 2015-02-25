@@ -18,11 +18,11 @@ namespace BaelorApi.Models.Database
 		public DbSet<User> Users { get; set; }
 
 		public DbSet<RateLimit> RateLimits { get; set; }
-		
+
 		protected override void OnConfiguring(DbContextOptions options)
 		{
 			var x = Startup.Configuration.Get("Data:DefaultConnection:ConnectionString");
-            options.UseSqlServer(x);
+			options.UseSqlServer(x);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
