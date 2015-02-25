@@ -21,10 +21,15 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnConfiguring(DbContextOptions options)
 		{
+
 			string connectionString = null;
-			Startup.Configuration.TryGet("Data:DefaultConnection:ConnectionString", out connectionString);
-			if (string.IsNullOrWhiteSpace(connectionString))
-				Startup.Configuration.TryGet("Data:AzureSqlConnectionString", out connectionString);
+			if (Startup.Configuration != null)
+				Startup.Configuration.TryGet("Data:DefaultConnection:ConnectionString", out connectionString);
+
+			// Must be azure, so we got that access protection layer bro
+			if (connectionString == null)
+				connectionString = "Server=tcp:vmy5iqiy4g.database.windows.net,1433;Database=baelor-api-sql;User ID=baelor-production@vmy5iqiy4g;Password=nQJuphE2JXaB9N82Uq6f7nxS;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+
 			options.UseSqlServer(connectionString);
 		}
 
