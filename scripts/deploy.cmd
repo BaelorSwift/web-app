@@ -104,7 +104,7 @@ IF !ERRORLEVEL! NEQ 0 goto error
 IF EXIST "D:\home\site\deployments\tools\PostDeploymentActions" (
   RD /S /Q "D:\home\site\deployments\tools\PostDeploymentActions"
 )
-Xcopy "D:\home\site\repository\scripts\PostDeploymentActions\" "D:\home\site\deployments\tools\PostDeploymentActions" /s /h /e /k /f /c
+Xcopy /s /e /h /i /y "D:\home\site\repository\scripts\PostDeploymentActions" "D:\home\site\deployments\tools\PostDeploymentActions"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub

@@ -64,8 +64,6 @@
 		"postpack": "echo after packing",
 		"prerestore": "echo before restoring packages",
 		"postrestore": "echo after restoring packages"
-		//"postrestore": [ "npm install", "npm dedupe" ],
-		//"prepare": "grunt bower:install",
 	},
 	"configurations": {
 		"Debugging": {
