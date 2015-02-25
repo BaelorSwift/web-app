@@ -71,8 +71,9 @@ namespace BaelorApi
 			services.AddMvc();
 
 			// Add the Entity Framework
-			services.AddEntityFramework().AddSqlServer().AddDbContext<DatabaseContext>
-				(o => o.UseSqlServer(Configuration.Get("Data:SqlServerConnection:ConnectionString")));
+			services.AddEntityFramework(Configuration).AddSqlServer().AddDbContext<DatabaseContext>
+				(o => o.UseSqlServer(Configuration.Get("Data:DefaultConnection:ConnectionString")));
+
 
 			// Add Entity Framework related repository's and context's to the scope
 			services.AddScoped<IAlbumRepository, AlbumRepository>();
