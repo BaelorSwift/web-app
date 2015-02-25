@@ -28,18 +28,17 @@ namespace BaelorApi.Models.Database
 		{
 			// Album's have many Songs
 			modelBuilder.Entity<Album>()
-				.OneToMany<Song>(a => a.Songs, s => s.Album)
+				.HasMany(a => a.Songs)
+				.WithOne(s => s.Album)
 				.ForeignKey(s => s.AlbumId);
 
 			// Album's have one Image
 			modelBuilder.Entity<Album>()
-				.OneToOne<Image>(a => a.Image)
-				.ForeignKey<Album>(a => a.ImageId);
+				.HasOne(a => a.Image);
 
 			// RateLimit's have one User
 			modelBuilder.Entity<RateLimit>()
-				.OneToOne<User>(r => r.User)
-				.ForeignKey<RateLimit>(r => r.UserId);
+				.HasOne(r => r.User);
 
 			base.OnModelCreating(modelBuilder);
 		}

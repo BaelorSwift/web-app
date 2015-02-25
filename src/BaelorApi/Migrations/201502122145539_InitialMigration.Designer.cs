@@ -1,7 +1,6 @@
 using BaelorApi.Models.Database;
-using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations.Infrastructure;
+using Microsoft.Data.Entity.Relational.Migrations.Infrastructure;
 using System;
 
 namespace BaelorApi.Migrations
