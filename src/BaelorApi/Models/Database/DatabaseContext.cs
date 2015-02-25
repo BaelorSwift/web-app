@@ -21,9 +21,11 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnConfiguring(DbContextOptions options)
 		{
-			var x = Startup.Configuration.Get("Data:DefaultConnection:ConnectionString");
-			if (x == null) x = Startup.Configuration.Get("Data:AzureSqlConnectionString");
-			options.UseSqlServer(x);
+			var connectionString = "";
+			Startup.Configuration.TryGet("Data:DefaultConnection:ConnectionString", out connectionString);
+			if (connectionString == null)
+				Startup.Configuration.TryGet("Data:AzureSqlConnectionString", out connectionString);
+			options.UseSqlServer(connectionString);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
