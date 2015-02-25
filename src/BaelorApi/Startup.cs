@@ -40,7 +40,7 @@ namespace BaelorApi
 			// Enable the MVC framework
 			app.UseMvc(routes =>
 			{
-				routes.MapRoute("Default", "{controller}/{action}/{id?}");
+				routes.MapRoute("Default", "{controller}/{action}/{id?}", new { controller = "Home", action = "Index" });
 				routes.MapWebApiRoute("v0", "v0/{controller}/{id?}");
 			});
 

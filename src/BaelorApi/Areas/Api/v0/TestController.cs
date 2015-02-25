@@ -8,8 +8,8 @@ namespace BaelorApi.Areas.Api.v0
 {
 	[ExceptionHandler]
 	[SetResponseHeaders]
-	[RequireAuthentication]
-	[RequireAdminAuthentication]
+	//[RequireAuthentication]
+	//[RequireAdminAuthentication]
 	[Route("api/v0/[controller]")]
 	public class TestController : ApiController
 	{
@@ -20,16 +20,9 @@ namespace BaelorApi.Areas.Api.v0
 		[HttpGet]
 		public IActionResult Get()
 		{
-			var build = "unknown";
-#if DEBUG
-			build = "debug";
-#elif RELEASE
-			build = "release";
-#endif
-
 			return Content(HttpStatusCode.OK, new ResponseBase
 			{
-				Result = build
+				Result = Startup.Configuration.Get("Data:DefaultConnection:ConnectionString")
 			});
 		}
 	}

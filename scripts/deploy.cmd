@@ -95,9 +95,6 @@ echo "yolo 2"
 call kpm restore "%DEPLOYMENT_SOURCE%" %SCM_KPM_RESTORE_OPTIONS%
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: 2.3 Wipe node_modules
-call rmdir "D:\home\site\repository\src\BaelorApi\node_modules" /s /q
-
 echo "yolo 3"
 
 :: 3. Run KPM Pack
@@ -120,8 +117,12 @@ call k ef migration apply
 echo "yolo 6"
 
 :: 6. Run npm install, again
+echo "Executing Node and Grunt asset management stuff. cool."
 call cd "D:\home\site\repository\src\BaelorApi\"
 call npm install
+call npm dedupe
+call grunt bower:install
+call grunt sass
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Post deployment stub
