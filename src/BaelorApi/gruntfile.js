@@ -15,19 +15,19 @@ module.exports = function (grunt) {
 			}
 		},
 		sass: {
+			options: {
+				sourceMap: true
+			},
 			dist: {
-				options: {
-					style: 'expanded'
-				},
 				files: {
-					'wwwroot/css/site.css': 'Assets/Sass/main.scss'
+					'wwwroot/css/site.css': 'Assets/Sass/site.scss'
 				}
 			}
 		}
 	});
 
 	grunt.loadNpmTasks("grunt-bower-task");
-	grunt.loadNpmTasks("grunt-contrib-sass");
+	grunt.loadNpmTasks("grunt-sass");
 	grunt.registerTask("default", [
 		"bower:install",
 		"sass"
