@@ -43,9 +43,7 @@
 
 		"EntityFramework": "7.0.0-beta3",
 		"EntityFramework.SqlServer": "7.0.0-beta3",
-		"EntityFramework.Commands": "7.0.0-beta3",
-
-		"kre-clr-win-x86": "1.0.0-beta3"
+		"EntityFramework.Commands": "7.0.0-beta3"
 	},
 	"commands": {
 		"ef": "EntityFramework.Commands"
