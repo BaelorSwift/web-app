@@ -13,7 +13,6 @@ using BaelorApi.Helpers;
 using BaelorApi.Models.Api;
 using BaelorApi.Attributes;
 using BaelorApi.Models.Miscellaneous;
-using System.Diagnostics;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {

@@ -1,3 +1,436 @@
 ﻿@{
-	ViewBag.Title = "Docs :: Baelor Api"
+	ViewBag.Title = "Docs :: Baelor Api";
+}
+
+<section id="api-docs-header">
+	<div class="mask">
+		<div class="container">
+			<h1>api docs</h1>
+			<h2>full set of resources and information required to use baelor.io</h2>
+		</div>
+	</div>
+</section>
+
+<section id="api-docs-content">
+	<div class="row">
+		<div class="col-md-3">
+			<nav class="api-docs-sidebar">
+				<ul class="nav api-docs-sidenav">
+					<li>
+						<a href="#authentication">Authentication</a>
+					</li>
+					<li>
+						<a href="#headers">Headers</a>
+					</li>
+					<li>
+						<a href="#errors">Errors</a>
+					</li>
+					<li>
+						<hr />
+					</li>
+					<li>
+						<a href="#users">Users</a>
+						<ul class="nav">
+							<li><a href="#create-user">Create User</a></li>
+							<li><a href="#get-user">Get Current User</a></li>
+							<li><a href="#get-user-data">Get User Data from Credentials</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#albums">Albums</a>
+						<ul class="nav">
+							<li><a href="#">Get Albums</a></li>
+							<li><a href="#">Get Specific Album</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#songs">Songs</a>
+						<ul class="nav">
+							<li><a href="#">Get Songs</a></li>
+							<li><a href="#">Get Specific Song</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#images">Images</a>
+						<ul class="nav">
+							<li><a href="#">Get Image</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#bae">Bae</a>
+						<ul class="nav">
+							<li><a href="#">Get Taylor's bae status</a></li>
+							<li><a href="#">Get the bae status of a word</a></li>
+						</ul>
+					</li>
+				</ul>
+				<a class="back-to-top hidden-xs hidden-sm" href="#top">
+					Back to top
+				</a>
+			</nav>
+		</div>
+		<div class="col-md-8 api-docs">
+			<section class="api-docs-section" id="authentication">
+				<h1>Authentication</h1>
+				<hr />
+
+				<article class="api-docs-article">
+					<h2>Unauthorized</h2>
+					<p>
+						Not much to say here. Go have fun!
+					</p>
+				</article>
+
+				<article class="api-docs-article">
+					<h2>Authorized</h2>
+					<p>
+						Here we go.. When you <a href="#create-user">create a user</a>, the API will return an <code>api_key</code>. You can use that API key to make authenticated requests from that point on. To use the API key, set the header <code>Authorization</code> to the following value <code>bearer api_key</code>. For more information, and examples, look in the <a href="#headers">headers</a> section of the documentation.
+					</p>
+				</article>
+			</section>
+			<section class="api-docs-section" id="headers">
+				<h1>Headers</h1>
+				<hr />
+
+				<article class="api-docs-article">
+					<h2>Request Headers</h2>
+					<p>These are headers that you're application can send </p>
+
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>Header</td>
+								<td>Required</td>
+								<td>Value</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Accept</td>
+								<td><span class="label label-success">yes</span></td>
+								<td>application/json</td>
+								<td>The data type you want the API to return.</td>
+							</tr>
+							<tr>
+								<td>Authorization</td>
+								<td><span class="label label-danger">no</span></td>
+								<td>bearer api_key</td>
+								<td>Your API key. Used this on requets marked with the <span class="label label-warning">Authorized</span> badge.</td>
+							</tr>
+							<tr>
+								<td>Content-Type</td>
+								<td><span class="label label-warning">if doing a POST</span></td>
+								<td>application/json</td>
+								<td>The format of the data in your POST body.</td>
+							</tr>
+						</tbody>
+					</table>
+				</article>
+
+				<article class="api-docs-article">
+					<h2>Response Headers</h2>
+					<p>These headers are returned by the API. The <code>X-RateLimit-*</code> headers are only returned on authenticated requests.</p>
+
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>Header</td>
+								<td>Value</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>X-BaelorApi-Version</td>
+								<td>v0</td>
+								<td>The version of the API you're querying.</td>
+							</tr>
+							<tr>
+								<td>X-Bad-Mistakes</td>
+								<td>add me on tinder xox</td>
+								<td>great idea ladies - xoxo gossip girl</td>
+							</tr>
+							<tr>
+								<td>X-Purple-Swag</td>
+								<td>i still sip</td>
+								<td>Purple weed, blunt still lit.</td>
+							</tr>
+							<tr>
+								<td>X-RateLimit-Limit</td>
+								<td>1000</td>
+								<td>The number of requests an api key is allowed to make per hour.</td>
+							</tr>
+							<tr>
+								<td>X-RateLimit-Remaining</td>
+								<td>[0-1000]</td>
+								<td>How many requests this API key has this hour.</td>
+							</tr>
+							<tr>
+								<td>X-RateLimit-Reset</td>
+								<td>2015-02-26T18:00:00</td>
+								<td>When the rate limit will reset - UTC time.</td>
+							</tr>
+						</tbody>
+					</table>
+				</article>
+			</section>
+			<section class="api-docs-section" id="errors">
+				<h1>Errors</h1>
+				<hr />
+
+				<article class="api-docs-article">
+					<h2>Http Status Codes</h2>
+					<p>
+						The api will returns the correct HTTP status code, rather than always just a generic 200:OK with the error in the json response. This makes sense, and application logic must be aware of this. This also means that you can always tell if there was an error in the request based on if the response status code isn't 200:OK
+					</p>
+				</article>
+
+				<article class="api-docs-article">
+					<h2>Baelor Errors</h2>
+					<p>
+						The endpoint can return a wide (and increasing) range of errors. Below are a list of all the errors (this list will always be up to date), but be aware that more can be added, and make sure the application logic allows for this. The API returns both a status and a description, the description is designed to be shown to the user in the event that the description is new and hasn't been added to the localization table in the applications logic.
+					</p>
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>
+									Error Status
+								</td>
+								<td>
+									Error Description
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0x1069</td>
+								<td><code>generic_server_error</code></td>
+							</tr>
+							<tr>
+								<td>0x106A</td>
+								<td><code>invalid_album_slug</code></td>
+							</tr>
+							<tr>
+								<td>0x106B</td>
+								<td><code>invalid_song_slug</code></td>
+							</tr>
+							<tr>
+								<td>0x106C</td>
+								<td><code>song_already_exists</code></td>
+							</tr>
+							<tr>
+								<td>0x106D</td>
+								<td><code>album_already_exists</code></td>
+							</tr>
+							<tr>
+								<td>0x106E</td>
+								<td><code>invalid_image_id</code></td>
+							</tr>
+							<tr>
+								<td>0x106F</td>
+								<td><code>data_validation_failed</code></td>
+							</tr>
+							<tr>
+								<td>0x1070</td>
+								<td><code>request_requires_authentication</code></td>
+							</tr>
+							<tr>
+								<td>0x1071</td>
+								<td><code>invalid_api_key</code></td>
+							</tr>
+							<tr>
+								<td>0x1072</td>
+								<td><code>revoked_api_key</code></td>
+							</tr>
+							<tr>
+								<td>0x1073</td>
+								<td><code>rate_limit_exceeded</code></td>
+							</tr>
+							<tr>
+								<td>0x1074</td>
+								<td><code>insufficient_privileges</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</article>
+			</section>
+
+			<section class="api-docs-section" id="users">
+				<h1>Users</h1>
+				<hr />
+
+				<article class="api-docs-article" id="create-user">
+					<h2>Create User</h2>
+					<hr />
+					<h3>
+						<span class="label label-success">Unauthorized</span>
+						<span class="label label-info">POST</span>
+						::
+						<code>api/v0/users</code>
+					</h3>
+					<h3>
+						This endpoint will allow you to create a user.
+					</h3>
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>
+									Parameter
+								</td>
+								<td>
+									Required
+								</td>
+								<td>
+									Requirements
+								</td>
+								<td>
+									Description
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									username
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Between 1 and 25 characters long, and match
+									<code>(?![\s])(?!.*[_-]{2})[a-zA-Z0-9-_]+(?<![\s])</code>
+								</td>
+								<td>
+									The friendly identifier of the account.
+								</td>
+							</tr>
+							<tr>
+								<td>
+									email_address
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Well.. Be a valid email address.
+								</td>
+								<td>
+									The email address tied to the account
+								</td>
+							</tr>
+							<tr>
+								<td>
+									password
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Be longer than 8 characters.. Also contain at least two of the following; number, lowercase letter, uppercase letter
+								</td>
+								<td>
+									The password used to log into the account.
+								</td>
+							</tr>
+							<tr>
+								<td>
+									password_confirm
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Be the same as <code>password</code>
+								</td>
+								<td>
+									Secondary imput of the password to validate it was typed in correctly.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#create-user-request" aria-controls="create-user-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#create-user-response" aria-controls="create-user-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="create-user-request">
+<pre><code class="json">{
+	"username": "0xdeafcafe",
+	"email_address": "alex@linda.internet",
+	"password": "heroinaddict420",
+	"password_confirm": "heroinaddict420"
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="create-user-response">
+<pre><code class="json">{
+	"result": {
+		"username": "0xdeafcafe",
+		"email_address": "alex@linda.internet",
+		"api_key": "IhgQkfmck/T69n+J8OoisYUS1ZD6oPFjuheqfnOlbJJw=",
+		"is_admin": false
+	},
+	"error": null,
+	"success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+
+				<article class="api-docs-article" id="get-user">
+					<h2>Get Current User</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/users</code>
+					</h3>
+					<h3>
+						This endpoint will return the data of the authenticated user.
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-user-response" aria-controls="get-user-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-user-response">
+<pre><code class="json">{
+	"result": {
+		"username": "0xdeafcafe",
+		"email_address": "alex@linda.internet",
+		"api_key": "IhgQkfmck/T69n+J8OoisYUS1ZD6oPFjuheqfnOlbJJw=",
+		"is_admin": false
+	},
+	"error": null,
+	"success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+			</section>
+		</div>
+	</div>
+</section>
+
+@section scripts {
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+	<script>
+		hljs.configure({
+			tabReplace: '    ',
+		});
+		hljs.initHighlightingOnLoad();
+	</script>
+	<script src="~/js/home.js"></script>
 }

@@ -1,0 +1,203 @@
+﻿#api-docs-header {
+	text-align: center;
+	color: #fff;
+	height: 65vh;
+	width: 100%;
+	background: url(../images/docs-cover.jpg) no-repeat center center fixed;
+	background-size: cover;
+
+	.mask {
+		background: rgba(164, 164, 164, 0.40);
+		height: 100%;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		position: relative;
+		padding-top: 27vh;
+
+		.container {
+			h1 {
+				font-family: $font-stack-header;
+				font-weight: 100;
+				font-size: 60px;
+			}
+
+			h2 {
+				font-family: $font-stack;
+				font-size: 25px;
+			}
+		}
+
+		@media (max-width: $extra-small-devices-width) {
+			.container {
+				h1 {
+					font-family: $font-stack-header;
+					font-weight: 100;
+					font-size: 40px;
+				}
+
+				h2 {
+					font-family: $font-stack;
+					font-size: 18px;
+				}
+			}
+		}
+	}
+}
+
+#api-docs-content {
+	margin-top: 40px;
+
+	.api-docs {
+		> .api-docs-section {
+			margin-bottom: 80px;
+			h1 {
+				color: #1b1b1b;
+				font-family: $font-stack;
+				font-size: 38px;
+			}
+
+			> .api-docs-article {
+				padding-top: 10px;
+
+				> h2 {
+					color: #5c5c5c;
+					font-family: $font-stack;
+					font-size: 28px;
+				}
+
+				> hr {
+					margin-top: 0;
+					margin-bottom: -10px;
+				}
+
+				> h3 {
+					color: #5c5c5c;
+					font-family: $font-stack;
+					font-size: 16px;
+				}
+
+				> .table {
+					margin-top: 30px;
+				}
+
+				> h4 {
+					color: #5c5c5c;
+					font-family: $font-stack;
+				}
+			}
+		}
+	}
+
+	.api-docs-sidebar {
+		margin-top: 50px;
+		padding-left: 40px;
+
+		&.affix {
+			position: fixed;
+			top: 25px;
+		}
+
+		.api-docs-sidenav {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+
+		.nav {
+			font-size: 15px;
+			
+			> {
+				.active {
+					> a {
+						padding-left: 18px;
+						font-weight: 700;
+						color: $primary-red;
+						background-color: transparent;
+						border-right: 1px solid $primary-red;
+					}
+
+					&:hover > a,
+					&:focus > a {
+						padding-left: 18px;
+						font-weight: 700;
+						color: $primary-red;
+						background-color: transparent;
+						border-right: 1px solid $primary-red;
+					}
+				}
+
+				li > a {
+					display: block;
+					font-size: 15px;
+					font-weight: 500;
+					color: #999;
+					padding: 4px 20px;
+
+					&:hover,
+					&:focus {
+						padding-left: 19px;
+						color: $primary-red;
+						text-decoration: none;
+						background-color: transparent;
+						border-right: 1px solid $primary-red;
+					}
+				}
+			}
+
+			.nav {
+				padding-bottom: 10px;
+
+				.active {
+					> a {
+						font-weight: 500;
+						padding-left: 38px;
+					}
+
+					&:hover > a,
+					&:focus > a {
+						font-weight: 500;
+						padding-left: 38px;
+					}
+				}
+
+				.nav {
+					.active {
+						> a {
+							font-weight: 500;
+							padding-left: 58px;
+						}
+
+						&:hover > a,
+						&:focus > a {
+							font-weight: 500;
+							padding-left: 58px;
+						}
+					}
+
+					> li > a {
+						padding-top: 1px;
+						padding-bottom: 1px;
+						padding-left: 60px;
+						font-size: 13px;
+						font-weight: 400;
+					}
+				}
+
+				> li > a {
+					padding-top: 1px;
+					padding-bottom: 1px;
+					padding-left: 40px;
+					font-size: 13px;
+					font-weight: 400;
+				}
+			}
+		}
+	}
+
+	@media(max-width: 992px) {
+		.api-docs-sidebar.affix {
+			position: static;
+		}
+	}
+}
