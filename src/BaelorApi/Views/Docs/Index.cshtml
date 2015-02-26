@@ -23,6 +23,9 @@
 						<a href="#headers">Headers</a>
 					</li>
 					<li>
+						<a href="#response">Response</a>
+					</li>
+					<li>
 						<a href="#errors">Errors</a>
 					</li>
 					<li>
@@ -39,28 +42,28 @@
 					<li>
 						<a href="#albums">Albums</a>
 						<ul class="nav">
-							<li><a href="#">Get Albums</a></li>
-							<li><a href="#">Get Specific Album</a></li>
+							<li><a href="#get-albums">Get Albums</a></li>
+							<li><a href="#get-album">Get Album</a></li>
 						</ul>
 					</li>
 					<li>
 						<a href="#songs">Songs</a>
 						<ul class="nav">
-							<li><a href="#">Get Songs</a></li>
-							<li><a href="#">Get Specific Song</a></li>
+							<li><a href="#get-songs">Get Songs</a></li>
+							<li><a href="#get-song">Get Song</a></li>
 						</ul>
 					</li>
 					<li>
 						<a href="#images">Images</a>
 						<ul class="nav">
-							<li><a href="#">Get Image</a></li>
+							<li><a href="#get-image">Get Image</a></li>
 						</ul>
 					</li>
 					<li>
 						<a href="#bae">Bae</a>
 						<ul class="nav">
-							<li><a href="#">Get Taylor's bae status</a></li>
-							<li><a href="#">Get the bae status of a word</a></li>
+							<li><a href="#get-bae">Get Taylor's bae status</a></li>
+							<li><a href="#get-bae-status">Get the bae status of a word</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -70,7 +73,7 @@
 			</nav>
 		</div>
 		<div class="col-md-8 api-docs">
-			<section class="api-docs-section" id="authentication">
+			<section id="authentication" class="api-docs-section">
 				<h1>Authentication</h1>
 				<hr />
 
@@ -88,7 +91,7 @@
 					</p>
 				</article>
 			</section>
-			<section class="api-docs-section" id="headers">
+			<section id="headers" class="api-docs-section">
 				<h1>Headers</h1>
 				<hr />
 
@@ -116,7 +119,7 @@
 								<td>Authorization</td>
 								<td><span class="label label-danger">no</span></td>
 								<td>bearer api_key</td>
-								<td>Your API key. Used this on requets marked with the <span class="label label-warning">Authorized</span> badge.</td>
+								<td>Your API key. Used this on requests marked with the <span class="label label-warning">Authorized</span> badge.</td>
 							</tr>
 							<tr>
 								<td>Content-Type</td>
@@ -173,6 +176,69 @@
 							</tr>
 						</tbody>
 					</table>
+				</article>
+			</section>
+			<section id="response" class="api-docs-section">
+				<h1>Response</h1>
+				<hr />
+
+				<article class="api-docs-article">
+					<h2>Base Response</h2>
+<pre><code class="json">{
+    "result": null,
+    "error": null,
+    "success": false
+}</code></pre>
+					<ul>
+						<li>
+							<code>result</code>:
+							Contains a response object - look below for details. If there was an error, it will be null.
+						</li>
+						<li>
+							<code>error</code>:
+							Contains an error object - look below for details. If there was no error, it will be null.
+						</li>
+						<li>
+							<code>success</code>:
+							If the response returned an error, this will be false. Otherwise, true. Go figure.
+						</li>
+					</ul>
+				</article>
+				<article class="api-docs-article">
+					<h2>Error Response Details</h2>
+<pre><code class="json">{
+    "result": null,
+    "error": {
+        "status_code": [integer_error_id],
+        "description": "[error_description]",
+        "details": null
+    },
+    "success": false
+}</code></pre>
+					<h3>status_code</h3>
+					<p>
+						This is an interger representation of the error. This can easily be mapped to an enum for catching errors. For a list of all error statuses, check the
+						<a target="_blank" href="https://github.com/0xdeafcafe/baelor-api/blob/master/src/BaelorApi/Models/Api/Error/Enums/ErrorStatus.cs">src/BaelorApi/Models/Api/Error/Enums/ErrorStatus.cs</a>
+						file.
+					</p>
+
+					<h3>status_code</h3>
+					<p>
+						This is a string representation of the error. This can easily be used for client localization. For a list of all error descriptions, check the
+						<a target="_blank" href="https://github.com/0xdeafcafe/baelor-api/blob/master/src/BaelorApi/Extentions/EnumExtentions.cs">src/BaelorApi/Extentions/EnumExtentions.cs</a>
+						file.
+					</p>
+
+					<h3>details</h3>
+					<p>
+						This holds additional error details the client app could use to identity where it went wrong. This can be null.
+					</p>
+				</article>
+				<article class="api-docs-article">
+					<h2>Result Response Details</h2>
+					<p>
+						This is always different. For examples of what the fuck this can look like, look at the desired endpoint documentation below.
+					</p>
 				</article>
 			</section>
 			<section class="api-docs-section" id="errors">
@@ -256,11 +322,11 @@
 				</article>
 			</section>
 
-			<section class="api-docs-section" id="users">
+			<section id="users" class="api-docs-section">
 				<h1>Users</h1>
 				<hr />
 
-				<article class="api-docs-article" id="create-user">
+				<article id="create-user" class="api-docs-article">
 					<h2>Create User</h2>
 					<hr />
 					<h3>
@@ -383,8 +449,7 @@
 						</div>
 					</div>
 				</article>
-
-				<article class="api-docs-article" id="get-user">
+				<article id="get-user" class="api-docs-article">
 					<h2>Get Current User</h2>
 					<hr />
 					<h3>
@@ -415,6 +480,541 @@
 	},
 	"error": null,
 	"success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+				<article id="get-user-data" class="api-docs-article">
+					<h2>Get User Data from Credentials</h2>
+					<hr />
+					<h3>
+						<span class="label label-success">Unauthorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/user/</code>
+					</h3>
+
+					<p>TODO</p>
+				</article>
+			</section>
+			<section id="albums" class="api-docs-section">
+				<h1>Albums</h1>
+				<hr />
+
+				<article id="get-albums" class="api-docs-article">
+					<h2>Get Albums</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/albums</code>
+					</h3>
+					<h3>
+						This endpoint will return a list of all of Taylor Swift's albums.
+					</h3>
+					<p>
+						Response has been shortened for cleanliness.
+					</p>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-albums-response" aria-controls="get-albums-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-albums-response">
+<pre><code class="json">{
+    "result": [
+        {
+            "slug": "taylor-swift",
+            "name": "Taylor Swift",
+            "released_at": "2006-10-24T00:00:00",
+            "length": "00:38:26",
+            "label": "Big Machine",
+            "genres": [
+                "Country"
+            ],
+            "producers": [
+                "Scott Borchetta",
+                "Nathan Chapman",
+                "Robert Ellis Orrall"
+            ],
+            "songs": [
+			],
+            "album_cover": {
+                "image_id": "c780c63f-8f19-4961-2873-08d21467e516"
+            }
+        },
+        {
+            "slug": "fearless",
+            "name": "Fearless",
+            "released_at": "2008-11-11T00:00:00",
+            "length": "00:53:33",
+            "label": "Big Machine",
+            "genres": [
+                "Country",
+                "Country Pop"
+            ],
+            "producers": [
+                "Scott Borchetta",
+                "Nathan Chapman",
+                "Taylor Swift"
+            ],
+            "songs": [
+			],
+            "album_cover": {
+                "image_id": "e0a70654-05ca-44bb-2871-08d21467e516"
+            }
+        },
+        {
+            "slug": "1989",
+            "name": "1989",
+            "released_at": "2014-10-27T00:00:00",
+            "length": "01:08:36",
+            "label": "Big Machine",
+            "genres": [
+                "Pop",
+                "Synthpop"
+            ],
+            "producers": [
+                "Max Martin",
+                "Taylor Swift",
+                "Jack Antonoff",
+                "Nathan Chapman",
+            ],
+            "songs": [
+                {
+                    "index": 1,
+                    "slug": "welcome-to-new-york",
+                    "title": "Welcome to New York",
+                    "length": "00:03:32",
+                    "writers": [
+                        "Taylor Swift",
+                        "Ryan Tedder"
+                    ],
+                    "producers": [
+                        "Ryan Tedder",
+                        "Noel Zancanella",
+                        "Taylor Swift"
+                    ]
+                },
+                {
+                    "index": 2,
+                    "slug": "blank-space",
+                    "title": "Blank Space",
+                    "length": "00:03:51",
+                    "writers": [
+                        "Taylor Swift",
+                        "Max Martin",
+                        "Shellback"
+                    ],
+                    "producers": [
+                        "Max Martin",
+                        "Shellback"
+                    ]
+                }
+            ],
+            "album_cover": {
+                "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+            }
+        }
+    ],
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+
+				<article id="get-album" class="api-docs-article">
+					<h2>Get Album</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/albums/{album-slug}</code>
+					</h3>
+					<h3>
+						This endpoint will return the data of a specific Taylor Swift album.
+					</h3>
+					<p>
+						Response has been shortened for cleanliness.
+					</p>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-album-response" aria-controls="get-album-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-album-response">
+<pre><code class="json">{
+    "result": {
+        "slug": "1989",
+        "name": "1989",
+        "released_at": "2014-10-27T00:00:00",
+        "length": "01:08:36",
+        "label": "Big Machine",
+        "genres": [
+            "Pop",
+            "Synthpop"
+        ],
+        "producers": [
+            "Max Martin",
+            "Taylor Swift",
+            "Jack Antonoff",
+            "Nathan Chapman",
+            "Imogen Heap",
+            "Greg Kurstin",
+            "Mattman & Robin",
+            "Ali Payami",
+            "Shellback",
+            "Ryan Tedder",
+            "Noel Zancanella"
+        ],
+        "songs": [
+            {
+                "index": 1,
+                "slug": "welcome-to-new-york",
+                "title": "Welcome to New York",
+                "length": "00:03:32",
+                "writers": [
+                    "Taylor Swift",
+                    "Ryan Tedder"
+                ],
+                "producers": [
+                    "Ryan Tedder",
+                    "Noel Zancanella",
+                    "Taylor Swift"
+                ]
+            },
+            {
+                "index": 2,
+                "slug": "blank-space",
+                "title": "Blank Space",
+                "length": "00:03:51",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback"
+                ]
+            }
+        ],
+        "album_cover": {
+            "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+        }
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+			</section>
+			<section id="songs" class="api-docs-section">
+				<h1>Songs</h1>
+				<hr />
+
+				<article id="get-songs" class="api-docs-article">
+					<h2>Get Songs</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/songs</code>
+					</h3>
+					<h3>
+						This endpoint will return a list of all of Taylor Swift's songs.
+					</h3>
+					<p>
+						Response has been shortened for cleanliness.
+					</p>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-songs-response" aria-controls="get-songs-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-songs-response">
+<pre><code class="json">{
+    "result": [
+        {
+            "index": 1,
+            "slug": "welcome-to-new-york",
+            "title": "Welcome to New York",
+            "length": "00:03:32",
+            "writers": [
+                "Taylor Swift",
+                "Ryan Tedder"
+            ],
+            "producers": [
+                "Ryan Tedder",
+                "Noel Zancanella",
+                "Taylor Swift"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            }
+        },
+        {
+            "index": 2,
+            "slug": "blank-space",
+            "title": "Blank Space",
+            "length": "00:03:51",
+            "writers": [
+                "Taylor Swift",
+                "Max Martin",
+                "Shellback"
+            ],
+            "producers": [
+                "Max Martin",
+                "Shellback"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            }
+        }
+    ],
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+
+				<article id="get-song" class="api-docs-article">
+					<h2>Get Song</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/songs/{song-slug}</code>
+					</h3>
+					<h3>
+						This endpoint will return the data of a specific Taylor Swift song.
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-song-response" aria-controls="get-song-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-song-response">
+<pre><code class="json">{
+    "result": {
+        "index": 3,
+        "slug": "style",
+        "title": "Style",
+        "length": "00:03:51",
+        "writers": [
+            "Taylor Swift",
+            "Max Martin",
+            "Shellback",
+            "Ali Payami"
+        ],
+        "producers": [
+            "Max Martin",
+            "Shellback",
+            "Ali Payami"
+        ],
+        "album": {
+            "slug": "1989",
+            "name": "1989",
+            "released_at": "2014-10-27T00:00:00",
+            "length": "01:08:36",
+            "label": "Big Machine",
+            "genres": [
+                "Pop",
+                "Synthpop"
+            ],
+            "producers": [
+                "Max Martin",
+                "Taylor Swift",
+                "Jack Antonoff",
+                "Nathan Chapman",
+                "Imogen Heap",
+                "Greg Kurstin",
+                "Mattman & Robin",
+                "Ali Payami",
+                "Shellback",
+                "Ryan Tedder",
+                "Noel Zancanella"
+            ],
+            "album_cover": {
+                "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+            }
+        }
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+			</section>
+			<section id="images" class="api-docs-section">
+				<h1>Images</h1>
+				<hr />
+
+				<article id="get-image" class="api-docs-article">
+					<h2>Get Image</h2>
+					<hr />
+					<h3>
+						<span class="label label-success">Unauthorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/images/{image-id}</code>
+					</h3>
+					<h3>
+						This endpoint returns the raw image of the specified image id.
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-image-response" aria-controls="get-songs-image" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-image-response">
+							<div class="thumbnail">
+								<img width="500" height="500" src="/api/v0/images/ca9232a3-363a-4be6-2870-08d21467e516" />
+							</div>
+						</div>
+					</div>
+				</article>
+			</section>
+			<section id="bae" class="api-docs-section">
+				<h1>Bae</h1>
+				<hr />
+
+				<article id="get-bae" class="api-docs-article">
+					<h2>Get Bae</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/bae</code>
+					</h3>
+					<h3>
+						This endpoint will return a boolean representation of whether Taylor Swift is bae. <sub>NB: this is always true</sub>
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-bae-response" aria-controls="get-bae-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-bae-response">
+<pre><code class="json">{
+    "result": {
+        "bae": true
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+				<article id="get-bae-status" class="api-docs-article">
+					<h2>Get Bae Status of Word</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/bae/{word}</code>
+					</h3>
+					<h3>
+						This endpoint will return a boolean representation of whether the word you entered is bae.
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-bae-status-response" aria-controls="get-bae-status-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-bae-status-response">
+<pre><code class="json">{
+    "result": {
+        "bae": false
+    },
+    "error": null,
+    "success": true
 }</code></pre>
 						</div>
 					</div>

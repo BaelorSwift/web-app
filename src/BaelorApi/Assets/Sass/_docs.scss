@@ -86,6 +86,10 @@
 					color: #5c5c5c;
 					font-family: $font-stack;
 				}
+
+				code {
+					max-height: 500px;
+				}
 			}
 		}
 	}
