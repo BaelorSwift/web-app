@@ -11,6 +11,9 @@ src/BaelorApi/wwwroot/lib/
 src/BaelorApi/wwwroot/css/
 src/BaelorApi/wwwroot/js/
 
+# Fuck off javascript
+src/BaelorApi/Assets/Typescript/*.js
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

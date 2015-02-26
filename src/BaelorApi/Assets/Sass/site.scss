@@ -37,7 +37,7 @@ pre {
 
 a {
 	color: $primary-red !important;
-	transition-property: color, text;
+	transition-property: color;
 	transition-duration: 0.2s;
 	transition-timing-function: linear, ease-in;
 
@@ -48,4 +48,4 @@ a {
 
 // Import Pages
 @import "_home.scss";
-@import "_docs.scss";
+@import "_docs.scss';
