@@ -25,6 +25,12 @@ pre {
 	padding: 0;
 }
 
+.navbar-default {
+	// TODO: impliment this using affix/scrollspy
+	//background-color: rgba(248, 248, 248, 0.70);
+	//border-color: rgba(231, 231, 231, 0.70);
+}
+
 a {
 	color: $primary-red !important;
 	transition-property: color, text;
