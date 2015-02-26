@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22512.0
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5735B7E4-BD19-4042-9363-6734E2E2CDE6}"
 EndProject
@@ -15,6 +15,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{593558DB-5B38-499B-89FE-AD9BB951C1FA}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\deploy.cmd = scripts\deploy.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostDeploymentActions", "PostDeploymentActions", "{40AFBAFE-706A-4307-B78A-60AC3CECA7F6}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\PostDeploymentActions\0-fixups.cmd = scripts\PostDeploymentActions\0-fixups.cmd
+		scripts\PostDeploymentActions\1-database.cmd = scripts\PostDeploymentActions\1-database.cmd
+		scripts\PostDeploymentActions\2-assets.cmd = scripts\PostDeploymentActions\2-assets.cmd
+		scripts\PostDeploymentActions\web.config = scripts\PostDeploymentActions\web.config
 	EndProjectSection
 EndProject
 Global
@@ -36,5 +44,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0BE53F81-E26F-49E8-965A-508A20D34552} = {5735B7E4-BD19-4042-9363-6734E2E2CDE6}
+		{40AFBAFE-706A-4307-B78A-60AC3CECA7F6} = {593558DB-5B38-499B-89FE-AD9BB951C1FA}
 	EndGlobalSection
 EndGlobal
