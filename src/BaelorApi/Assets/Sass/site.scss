@@ -9,6 +9,9 @@ $small-devices-width: 768px;
 $medium-devices-width: 992px;
 $large-devices-width: 1200px;
 
+// Import Partials
+@import "_loaders.scss";
+
 body {
 	font-family: $font-stack;
 }
@@ -19,6 +22,7 @@ code {
 
 pre {
 	border-radius: 0;
+	padding: 0;
 }
 
 a {
@@ -32,4 +36,5 @@ a {
 	}
 }
 
+// Import Pages
 @import "_home.scss";

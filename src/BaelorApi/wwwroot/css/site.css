@@ -1,3 +1,26 @@
+.loader-pulse {
+  border: 3px solid #fff;
+  border-radius: 30px;
+  height: 30px;
+  left: 50%;
+  opacity: 0;
+  top: 50%;
+  width: 30px;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite; }
+
+@keyframes pulsate {
+  0% {
+    transform: scale(.1);
+    opacity: 0.0; }
+
+  50% {
+    opacity: 1; }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0; } }
+
 body {
   font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
@@ -5,7 +28,8 @@ code {
   font-family: Consolas; }
 
 pre {
-  border-radius: 0; }
+  border-radius: 0;
+  padding: 0; }
 
 a {
   color: #e45a5a !important;
@@ -72,9 +96,21 @@ a {
     font-size: 12px;
     padding-left: 10px;
     padding-top: 5px; }
+  .baelor-info-section .api-demo .loader {
+    transition: all 1.3s cubic-bezier(0, 1, 0.5, 1);
+    transition-property: height, padding;
+    height: 0;
+    opacity: 0;
+    width: 30px;
+    padding: 0 0;
+    margin: 0 auto; }
   .baelor-info-section .api-demo #api-demo-response {
     display: none;
     margin-top: 35px; }
+    .baelor-info-section .api-demo #api-demo-response h4 {
+      font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #fff;
+      font-weight: 300; }
 
 #top-banner-section {
   background-color: #e45a5a; }
