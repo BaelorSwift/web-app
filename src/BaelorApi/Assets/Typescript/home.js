@@ -51,15 +51,15 @@ var ApiStuff = (function () {
         HomeVisualStateManager.apiDemoResponseVisualModifier(false);
         HomeVisualStateManager.loaderVisualModifier(true);
         $.getJSON(this.path + endpoint, function (data) {
-            document.getElementById("json-preview").innerText = JSON.stringify(data, null, 4).trim();
-            document.getElementById("api-demo-response-header").innerText = "api response - http(200)";
+            document.getElementById("json-preview").textContent = JSON.stringify(data, null, 4).trim();
+            document.getElementById("api-demo-response-header").textContent = "api response - http(200)";
         }).fail(function (jqxhr, textStatus, error) {
-            document.getElementById("api-demo-response-header").innerText = "api response - http(" + jqxhr.status + ")";
+            document.getElementById("api-demo-response-header").textContent = "api response - http(" + jqxhr.status + ")";
             if (jqxhr.responseText.indexOf("{") == 0) {
-                document.getElementById("json-preview").innerText = JsonHelpers.formatJsonString(jqxhr.responseText).trim();
+                document.getElementById("json-preview").textContent = JsonHelpers.formatJsonString(jqxhr.responseText).trim();
             }
             else {
-                document.getElementById("json-preview").innerText = JSON.stringify(this.genericError, null, 4).trim();
+                document.getElementById("json-preview").textContent = JSON.stringify(this.genericError, null, 4).trim();
             }
         }).always(function () {
             HomeVisualStateManager.loaderVisualModifier(false);
