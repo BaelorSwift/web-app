@@ -97,11 +97,8 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 
 			lyric.Lyrics = viewModel.Lyrics;
 			lyric = _lyricRepository.Update(lyric.Id, lyric);
-
-			if (lyric != null)
-				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(_lyricRepository.GetById(lyric.Id), true) });
-
-			throw new NotImplementedException("TODO: add error when failing to patch lyric.");
+			
+			return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(_lyricRepository.GetById(lyric.Id), true) });
 		}
 	}
 }
