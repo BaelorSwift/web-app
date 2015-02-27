@@ -36,15 +36,38 @@
 			</div>
 		</div>
 	</nav>
-	<main>
+	<main class="main-content">
 		@RenderBody()
 	</main>
-	<div class="container body-content">
+	<footer>
 		<hr />
-		<footer>
-			<p>&copy; @DateTime.Now.Year - Baelor Api</p>
-		</footer>
-	</div>
+		<div class="container">
+			<p>
+				Developed by
+				<a href="https://twitter.com/0xdeafcafe" target="_blank">
+					Alex Forbes-Reed - @@0xdeafcafe
+				</a>
+			</p>
+			<p>
+				Developed in C# ASP.NET vNext | Running on Windows Azure
+			</p>
+			<p>
+				Code licensed under the 
+				<a href="http://dbad-license.org/" target="_blank">
+					Don't Be A Dick Public License
+				</a>
+			</p>
+			<p>
+				Code fully Open Sourced at
+				<a href="https://github.com/0xdeafcafe/baelor-api" target="_blank">
+					0xdeafcafe/baelor-api
+				</a>
+			</p>
+			<p class="legal">
+				&copy; @DateTime.Now.Year - baelor.io
+			</p>
+		</div>
+	</footer>
 	<script src="~/lib/jquery/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
 	@RenderSection("scripts", required: false)
