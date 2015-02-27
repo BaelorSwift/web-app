@@ -36,6 +36,7 @@ namespace BaelorApi.Attributes
 			// Extract token
 			var apiKey = authTokens.First().Remove(0, 7);
 
+			// TODO: fix this
 			using (var dbContext = new DatabaseContext())
 			{
 				var userRepo = new UserRepository(dbContext);
@@ -74,11 +75,11 @@ namespace BaelorApi.Attributes
 				var reset = new DateTime(
 					now.Year, now.Month, now.Day, now.Hour, 0, 0);
 				reset = reset.AddHours(1);
-				
+
 				if (rateLimit.RateLimitReached)
 					rateLimitExceeded = true;
 				else
-					rateLimitRequestsMade = 
+					rateLimitRequestsMade =
 						rateLimitRepo.IncrementRequestCount(rateLimit.Id);
 
 				context.HttpContext.Response.Headers.Add("X-RateLimit-Limit", new[]
@@ -95,7 +96,7 @@ namespace BaelorApi.Attributes
 				});
 
 				if (rateLimitExceeded)
-					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode) 429);
+					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode)429);
 			}
 
 			base.OnActionExecuting(context);

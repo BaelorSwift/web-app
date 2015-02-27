@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BaelorApi.Models.Database
 {
@@ -21,8 +20,20 @@ namespace BaelorApi.Models.Database
 
 		public string Producers { get; set; }
 
+		#region [ Album ]
+
 		public Guid AlbumId { get; set; }
 
 		public Album Album { get; set; }
+
+		#endregion
+
+		#region [ Lyric ]
+
+		public Nullable<Guid> LyricId { get; set; }
+
+		public Lyric Lyric { get; set; }
+
+		#endregion
 	}
 }

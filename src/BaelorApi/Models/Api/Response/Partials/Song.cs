@@ -26,6 +26,9 @@ namespace BaelorApi.Models.Api.Response.Partials
 		[JsonProperty("album", NullValueHandling = NullValueHandling.Ignore)]
 		public Album Album { get; set; }
 
+		[JsonProperty("lyric_slug")]
+		public string LyricSlug { get; set; }
+
 		public static Song Create(Database.Song song, bool includeAlbum)
 		{
 			return new Song
@@ -36,6 +39,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 				Index = song.Index,
 				Title = song.Title,
 				Slug = song.Slug,
+				LyricSlug = song.LyricId == null ? null : song.Slug,
 				Album = includeAlbum ? Album.Create(song.Album, false) : null
 			};
 		}

@@ -7,9 +7,25 @@ using System;
 namespace BaelorApi.Migrations
 {
     [ContextType(typeof(BaelorApi.Models.Database.DatabaseContext))]
-    public class DatabaseContextModelSnapshot : ModelSnapshot
+    public partial class LyricStuffBro : IMigrationMetadata
     {
-        public override IModel Model
+        string IMigrationMetadata.MigrationId
+        {
+            get
+            {
+                return "201502270205035_LyricStuffBro";
+            }
+        }
+        
+        string IMigrationMetadata.ProductVersion
+        {
+            get
+            {
+                return "7.0.0-beta3-12166";
+            }
+        }
+        
+        IModel IMigrationMetadata.TargetModel
         {
             get
             {
@@ -48,8 +64,7 @@ namespace BaelorApi.Migrations
                         b.Property<Guid>("Id")
                             .GenerateValueOnAdd();
                         b.Property<string>("Lyrics");
-                        b.Property<string>("Slug");
-                        b.Property<Guid?>("SongId");
+                        b.Property<Guid>("SongId");
                         b.Property<DateTime>("UpdatedAt");
                         b.Key("Id");
                     });
@@ -73,7 +88,7 @@ namespace BaelorApi.Migrations
                             .GenerateValueOnAdd();
                         b.Property<int>("Index");
                         b.Property<int>("LengthSeconds");
-                        b.Property<Guid?>("LyricId");
+                        b.Property<Guid>("LyricId");
                         b.Property<string>("Producers");
                         b.Property<string>("Slug");
                         b.Property<string>("Title");

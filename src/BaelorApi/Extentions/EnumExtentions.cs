@@ -34,7 +34,10 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.InsufficientPrivileges, "insufficient_privileges" },
 
 			// Rate Limit
-			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" }
+			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" },
+
+			// Lyrics
+			{ ErrorStatus.SongDoesntContainLyrics, "song_doesnt_contain_lyrics" }
 		};
 
 		/// <summary>

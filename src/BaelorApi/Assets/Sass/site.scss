@@ -48,4 +48,7 @@ a {
 
 // Import Pages
 @import "_home.scss";
-@import "_docs.scss';
+@import "_docs.scss";
+
+// Import Partials
+@import "Partials/_footer.scss";

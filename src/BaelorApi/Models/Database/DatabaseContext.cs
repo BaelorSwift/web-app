@@ -13,6 +13,8 @@ namespace BaelorApi.Models.Database
 
 		public DbSet<Song> Songs { get; set; }
 
+		public DbSet<Lyric> Lyrics { get; set; }
+
 		public DbSet<Image> Images { get; set; }
 
 		public DbSet<User> Users { get; set; }
@@ -21,14 +23,13 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnConfiguring(DbContextOptions options)
 		{
-
 			string connectionString = null;
 			if (Startup.Configuration != null)
 				Startup.Configuration.TryGet("Data:DefaultConnection:ConnectionString", out connectionString);
 
-			// Must be azure, so we got that access protection layer bro
+			//Must be azure, so we got that access protection layer bro
 			if (connectionString == null)
-				connectionString = "Server=tcp:vmy5iqiy4g.database.windows.net,1433;Database=baelor-api-sql;MultipleActiveResultSets=true;User ID=baelor-production@vmy5iqiy4g;Password=nQJuphE2JXaB9N82Uq6f7nxS;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+				connectionString = "Server =tcp:vmy5iqiy4g.database.windows.net,1433;Database=baelor-api-sql;MultipleActiveResultSets=true;User ID=baelor-production@vmy5iqiy4g;Password=nQJuphE2JXaB9N82Uq6f7nxS;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
 			options.UseSqlServer(connectionString);
 		}
@@ -48,6 +49,11 @@ namespace BaelorApi.Models.Database
 			// RateLimit's have one User
 			modelBuilder.Entity<RateLimit>()
 				.HasOne(r => r.User);
+
+			modelBuilder.Entity<Lyric>()
+				.HasOne<Song>(l => l.Song)
+				.WithOne(s => s.Lyric)
+				.ForeignKey<Song>(s => s.LyricId);
 
 			base.OnModelCreating(modelBuilder);
 		}

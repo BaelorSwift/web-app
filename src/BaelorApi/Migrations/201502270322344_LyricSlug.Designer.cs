@@ -7,9 +7,25 @@ using System;
 namespace BaelorApi.Migrations
 {
     [ContextType(typeof(BaelorApi.Models.Database.DatabaseContext))]
-    public class DatabaseContextModelSnapshot : ModelSnapshot
+    public partial class LyricSlug : IMigrationMetadata
     {
-        public override IModel Model
+        string IMigrationMetadata.MigrationId
+        {
+            get
+            {
+                return "201502270322344_LyricSlug";
+            }
+        }
+        
+        string IMigrationMetadata.ProductVersion
+        {
+            get
+            {
+                return "7.0.0-beta3-12166";
+            }
+        }
+        
+        IModel IMigrationMetadata.TargetModel
         {
             get
             {
