@@ -59,9 +59,18 @@ namespace BaelorApi.Models.Repositories
 					.Include(s => s.Song.Album.Image).FirstOrDefault(a => a.Slug == slug);
 		}
 
-		public Lyric Update(Guid id, Lyric item)
+		public Lyric Update(Guid id, Lyric delta)
 		{
-			throw new NotImplementedException();
+			var item = _db.Lyrics.FirstOrDefault(r => r.Id == id);
+			if (item == null)
+				return null;
+
+			item.Lyrics = delta.Lyrics;
+
+			if (_db.SaveChanges() > 0)
+				return delta;
+
+			return null;
 		}
 
 		public bool TryDelete(Guid id)

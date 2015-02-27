@@ -3,7 +3,6 @@ using System.Net;
 using System.Web.Http;
 using BaelorApi.Models.Api;
 using BaelorApi.Models.Repositories;
-using System.Collections.Generic;
 using BaelorApi.Attributes;
 using BaelorApi.Models.ViewModels;
 using BaelorApi.Models.Api.Error;
@@ -79,7 +78,30 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			if (lyric != null)
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(lyric, true) });
 
-			throw new NotImplementedException("TODO: add error when failing to create song.");
+			throw new NotImplementedException("TODO: add error when failing to create lyric.");
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="viewModel"></param>
+		/// <returns></returns>
+		[HttpPatch("{id}")]
+		[RequireAdminAuthentication]
+		public IActionResult Patch(string id, [FromBody] PatchLyricViewModel viewModel)
+		{
+			var lyric = _lyricRepository.GetBySlug(id);
+			if (lyric == null)
+				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.SongDoesntContainLyrics), Success = false });
+
+			lyric.Lyrics = viewModel.Lyrics;
+			lyric = _lyricRepository.Update(lyric.Id, lyric);
+
+			if (lyric != null)
+				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(_lyricRepository.GetById(lyric.Id), true) });
+
+			throw new NotImplementedException("TODO: add error when failing to patch lyric.");
 		}
 	}
 }
