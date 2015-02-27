@@ -63,7 +63,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		public IActionResult Post([FromBody] CreateLyricViewModel viewModel)
 		{
 			var song = _songRepository.GetBySlug(viewModel.SongSlug);
-
+			
 			if (song == null)
 				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidSongSlug), Success = false });
 

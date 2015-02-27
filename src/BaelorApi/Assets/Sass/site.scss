@@ -16,8 +16,8 @@ body {
 	font-family: $font-stack;
 }
 
-.main-content {
-	background-color: white;
+main {
+	overflow-x: hidden;
 }
 
 code {
