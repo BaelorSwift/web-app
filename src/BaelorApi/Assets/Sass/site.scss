@@ -12,13 +12,17 @@ $large-devices-width: 1200px;
 // Import Partials
 @import "_loaders.scss";
 
+html {
+	background-color: $primary-red;
+}
+
 body {
 	font-family: $font-stack;
-	background-color: $primary-red;
 }
 
 main {
 	overflow-x: hidden;
+	background: #fff;
 }
 
 code {
