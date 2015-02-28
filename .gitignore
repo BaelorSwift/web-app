@@ -11,6 +11,9 @@ src/BaelorApi/wwwroot/lib/
 src/BaelorApi/wwwroot/css/
 src/BaelorApi/wwwroot/js/
 
+# Local development web.config
+src/BaelorApi/wwwroot/web.config
+
 # Fuck off javascript
 src/BaelorApi/Assets/Typescript/*.js
 
