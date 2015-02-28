@@ -14,6 +14,8 @@
 		RevokedApiKey = 0x1072,
 		RateLimitExceeded = 0x1073,
 		InsufficientPrivileges = 0x1074,
-		SongDoesntContainLyrics = 0x1075
+		SongDoesntContainLyrics = 0x1075,
+		SongAlreadyContainsLyrics = 0x1076,
+		UnableToCreateLyrics = 0x1077
 	}
 }

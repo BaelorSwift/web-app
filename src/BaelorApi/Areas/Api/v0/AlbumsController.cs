@@ -49,11 +49,11 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		///		[GET] api/v0/albums/{slug}
 		/// Gets the album by Bae with the specified slug.
 		/// </summary>
-		/// <param name="id">The slug of the album.</param>
-		[HttpGet("{id}")]
-		public IActionResult Get(string id)
+		/// <param name="slug">The slug of the album.</param>
+		[HttpGet("{slug}")]
+		public IActionResult Get(string slug)
 		{
-			var album = _albumRepository.GetBySlug(id);
+			var album = _albumRepository.GetBySlug(slug);
 
 			if (album != null)
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Album.Create(album, true) });

@@ -62,8 +62,6 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		[HttpPost]
 		public IActionResult Post([FromBody] CreateUserViewModel viewModel)
 		{
-			DopeTrace.WriteLine("ehhh");
-
 			if (ModelState.IsValid)
 			{
 				#region [ Validate Password Strength ]
@@ -100,9 +98,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 
 				#endregion
 			}
-
-			DopeTrace.WriteLine("fuck");
-
+			
 			#region [ Model Validation ]
 
 			var errors = ModelState.GetErrors("viewModel");
@@ -110,17 +106,13 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				throw new BaelorV0Exception(ErrorStatus.DataValidationFailed, HttpStatusCode.BadRequest, errors);
 
 			#endregion
-
-			DopeTrace.WriteLine("yo");
-
+			
 			#region [ Password Hashing ]
 
 			var hash = Pbkdf2.ComputeHash(viewModel.Password);
 
 			#endregion
-
-			DopeTrace.WriteLine("tits");
-
+			
 			#region [ Create User ]
 
 			var user = new User
@@ -137,9 +129,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			user = _userRepository.Add(user);
 
 			#endregion
-
-			DopeTrace.WriteLine("bro");
-
+			
 			return Content(HttpStatusCode.OK, new ResponseBase
 			{
 				Success = true,

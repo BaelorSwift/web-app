@@ -39,14 +39,14 @@ namespace BaelorApi
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute("Default", "{controller}/{action}/{id?}", new { controller = "Home", action = "Index" });
-				routes.MapWebApiRoute("v0", "v0/{controller}/{id?}");
+				routes.MapWebApiRoute("v0", "api/v0/{controller}/{id?}");
 			});
 
 			if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
 			{
 				//app.UseBrowserLink();
-				app.UseErrorPage(ErrorPageOptions.ShowAll);
-				app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
+				//app.UseErrorPage(ErrorPageOptions.ShowAll);
+				//app.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
 			}
 			else
 			{

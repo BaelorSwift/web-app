@@ -29,15 +29,24 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		private readonly ISongRepository _songRepository;
 
 		/// <summary>
+		/// Repository for interacting with <see cref="Lyric"/> data
+		/// </summary>
+		private readonly ILyricRepository _lyricRepository;
+
+		/// <summary>
 		/// Creates a new instance of the Songs Controller.
 		/// </summary>
 		/// <param name="albumRepository">The repository of <see cref="Album"/> data.</param>
-		public SongsController(IAlbumRepository albumRepository, ISongRepository songRepository)
+		/// <param name="songRepository">The repository of <see cref="Song"/> data.</param>
+		/// <param name="lyricRepository">The repository of <see cref="Lyric"/> data.</param>
+		public SongsController(IAlbumRepository albumRepository, 
+			ISongRepository songRepository, ILyricRepository lyricRepository)
 		{
 			_albumRepository = albumRepository;
 			_songRepository = songRepository;
+			_lyricRepository = lyricRepository;
 		}
-
+		
 		/// <summary>
 		///		[GET] api/v0/songs
 		/// Gets all of Bae's songs.
@@ -56,11 +65,11 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		///		[GET] api/v0/songs/{slug}
 		/// Gets the song by Bae with the specified slug.
 		/// </summary>
-		/// <param name="id">The slug of the song.</param>
-		[HttpGet("{id}")]
-		public IActionResult Get(string id)
+		/// <param name="slug">The slug of the song.</param>
+		[HttpGet("{slug}")]
+		public IActionResult Get(string slug)
 		{
-			var song = _songRepository.GetBySlug(id);
+			var song = _songRepository.GetBySlug(slug);
 
 			if (song != null)
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Song.Create(song, true) });
@@ -73,9 +82,9 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		/// Adds a song by bae based on the POST'ed view model.
 		/// </summary>
 		/// <param name="viewModel">The data of the song to create.</param>
-		[HttpPost]
 		[RequireAuthentication]
 		[RequireAdminAuthentication]
+		[HttpPost]
 		public IActionResult Post([FromBody] CreateSongViewModel viewModel)
 		{
 			var album = _albumRepository.GetBySlug(viewModel.AlbumSlug);

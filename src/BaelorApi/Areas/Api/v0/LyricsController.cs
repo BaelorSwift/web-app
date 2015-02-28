@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNet.Mvc;
-using System.Net;
 using System.Web.Http;
-using BaelorApi.Models.Api;
 using BaelorApi.Models.Repositories;
 using BaelorApi.Attributes;
-using BaelorApi.Models.ViewModels;
-using BaelorApi.Models.Api.Error;
+using System.Net;
+using BaelorApi.Models.Api;
 using BaelorApi.Models.Error.Enums;
-using System;
+using BaelorApi.Models.Api.Error;
+using BaelorApi.Models.ViewModels;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
 	[ExceptionHandler]
 	[SetResponseHeaders]
 	[RequireAuthentication]
-	[Route("api/v0/[controller]")]
+	[Route("api/v0/songs/{slug}/lyrics")]
 	public class LyricsController : ApiController
 	{
 		/// <summary>
@@ -39,13 +38,18 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		}
 
 		/// <summary>
-		///		[GET] api/v0/lyrics/{song-slug}
-		/// Gets all of Bae's Lyrics.
+		///		[GET] api/v0/songs/{slug}/lyrics
+		/// Gets the lyrics of a song by Bae with the specified slug.
 		/// </summary>
-		[HttpGet("{id}")]
-		public IActionResult Get(string id)
+		/// <param name="slug">The slug of the song.</param>
+		[HttpGet]
+		public IActionResult GetLyrics(string slug)
 		{
-			var lyric = _lyricRepository.GetBySlug(id);
+			var song = _songRepository.GetBySlug(slug);
+			if (song == null)
+				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidSongSlug), Success = false });
+
+			var lyric = song.Lyric;
 			if (lyric == null)
 				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.SongDoesntContainLyrics), Success = false });
 
@@ -53,18 +57,20 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		}
 
 		/// <summary>
-		///		[POST] api/v0/lyrics/
+		///		[POST] api/v0/songs/{slug}/lyrics
 		/// Add's the lyrics to a song based on the POST'ed view model.
 		/// </summary>
-		/// <param name="viewModel">The data of the lyrics.</param>
-		[HttpPost]
+		/// <param name="slug">The slug of the song.</param>
+		/// <param name="viewModel">The view model containg the data of the lyrics.</param>
 		[RequireAdminAuthentication]
-		public IActionResult Post([FromBody] CreateLyricViewModel viewModel)
+		[HttpPost]
+		public IActionResult Post(string slug, [FromBody] CreateLyricViewModel viewModel)
 		{
-			var song = _songRepository.GetBySlug(viewModel.SongSlug);
-			
+			var song = _songRepository.GetBySlug(slug);
 			if (song == null)
 				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidSongSlug), Success = false });
+			if (song.Lyric != null)
+				return Content(HttpStatusCode.Conflict, new ResponseBase { Error = new ErrorBase(ErrorStatus.SongAlreadyContainsLyrics), Success = false });
 
 			var lyric = new Models.Database.Lyric
 			{
@@ -74,31 +80,32 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				SongId = song.Id
 			};
 			lyric = _lyricRepository.Add(lyric);
-			
+
 			if (lyric != null)
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(lyric, true) });
 
-			throw new NotImplementedException("TODO: add error when failing to create lyric.");
+			return Content(HttpStatusCode.BadRequest, new ResponseBase { Error = new ErrorBase(ErrorStatus.UnableToCreateLyrics), Success = false });
 		}
 
 		/// <summary>
-		/// 
+		///		[PATCH] api/v0/songs/{slug}/lyrics
+		/// Updates the lyrics to a song based on the PATCH'ed view model.
 		/// </summary>
-		/// <param name="id"></param>
-		/// <param name="viewModel"></param>
-		/// <returns></returns>
-		[HttpPatch("{id}")]
+		/// <param name="slug">The slug of the song.</param>
+		/// <param name="viewModel">The view model containg the data of the updated lyrics.</param>
+		[HttpPatch]
 		[RequireAdminAuthentication]
-		public IActionResult Patch(string id, [FromBody] PatchLyricViewModel viewModel)
+		public IActionResult Post(string slug, [FromBody] PatchLyricViewModel viewModel)
 		{
-			var lyric = _lyricRepository.GetBySlug(id);
-			if (lyric == null)
+			var song = _songRepository.GetBySlug(slug);
+			if (song == null)
+				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidSongSlug), Success = false });
+			if (song.Lyric == null)
 				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.SongDoesntContainLyrics), Success = false });
 
-			lyric.Lyrics = viewModel.Lyrics;
-			lyric = _lyricRepository.Update(lyric.Id, lyric);
-			
-			return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(_lyricRepository.GetById(lyric.Id), true) });
+			song.Lyric.Lyrics = viewModel.Lyrics;
+			var lyric = _lyricRepository.Update(song.Lyric.Id, song.Lyric);
+			return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Lyric.Create(lyric, true) });
 		}
 	}
 }

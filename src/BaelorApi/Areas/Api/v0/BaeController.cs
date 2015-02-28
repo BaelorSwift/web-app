@@ -38,11 +38,11 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		///		[GET] api/v0/bae/{word}
 		/// Gets the bae status of a word.
 		/// </summary>
-		/// <param name="id">The word to get the bae status of.</param>
-		[HttpGet("{id}")]
-		public IActionResult Get(string id)
+		/// <param name="word">The word to get the bae status of.</param>
+		[HttpGet("{word}")]
+		public IActionResult Get(string word)
 		{
-			return Content(HttpStatusCode.OK, new ResponseBase { Result = new { bae = _baes.Contains(id.ToLowerInvariant()) } });
+			return Content(HttpStatusCode.OK, new ResponseBase { Result = new { bae = _baes.Contains(word.ToLowerInvariant()) } });
 		}
 	}
 }

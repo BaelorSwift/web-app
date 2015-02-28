@@ -70,7 +70,7 @@ namespace BaelorApi.Models.Repositories
 			if (_db.SaveChanges() > 0)
 				return delta;
 
-			return null;
+			return item;
 		}
 
 		public bool TryDelete(Guid id)

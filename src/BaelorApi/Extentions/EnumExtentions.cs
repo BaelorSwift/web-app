@@ -37,7 +37,9 @@ namespace BaelorApi.Extentions
 			{ ErrorStatus.RateLimitExceeded, "rate_limit_exceeded" },
 
 			// Lyrics
-			{ ErrorStatus.SongDoesntContainLyrics, "song_doesnt_contain_lyrics" }
+			{ ErrorStatus.SongDoesntContainLyrics, "song_doesnt_contain_lyrics" },
+			{ ErrorStatus.SongAlreadyContainsLyrics, "song_already_contains_lyrics" },
+			{ ErrorStatus.UnableToCreateLyrics, "unable_to_create_lyrics" }
 		};
 
 		/// <summary>
