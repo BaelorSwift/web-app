@@ -1,7 +1,7 @@
 ﻿#api-docs-header {
 	text-align: center;
 	color: #fff;
-	height: 65vh;
+	height: 450px;
 	width: 100%;
 	background: url(../images/docs-cover.jpg) no-repeat center center fixed;
 	background-size: cover;
@@ -14,7 +14,7 @@
 		bottom: 0;
 		right: 0;
 		position: relative;
-		padding-top: 27vh;
+		padding-top: 150px;
 
 		.container {
 			h1 {
@@ -50,6 +50,8 @@
 	margin-top: 40px;
 
 	.api-docs {
+		position: relative;
+
 		> .api-docs-section {
 			margin-bottom: 80px;
 			h1 {
@@ -96,11 +98,20 @@
 
 	.api-docs-sidebar {
 		margin-top: 50px;
-		padding-left: 40px;
+		margin-right: 20px;
+		padding-left: 30px;
+
+		@media (min-width: ($extra-small-devices-width + 1)) {
+			width: 250px;
+		}
 
 		&.affix {
 			position: fixed;
-			top: 25px;
+			top: 23px;
+
+			@media (min-width: ($extra-small-devices-width + 1)) {
+				width: 250px;
+			}
 		}
 
 		.api-docs-sidenav {
@@ -111,41 +122,39 @@
 		.nav {
 			font-size: 15px;
 			
-			> {
-				.active {
-					> a {
-						padding-left: 18px;
-						font-weight: 700;
-						color: $primary-red;
-						background-color: transparent;
-						border-right: 1px solid $primary-red;
-					}
-
-					&:hover > a,
-					&:focus > a {
-						padding-left: 18px;
-						font-weight: 700;
-						color: $primary-red;
-						background-color: transparent;
-						border-right: 1px solid $primary-red;
-					}
+			> .active {
+				> a {
+					padding-left: 20px;
+					font-weight: 700;
+					color: $primary-red;
+					background-color: transparent;
+					border-right: 1px solid $primary-red;
 				}
 
-				li > a {
-					display: block;
-					font-size: 15px;
-					font-weight: 500;
-					color: #999;
-					padding: 4px 20px;
+				&:hover > a,
+				&:focus > a {
+					padding-left: 20px;
+					font-weight: 700;
+					color: $primary-red;
+					background-color: transparent;
+					border-right: 1px solid $primary-red;
+				}
+			}
 
-					&:hover,
-					&:focus {
-						padding-left: 19px;
-						color: $primary-red;
-						text-decoration: none;
-						background-color: transparent;
-						border-right: 1px solid $primary-red;
-					}
+			> li > a {
+				display: block;
+				font-size: 15px;
+				font-weight: 500;
+				color: #999;
+				padding: 4px 20px;
+
+				&:hover,
+				&:focus {
+					padding-left: 20px;
+					color: $primary-red;
+					text-decoration: none;
+					background-color: transparent;
+					border-right: 1px solid $primary-red;
 				}
 			}
 
@@ -154,7 +163,7 @@
 
 				.active {
 					> a {
-						font-weight: 500;
+						font-weight: 700;
 						padding-left: 38px;
 					}
 
@@ -162,29 +171,6 @@
 					&:focus > a {
 						font-weight: 500;
 						padding-left: 38px;
-					}
-				}
-
-				.nav {
-					.active {
-						> a {
-							font-weight: 500;
-							padding-left: 58px;
-						}
-
-						&:hover > a,
-						&:focus > a {
-							font-weight: 500;
-							padding-left: 58px;
-						}
-					}
-
-					> li > a {
-						padding-top: 1px;
-						padding-bottom: 1px;
-						padding-left: 60px;
-						font-size: 13px;
-						font-weight: 400;
 					}
 				}
 
@@ -203,5 +189,9 @@
 		.api-docs-sidebar.affix {
 			position: static;
 		}
+	}
+
+	.api-docs {
+		
 	}
 }

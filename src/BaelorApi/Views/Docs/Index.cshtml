@@ -1,5 +1,7 @@
 ﻿@{
 	ViewBag.Title = "Docs :: baelor.io";
+	ViewBag.BodyDataSpy = "scroll";
+	ViewBag.BodyDataTarget = "#docs-sidebar";
 }
 
 <section id="api-docs-header">
@@ -13,9 +15,9 @@
 
 <section id="api-docs-content">
 	<div class="row">
-		<div class="col-md-3">
-			<nav class="api-docs-sidebar">
-				<ul class="nav api-docs-sidenav">
+		<div id="docs-sidebar-container" class="col-md-3">
+			<nav class="api-docs-sidebar" id="docs-sidebar" data-spy="affix" data-offset-top="500" data-offset-bottom="250">
+				<ul class="nav api-docs-sidenav" role="tablist">
 					<li>
 						<a href="#authentication">Authentication</a>
 					</li>
@@ -42,6 +44,8 @@
 					<li>
 						<a href="#albums">Albums</a>
 						<ul class="nav">
+							<li><a href="#create-album">Create Album</a></li>
+							<li><a href="#patch-album">Patch Album</a></li>
 							<li><a href="#get-albums">Get Albums</a></li>
 							<li><a href="#get-album">Get Album</a></li>
 						</ul>
@@ -49,6 +53,8 @@
 					<li>
 						<a href="#songs">Songs</a>
 						<ul class="nav">
+							<li><a href="#create-song">Create Song</a></li>
+							<li><a href="#patch-song">Patch Song</a></li>
 							<li><a href="#get-songs">Get Songs</a></li>
 							<li><a href="#get-song">Get Song</a></li>
 						</ul>
@@ -56,6 +62,8 @@
 					<li>
 						<a href="#lyrics">Lyrics</a>
 						<ul class="nav">
+							<li><a href="#create-lyric">Create Lyrics</a></li>
+							<li><a href="#patch-lyric">Patch Lyrics</a></li>
 							<li><a href="#get-lyric">Get Lyrics</a></li>
 						</ul>
 					</li>
@@ -78,6 +86,7 @@
 				</a>
 			</nav>
 		</div>
+
 		<div class="col-md-8 api-docs">
 			<section id="authentication" class="api-docs-section">
 				<h1>Authentication</h1>
@@ -94,6 +103,13 @@
 					<h2>Authorized</h2>
 					<p>
 						Here we go.. When you <a href="#create-user">create a user</a>, the API will return an <code>api_key</code>. You can use that API key to make authenticated requests from that point on. To use the API key, set the header <code>Authorization</code> to the following value <code>bearer api_key</code>. For more information, and examples, look in the <a href="#headers">headers</a> section of the documentation.
+					</p>
+				</article>
+
+				<article class="api-docs-article">
+					<h2>Admin Authorization</h2>
+					<p>
+						You won't really need to worry about this one. It is only avaiable if the user is an admin. I just documented it as I forget stuff.
 					</p>
 				</article>
 			</section>
@@ -356,6 +372,7 @@
 					<h3>
 						This endpoint will allow you to create a user.
 					</h3>
+
 					<table class="table table-striped table-bordered">
 						<thead>
 							<tr>
@@ -519,6 +536,30 @@
 				<h1>Albums</h1>
 				<hr />
 
+				<article id="create-album" class="api-docs-article">
+					<h2>Create Album</h2>
+					<hr />
+					<h3>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">POST</span>
+						::
+						<code>api/v0/album/</code>
+					</h3>
+
+					<p>TODO</p>
+				</article>
+				<article id="patch-album" class="api-docs-article">
+					<h2>Patch Album</h2>
+					<hr />
+					<h3>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">PATCH</span>
+						::
+						<code>api/v0/album/</code>
+					</h3>
+
+					<p>TODO</p>
+				</article>
 				<article id="get-albums" class="api-docs-article">
 					<h2>Get Albums</h2>
 					<hr />
@@ -574,7 +615,7 @@
                         "Nathan Chapman",
                         "Robert Ellis Orrall"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 },
                 {
                     "index": 2,
@@ -589,7 +630,7 @@
                         "Nathan Chapman",
                         "Robert Ellis Orrall"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 }
             ],
             "album_cover": {
@@ -624,7 +665,7 @@
                         "Taylor Swift",
                         "Nathan Chapman"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 },
                 {
                     "index": 2,
@@ -641,7 +682,7 @@
                         "Taylor Swift",
                         "Nathan Chapman"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 }
             ],
             "album_cover": {
@@ -674,7 +715,7 @@
                         "Nathan Chapman",
                         "Taylor Swift"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 },
                 {
                     "index": 2,
@@ -688,157 +729,11 @@
                         "Nathan Chapman",
                         "Taylor Swift"
                     ],
-                    "lyric_slug": null
+                    "has_lyrics": true
                 }
             ],
             "album_cover": {
                 "image_id": "5b2091df-33b2-4a01-2872-08d21467e516"
-            }
-        },
-        {
-            "slug": "red",
-            "name": "Red",
-            "released_at": "2012-10-22T00:00:00",
-            "length": "01:05:11",
-            "label": "Big Machine",
-            "genres": [
-                "Country",
-                "Pop Rock"
-            ],
-            "producers": [
-                "Scott Borchetta",
-                "Jeff Bhasker",
-                "Nathan Chapman",
-                "Dann Huff",
-                "Jacknife Lee",
-                "Max Martin",
-                "Shellback",
-                "Taylor Swift",
-                "Butch Walker",
-                "Dan Wilson"
-            ],
-            "songs": [
-                {
-                    "index": 1,
-                    "slug": "state-of-grace",
-                    "title": "State of Grace",
-                    "length": "00:04:55",
-                    "writers": [
-                        "Taylor Swift"
-                    ],
-                    "producers": [
-                        "Nathan Chapman",
-                        "Taylor Swift"
-                    ],
-                    "lyric_slug": null
-                },
-                {
-                    "index": 2,
-                    "slug": "red",
-                    "title": "Red",
-                    "length": "00:03:43",
-                    "writers": [
-                        "Taylor Swift"
-                    ],
-                    "producers": [
-                        "Nathan Chapman",
-                        "Taylor Swift",
-                        "Dann Huff"
-                    ],
-                    "lyric_slug": null
-                }
-            ],
-            "album_cover": {
-                "image_id": "6b3e42bb-feee-4e05-286f-08d21467e516"
-            }
-        },
-        {
-            "slug": "1989",
-            "name": "1989",
-            "released_at": "2014-10-27T00:00:00",
-            "length": "01:08:36",
-            "label": "Big Machine",
-            "genres": [
-                "Pop",
-                "Synthpop"
-            ],
-            "producers": [
-                "Max Martin",
-                "Taylor Swift",
-                "Jack Antonoff",
-                "Nathan Chapman",
-                "Imogen Heap",
-                "Greg Kurstin",
-                "Mattman & Robin",
-                "Ali Payami",
-                "Shellback",
-                "Ryan Tedder",
-                "Noel Zancanella"
-            ],
-            "songs": [
-                {
-                    "index": 1,
-                    "slug": "welcome-to-new-york",
-                    "title": "Welcome to New York",
-                    "length": "00:03:32",
-                    "writers": [
-                        "Taylor Swift",
-                        "Ryan Tedder"
-                    ],
-                    "producers": [
-                        "Ryan Tedder",
-                        "Noel Zancanella",
-                        "Taylor Swift"
-                    ],
-                    "lyric_slug": null
-                },
-                {
-                    "index": 2,
-                    "slug": "blank-space",
-                    "title": "Blank Space",
-                    "length": "00:03:51",
-                    "writers": [
-                        "Taylor Swift",
-                        "Max Martin",
-                        "Shellback"
-                    ],
-                    "producers": [
-                        "Max Martin",
-                        "Shellback"
-                    ],
-                    "lyric_slug": null
-                }
-                    "index": 18,
-                    "slug": "i-wish-you-would-voice-memo",
-                    "title": "I Wish You Would (Voice Memo)",
-                    "length": "00:01:47",
-                    "writers": [
-                        "Taylor Swift",
-                        "Jack Antonoff"
-                    ],
-                    "producers": [
-                        ""
-                    ],
-                    "lyric_slug": null
-                },
-                {
-                    "index": 19,
-                    "slug": "blank-space-voice-memo",
-                    "title": "Blank Space (Voice Memo)",
-                    "length": "00:02:11",
-                    "writers": [
-                        "Taylor Swift",
-                        "Max Martin",
-                        "Shellback"
-                    ],
-                    "producers": [
-                        ""
-                    ],
-                    "lyric_slug": null
-                }
-            ],
-            "album_cover": {
-                "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
             }
         }
     ],
@@ -912,7 +807,7 @@
                     "Noel Zancanella",
                     "Taylor Swift"
                 ],
-                "lyric_slug": null
+                "has_lyrics": true
             },
             {
                 "index": 2,
@@ -928,7 +823,7 @@
                     "Max Martin",
                     "Shellback"
                 ],
-                "lyric_slug": null
+                "has_lyrics": true
             },
             {
                 "index": 3,
@@ -946,7 +841,120 @@
                     "Shellback",
                     "Ali Payami"
                 ],
-                "lyric_slug": "style"
+                "has_lyrics": true
+            },
+            {
+                "index": 4,
+                "slug": "out-of-the-woods",
+                "title": "Out of the Woods",
+                "length": "00:03:55",
+                "writers": [
+                    "Taylor Swift",
+                    "Jack Antonoff"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 5,
+                "slug": "all-you-had-to-do-was-stay",
+                "title": "All You Had to Do Was Stay",
+                "length": "00:03:13",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Martin"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback",
+                    "Mattman & Robin"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 6,
+                "slug": "shake-it-off",
+                "title": "Shake It Off",
+                "length": "00:03:39",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 7,
+                "slug": "i-wish-you-would",
+                "title": "I Wish You Would",
+                "length": "00:03:27",
+                "writers": [
+                    "Taylor Swift",
+                    "Jack Antonoff"
+                ],
+                "producers": [
+                    "Jack Antonoff",
+                    "Taylor Swift",
+                    "Greg Kurstin",
+                    "Max Martin"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 8,
+                "slug": "bad-blood",
+                "title": "Bad Blood",
+                "length": "00:03:31",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Margin",
+                    "Shellback"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 9,
+                "slug": "wildest-dreams",
+                "title": "Wildest Dreams",
+                "length": "00:03:40",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Margin",
+                    "Shellback"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "has_lyrics": true
+            },
+            {
+                "index": 10,
+                "slug": "how-you-get-the-girl",
+                "title": "How You Get the Girl",
+                "length": "00:04:07",
+                "writers": [
+                    "Taylor Swift",
+                    "Max Margin",
+                    "Shellback"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Shellback"
+                ],
+                "has_lyrics": true
             }
         ],
         "album_cover": {
@@ -964,6 +972,30 @@
 				<h1>Songs</h1>
 				<hr />
 
+				<article id="create-song" class="api-docs-article">
+					<h2>Create Song</h2>
+					<hr />
+					<h3>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">POST</span>
+						::
+						<code>api/v0/song/</code>
+					</h3>
+
+					<p>TODO</p>
+				</article>
+				<article id="patch-song" class="api-docs-article">
+					<h2>Patch Song</h2>
+					<hr />
+					<h3>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">PATCH</span>
+						::
+						<code>api/v0/song/</code>
+					</h3>
+
+					<p>TODO</p>
+				</article>
 				<article id="get-songs" class="api-docs-article">
 					<h2>Get Songs</h2>
 					<hr />
@@ -991,7 +1023,7 @@
 						<div role="tabpanel" class="tab-pane fade in active" id="get-songs-response">
 <pre><code class="json">{
     "result": [
-	 	        {
+        {
             "index": 1,
             "slug": "welcome-to-new-york",
             "title": "Welcome to New York",
@@ -1032,7 +1064,7 @@
                     "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
                 }
             },
-            "lyric_slug": null
+            "has_lyrics": true
         },
         {
             "index": 2,
@@ -1075,7 +1107,7 @@
                     "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
                 }
             },
-            "lyric_slug": null
+            "has_lyrics": true
         },
         {
             "index": 3,
@@ -1120,8 +1152,181 @@
                     "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
                 }
             },
-            "lyric_slug": "style"
+            "has_lyrics": true
         },
+        {
+            "index": 4,
+            "slug": "out-of-the-woods",
+            "title": "Out of the Woods",
+            "length": "00:03:55",
+            "writers": [
+                "Taylor Swift",
+                "Jack Antonoff"
+            ],
+            "producers": [
+                "Max Martin",
+                "Taylor Swift",
+                "Jack Antonoff"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
+        },
+        {
+            "index": 5,
+            "slug": "all-you-had-to-do-was-stay",
+            "title": "All You Had to Do Was Stay",
+            "length": "00:03:13",
+            "writers": [
+                "Taylor Swift",
+                "Max Martin"
+            ],
+            "producers": [
+                "Max Martin",
+                "Shellback",
+                "Mattman & Robin"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
+        },
+        {
+            "index": 6,
+            "slug": "shake-it-off",
+            "title": "Shake It Off",
+            "length": "00:03:39",
+            "writers": [
+                "Taylor Swift",
+                "Max Martin",
+                "Shellback"
+            ],
+            "producers": [
+                "Max Martin",
+                "Shellback"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
+        },
+        {
+            "index": 7,
+            "slug": "i-wish-you-would",
+            "title": "I Wish You Would",
+            "length": "00:03:27",
+            "writers": [
+                "Taylor Swift",
+                "Jack Antonoff"
+            ],
+            "producers": [
+                "Jack Antonoff",
+                "Taylor Swift",
+                "Greg Kurstin",
+                "Max Martin"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
+        }
     ],
     "error": null,
     "success": true
@@ -1195,7 +1400,7 @@
                 "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
             }
         },
-        "lyric_slug": "style"
+        "has_lyrics": true
     },
     "error": null,
     "success": true
@@ -1208,31 +1413,71 @@
 				<h1>Lyrics</h1>
 				<hr />
 
-				<article id="get-lyric" class="api-docs-article">
-					<h2>Get Lyrics</h2>
+				<article id="create-lyric" class="api-docs-article">
+					<h2>Create Lyrics</h2>
 					<hr />
 					<h3>
-						<span class="label label-warning">Authorized</span>
-						<span class="label label-info">GET</span>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">POST</span>
 						::
-						<code>api/v0/lyrics/{slug}</code>
+						<code>api/v0/song/{song-slug}/lyrics</code>
 					</h3>
-					<h3>
-						This endpoint will return the lyrics of a Taylor Swift song.
-					</h3>
+
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>
+									Parameter
+								</td>
+								<td>
+									Required
+								</td>
+								<td>
+									Requirements
+								</td>
+								<td>
+									Description
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									lyrics
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Be a string.
+								</td>
+								<td>
+									The lyrics of the song.
+								</td>
+							</tr>
+						</tbody>
+					</table>
 
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active">
-							<a href="#get-lyric-response" aria-controls="get-lyric-response" role="tab" data-toggle="tab">Response</a>
+							<a href="#create-lyric-request" aria-controls="create-lyric-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#create-lyric-response" aria-controls="create-lyric-response" role="tab" data-toggle="tab">Response</a>
 						</li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane fade in active" id="get-lyric-response">
+						<div role="tabpanel" class="tab-pane fade in active" id="create-lyric-request">
+<pre><code class="json">{
+  "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n we never go out of style\nWe never go out of style",
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="create-lyric-response">
 <pre><code class="json">{
     "result": {
-        "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\nwe never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\nwe never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\nwe never go out of style\nWe never go out of style",
+        "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n we never go out of style\nWe never go out of style",
         "song": {
             "index": 3,
             "slug": "style",
@@ -1275,7 +1520,202 @@
                 "album_cover": {
                     "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
                 }
-            }
+            },
+            "has_lyrics": true
+        }
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+				<article id="patch-lyric" class="api-docs-article">
+					<h2>Patch Lyrics</h2>
+					<hr />
+					<h3>
+						<span class="label label-danger">Admin Authorization</span>
+						<span class="label label-info">PATCH</span>
+						::
+						<code>api/v0/song/{song-slug}/lyrics</code>
+					</h3>
+
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>
+									Parameter
+								</td>
+								<td>
+									Required
+								</td>
+								<td>
+									Requirements
+								</td>
+								<td>
+									Description
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									lyrics
+								</td>
+								<td>
+									<span class="label label-success">yes</span>
+								</td>
+								<td>
+									Be a string.
+								</td>
+								<td>
+									The lyrics of the song.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#patch-lyric-request" aria-controls="patch-lyric-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#patch-lyric-response" aria-controls="patch-lyric-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="patch-lyric-request">
+<pre><code class="json">{
+  "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n we never go out of style\nWe never go out of style",
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="patch-lyric-response">
+<pre><code class="json">{
+    "result": {
+        "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n we never go out of style\nWe never go out of style",
+        "song": {
+            "index": 3,
+            "slug": "style",
+            "title": "Style",
+            "length": "00:03:51",
+            "writers": [
+                "Taylor Swift",
+                "Max Martin",
+                "Shellback",
+                "Ali Payami"
+            ],
+            "producers": [
+                "Max Martin",
+                "Shellback",
+                "Ali Payami"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
+        }
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
+				</article>
+				<article id="get-lyric" class="api-docs-article">
+					<h2>Get Lyrics</h2>
+					<hr />
+					<h3>
+						<span class="label label-warning">Authorized</span>
+						<span class="label label-info">GET</span>
+						::
+						<code>api/v0/songs/{song-slug}/lyrics</code>
+					</h3>
+					<h3>
+						This endpoint will return the lyrics of a Taylor Swift song.
+					</h3>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#get-lyric-response" aria-controls="get-lyric-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="get-lyric-response">
+<pre><code class="json">{
+    "result": {
+        "lyrics": "Midnight\nYou come and pick me up, no headlights\nLong drive\nCould end in burning flames or paradise\nFade into view, oh\nIt's been a while since I have even heard from you (heard from you)\n\nI should just tell you to leave 'cause I\nKnow exactly where it leads but I\nWatch us go 'round and 'round each time\n\nYou got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nSo it goes\nHe can't keep his wild eyes on the road, \nTakes me home\nLights are off, he's taking off his coat, \nI say I heard, oh\nThat you've been out and about with some other girl\nSome other girl\n\nHe says what you heard is true but I\nCan't stop thinking about you and I\nI said I've been there too a few times\n\n'Cause you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n'Cause we never go out of style\nWe never go out of style\n\nYou got that long hair, slick back, white t-shirt\nAnd I got that good girl faith and a tight little skirt\nAnd when we go crashing down, we come back every time\n we never go out of style\nWe never go out of style\n\nTake me home\nJust take me home\nYeah, just take me home\n\n(Out of style)\n\nOh, you got that James Dean daydream look in your eye\nAnd I got that red lip classic thing that you like\nAnd then we go crashing down, we come back every time\n we never go out of style\nWe never go out of style",
+        "song": {
+            "index": 3,
+            "slug": "style",
+            "title": "Style",
+            "length": "00:03:51",
+            "writers": [
+                "Taylor Swift",
+                "Max Martin",
+                "Shellback",
+                "Ali Payami"
+            ],
+            "producers": [
+                "Max Martin",
+                "Shellback",
+                "Ali Payami"
+            ],
+            "album": {
+                "slug": "1989",
+                "name": "1989",
+                "released_at": "2014-10-27T00:00:00",
+                "length": "01:08:36",
+                "label": "Big Machine",
+                "genres": [
+                    "Pop",
+                    "Synthpop"
+                ],
+                "producers": [
+                    "Max Martin",
+                    "Taylor Swift",
+                    "Jack Antonoff",
+                    "Nathan Chapman",
+                    "Imogen Heap",
+                    "Greg Kurstin",
+                    "Mattman & Robin",
+                    "Ali Payami",
+                    "Shellback",
+                    "Ryan Tedder",
+                    "Noel Zancanella"
+                ],
+                "album_cover": {
+                    "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+                }
+            },
+            "has_lyrics": true
         }
     },
     "error": null,
