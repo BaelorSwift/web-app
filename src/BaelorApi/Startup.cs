@@ -50,6 +50,7 @@ namespace BaelorApi
 			{
 				// Add Error handling middleware which catches all application specific errors and
 				// send the request to the following path or controller action.
+
 				// TODO: Add error controller action
 				//app.UseErrorHandler("/Home/Error");
 			}
