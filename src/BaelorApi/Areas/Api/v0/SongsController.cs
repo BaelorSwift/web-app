@@ -51,6 +51,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		///		[GET] api/v0/songs
 		/// Gets all of Bae's songs.
 		/// </summary>
+		[RequireAuthentication]
 		[HttpGet]
 		public IActionResult Get()
 		{
@@ -66,6 +67,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		/// Gets the song by Bae with the specified slug.
 		/// </summary>
 		/// <param name="slug">The slug of the song.</param>
+		[RequireAuthentication(true)]
 		[HttpGet("{slug}")]
 		public IActionResult Get(string slug)
 		{

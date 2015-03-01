@@ -13,7 +13,6 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 {
 	[ExceptionHandler]
 	[SetResponseHeaders]
-	[RequireAuthentication]
 	[Route("api/v0/[controller]")]
 	public class AlbumsController : ApiController
 	{
@@ -35,6 +34,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		///		[GET] api/v0/albums
 		/// Gets all of Bae's albums.
 		/// </summary>
+		[RequireAuthentication]
 		[HttpGet]
 		public IActionResult Get()
 		{
@@ -50,6 +50,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		/// Gets the album by Bae with the specified slug.
 		/// </summary>
 		/// <param name="slug">The slug of the album.</param>
+		[RequireAuthentication(true)]
 		[HttpGet("{slug}")]
 		public IActionResult Get(string slug)
 		{

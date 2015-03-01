@@ -16,7 +16,13 @@ namespace BaelorApi.Attributes
 		/// <summary>
 		/// Checks if the request has valid authentication headers.
 		/// </summary>
-		public RequireAuthenticationAttribute() { }
+		/// <param name="allowDemoApiKeys">Does the authentication allow demo api keys?</param>
+		public RequireAuthenticationAttribute(bool allowDemoApiKeys = false)
+		{
+			_allowDemoApiKeys = allowDemoApiKeys;
+        }
+
+		private bool _allowDemoApiKeys = false;
 
 		/// <summary>
 		/// Check the `Authentication` header for a valid api key.
@@ -31,7 +37,7 @@ namespace BaelorApi.Attributes
 			// Check if the header exists
 			if (authTokens == null || !authTokens.Any() || 
 				!authTokens.First().ToLowerInvariant().StartsWith("bearer"))
-				throw new BaelorV0Exception(ErrorStatus.RequestRequiredAuthentication, HttpStatusCode.Forbidden);
+				throw new BaelorV0Exception(ErrorStatus.RequestRequiredAuthentication, HttpStatusCode.Unauthorized);
 
 			// Extract token
 			var apiKey = authTokens.First().Remove(0, 7);
@@ -52,6 +58,16 @@ namespace BaelorApi.Attributes
 				// Save user authentication
 				context.HttpContext.SetFeature<AuthenticationStorage>(
 					new AuthenticationStorage(user));
+
+				// Are we even demo?
+				if (user.IsDemo)
+					if (_allowDemoApiKeys)
+					{
+						base.OnActionExecuting(context);
+						return;
+					}
+					else
+						throw new BaelorV0Exception(ErrorStatus.DemoApiKeyNotAcceptable, HttpStatusCode.Forbidden);
 
 				// Get (or create?) a rate limit
 				var rateLimit = rateLimitRepo.GetByUserId(user.Id);
@@ -86,17 +102,17 @@ namespace BaelorApi.Attributes
 				{
 					rateLimitMax.ToString()
 				});
-				context.HttpContext.Response.Headers.Add("X-RateLimit-Remaining", new[]
+					context.HttpContext.Response.Headers.Add("X-RateLimit-Remaining", new[]
 				{
 					(rateLimitMax - rateLimitRequestsMade).ToString()
 				});
-				context.HttpContext.Response.Headers.Add("X-RateLimit-Reset", new[]
+					context.HttpContext.Response.Headers.Add("X-RateLimit-Reset", new[]
 				{
 					reset.ToString()
 				});
 
 				if (rateLimitExceeded)
-					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode)429);
+					throw new BaelorV0Exception(ErrorStatus.RateLimitExceeded, (HttpStatusCode) 429);
 			}
 
 			base.OnActionExecuting(context);

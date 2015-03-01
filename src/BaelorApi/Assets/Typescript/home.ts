@@ -6,13 +6,9 @@ module HomeVisualStateManager {
 		var loader = <HTMLElement> document.getElementsByClassName("loader")[0];
 
 		if (show) {
-			loader.style.height = "240px";
-			loader.style.opacity = "1.0";
-			loader.style.paddingTop = "140px";
+			loader.className += " active";
 		} else {
-			loader.style.height = "0";
-			loader.style.opacity = "0";
-			loader.style.paddingTop = "0";
+			loader.className = loader.className.replace(/(?:^|\s)active(?!\S)/g, '');
 		}
 	}
 
@@ -20,9 +16,9 @@ module HomeVisualStateManager {
 		var apiDemoResponse = <HTMLElement> document.getElementById("api-demo-response");
 
 		if (show) {
-			apiDemoResponse.style.display = "block";
+			apiDemoResponse.className += " active";
 		} else {
-			apiDemoResponse.style.display = "none";
+			apiDemoResponse.className = apiDemoResponse.className.replace(/(?:^|\s)active(?!\S)/g, '');
 		}
 	}
 }
@@ -51,25 +47,55 @@ class ApiStuff {
 		HomeVisualStateManager.apiDemoResponseVisualModifier(false);
 		HomeVisualStateManager.loaderVisualModifier(true);
 
-		$.getJSON(this.path + endpoint, function (data) {
-			document.getElementById("json-preview").textContent = JSON.stringify(data, null, 4).trim();
-			document.getElementById("api-demo-response-header").textContent = "api response - http(200)";
-		})
-		.fail(function (jqxhr, textStatus, error) {
-			document.getElementById("api-demo-response-header").textContent = "api response - http(" + jqxhr.status + ")";
-			if ((<string> jqxhr.responseText).indexOf("{") == 0) {
-				document.getElementById("json-preview").textContent = JsonHelpers.formatJsonString(<string> jqxhr.responseText).trim();
-			} else {
-				document.getElementById("json-preview").textContent = JSON.stringify(this.genericError, null, 4).trim();
-			}
-		})
-		.always(function () {
-			HomeVisualStateManager.loaderVisualModifier(false);
-			HomeVisualStateManager.apiDemoResponseVisualModifier(true);
+		$.ajax({
+			url: this.path + endpoint,
+			type: "GET",
+			dataType: "json",
+			success: function (data, textStatus, jqxhr) {
+				document.getElementById("json-preview").textContent = JSON.stringify(data, null, 4).trim();
+				document.getElementById("api-demo-response-header").textContent = "api response - http(200)";
+			},
+			error: function (jqxhr, textStatus, error) {
+				document.getElementById("api-demo-response-header").textContent = "api response - http(" + jqxhr.status + ")";
+				if ((<string> jqxhr.responseText).indexOf("{") == 0) {
+					document.getElementById("json-preview").textContent = JsonHelpers.formatJsonString(<string> jqxhr.responseText).trim();
+				} else {
+					document.getElementById("json-preview").textContent = JSON.stringify(this.genericError, null, 4).trim();
+				}
+			},
+			complete: function () {
+				HomeVisualStateManager.loaderVisualModifier(false);
+				HomeVisualStateManager.apiDemoResponseVisualModifier(true);
 
-			document.getElementById("api-demo-response").style.display = "block";
-			hljs.highlightBlock($('pre code')[0]);
-		});
+				document.getElementById("api-demo-response").style.display = "block";
+				hljs.highlightBlock($('pre code')[0]);
+			},
+			beforeSend: this.setXhrHeaders
+		})
+
+		//$.getJSON(this.path + endpoint, function (data) {
+		//	document.getElementById("json-preview").textContent = JSON.stringify(data, null, 4).trim();
+		//	document.getElementById("api-demo-response-header").textContent = "api response - http(200)";
+		//})
+		//.fail(function (jqxhr, textStatus, error) {
+		//	document.getElementById("api-demo-response-header").textContent = "api response - http(" + jqxhr.status + ")";
+		//	if ((<string> jqxhr.responseText).indexOf("{") == 0) {
+		//		document.getElementById("json-preview").textContent = JsonHelpers.formatJsonString(<string> jqxhr.responseText).trim();
+		//	} else {
+		//		document.getElementById("json-preview").textContent = JSON.stringify(this.genericError, null, 4).trim();
+		//	}
+		//})
+		//.always(function () {
+		//	HomeVisualStateManager.loaderVisualModifier(false);
+		//	HomeVisualStateManager.apiDemoResponseVisualModifier(true);
+
+		//	document.getElementById("api-demo-response").style.display = "block";
+		//	hljs.highlightBlock($('pre code')[0]);
+		//});
+	}
+
+	setXhrHeaders(xhr: XMLHttpRequest) {
+		xhr.setRequestHeader("Authorization", "bearer 2qz5daQDW0R1cGsyVnjF3cePFYhHEJHsL5hqdfXAxUE=");
 	}
 }
 

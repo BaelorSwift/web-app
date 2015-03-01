@@ -66,16 +66,9 @@
 		"postrestore": "echo after restoring packages"
 	},
 	"configurations": {
-		"Debugging": {
-			"compilationOptions": {
-				"define": [ "DEBUG", "TRACE" ]
-			}
-		},
-		// This is hacky - server uses debug for some reason, so we spoof that to release.
 		"Debug": {
 			"compilationOptions": {
-				"define": [ "RELEASE", "TRACE" ],
-				"optimize": true
+				"define": [ "DEBUG", "TRACE" ]
 			}
 		},
 		"Release": {

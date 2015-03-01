@@ -20,6 +20,7 @@ namespace BaelorApi.Models.Miscellaneous
 			Username = user.Username;
 			EmailAddress = user.EmailAddress;
 			IsAdmin = user.IsAdmin;
+			IsDemo = user.IsDemo;
 			UserId = user.Id;
 		}
 
@@ -42,6 +43,11 @@ namespace BaelorApi.Models.Miscellaneous
 		/// Gets or Sets if the authenticated <see cref="User"/> has admin privileges.
 		/// </summary>
 		public bool IsAdmin { get; set; }
+
+		/// <summary>
+		/// Gets or Sets if the authenticated <see cref="User"/> is a demo account.
+		/// </summary>
+		public bool IsDemo { get; set; }
 
 		/// <summary>
 		/// Gets or Sets the Id of the authenticated <see cref="User"/>.

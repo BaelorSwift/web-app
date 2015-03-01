@@ -16,6 +16,7 @@
 		InsufficientPrivileges = 0x1074,
 		SongDoesntContainLyrics = 0x1075,
 		SongAlreadyContainsLyrics = 0x1076,
-		UnableToCreateLyrics = 0x1077
+		UnableToCreateLyrics = 0x1077,
+		DemoApiKeyNotAcceptable = 0x1078
 	}
 }

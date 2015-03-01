@@ -124,6 +124,10 @@
 			display: none;
 			margin-top: 35px;
 
+			&.active {
+				display: block;
+			}
+
 			h4 {
 				font-family: $font-stack;
 				color: #fff;

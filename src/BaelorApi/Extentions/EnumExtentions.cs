@@ -39,7 +39,10 @@ namespace BaelorApi.Extentions
 			// Lyrics
 			{ ErrorStatus.SongDoesntContainLyrics, "song_doesnt_contain_lyrics" },
 			{ ErrorStatus.SongAlreadyContainsLyrics, "song_already_contains_lyrics" },
-			{ ErrorStatus.UnableToCreateLyrics, "unable_to_create_lyrics" }
+			{ ErrorStatus.UnableToCreateLyrics, "unable_to_create_lyrics" },
+
+			// Demo shit
+			{ ErrorStatus.DemoApiKeyNotAcceptable, "demo_api_key_not_acceptable" }
 		};
 
 		/// <summary>
