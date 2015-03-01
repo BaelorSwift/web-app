@@ -19,6 +19,8 @@
 
 		public bool IsAdmin { get; set; }
 
+		public bool IsDemo { get; set; }
+
 		public bool IsRevoked { get; set; }
 	}
 }
