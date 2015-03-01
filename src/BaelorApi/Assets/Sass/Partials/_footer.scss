@@ -2,6 +2,12 @@
 	color: #fff;
 	height: 225px;
 	background-color: $primary-red;
+	margin-bottom: 20px;
+
+	@media (max-width: $extra-small-devices-width) {
+		height: 150px;
+		font-size: 10px;
+	}
 
 	a {
 		color: #ffbbc6 !important;

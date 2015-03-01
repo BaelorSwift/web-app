@@ -10,8 +10,8 @@
 				<h2>a fully <strong>RESTful</strong> api for Taylor Swift</h2>
 			</div>
 		</div>
-		<div>
-			<video src="~/video/baelor-home.mp4" loop autoplay poster="~/images/baelor-cover.jpg"></video>
+		<div class="swag-xox">
+			<video class="hidden-xs" src="~/video/baelor-home.mp4" loop autoplay poster="~/images/baelor-cover.jpg"></video>
 		</div>
 	</div>
 </section>
@@ -22,20 +22,42 @@
 			<h3>
 				api example
 			</h3>
-			<div class="input-group">
-				<span class="input-group-addon" id="basic-addon1">http://baelor.io/api/v0/</span>
-				<input id="api-preview-path" type="text" class="form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
-				<span class="input-group-btn">
-					<button id="get-api-preview" class="btn btn-success" type="button">Shake it off!</button>
-				</span>
-			</div>
-			<p>
-				<sup>
-					*
-				</sup>
-				this does a simple GET request. The only endpoint that supports unauthenticated GET requests is v0/songs
-			</p>
 
+			<div class="desktop-api-demo hidden-xs">
+				<div class="input-group">
+					<span class="input-group-addon">http://baelor.io/api/v0/</span>
+					<input id="desktop-api-preview-path" type="text" class="api-preview-path form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
+					<span class="input-group-btn">
+						<button id="desktop-get-api-preview" class="get-api-preview btn btn-success" type="button">Shake it off!</button>
+					</span>
+				</div>
+				<p>
+					<sup>
+						*
+					</sup>
+					this does a simple GET request. The only endpoint that supports unauthenticated GET requests is v0/songs
+				</p>
+			</div>
+			<div class="mobile-api-demo visible-xs">
+				<div>
+					<span id="api-path-prefix" class="input-group-addon">http://baelor.io/api/v0/</span>
+				</div>
+				<div>
+					<input id="mobile-api-preview-path" type="text" class="api-preview-path form-control" placeholder="path" value="songs/style" aria-describedby="basic-addon1">
+				</div>
+				<div id="api-request-button">
+					<span>
+						<button id="mobile-get-api-preview" class="get-api-preview btn btn-success" type="button">Shake it off!</button>
+					</span>
+				</div>
+				<p>
+					<sup>
+						*
+					</sup>
+					this does a simple GET request. The only endpoint that supports unauthenticated GET requests is v0/songs
+				</p>
+			</div>
+			
 			<div class="loader">
 				<div class="loader-pulse"></div>
 			</div>
@@ -51,9 +73,9 @@
 @section scripts {
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
 	<script>
-	hljs.configure({
-		tabReplace: '    ',
-	});
+		hljs.configure({
+			tabReplace: '    ',
+		});
 	</script>
 	<script src="~/js/home.js"></script>
 }

@@ -75,8 +75,11 @@ class ApiStuff {
 
 window.onload = () => {
 	var api = new ApiStuff();
-
-	document.getElementById("get-api-preview").onclick = () => {
-		api.doRequest((<HTMLInputElement> document.getElementById("api-preview-path")).value);
+	
+	document.getElementById("desktop-get-api-preview").onclick = () => {
+		api.doRequest((<HTMLInputElement> document.getElementById("desktop-api-preview-path")).value);
+	};
+	document.getElementById("mobile-get-api-preview").onclick = () => {
+		api.doRequest((<HTMLInputElement> document.getElementById("mobile-api-preview-path")).value);
 	};
 };

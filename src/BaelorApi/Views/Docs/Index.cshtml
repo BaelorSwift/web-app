@@ -15,7 +15,7 @@
 
 <section id="api-docs-content">
 	<div class="row">
-		<div id="docs-sidebar-container" class="col-md-3">
+		<div id="docs-sidebar-container" class="col-md-3 hidden-sm hidden-xs">
 			<nav class="api-docs-sidebar" id="docs-sidebar" data-spy="affix" data-offset-top="500" data-offset-bottom="250">
 				<ul class="nav api-docs-sidenav" role="tablist">
 					<li>
@@ -121,83 +121,87 @@
 					<h2>Request Headers</h2>
 					<p>These are headers that you're application can send </p>
 
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>Header</td>
-								<td>Required</td>
-								<td>Value</td>
-								<td>Description</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Accept</td>
-								<td><span class="label label-success">yes</span></td>
-								<td>application/json</td>
-								<td>The data type you want the API to return.</td>
-							</tr>
-							<tr>
-								<td>Authorization</td>
-								<td><span class="label label-danger">no</span></td>
-								<td>bearer api_key</td>
-								<td>Your API key. Used this on requests marked with the <span class="label label-warning">Authorized</span> badge.</td>
-							</tr>
-							<tr>
-								<td>Content-Type</td>
-								<td><span class="label label-warning">if doing a POST</span></td>
-								<td>application/json</td>
-								<td>The format of the data in your POST body.</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>Header</td>
+									<td>Required</td>
+									<td>Value</td>
+									<td>Description</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Accept</td>
+									<td><span class="label label-success">yes</span></td>
+									<td>application/json</td>
+									<td>The data type you want the API to return.</td>
+								</tr>
+								<tr>
+									<td>Authorization</td>
+									<td><span class="label label-danger">no</span></td>
+									<td>bearer api_key</td>
+									<td>Your API key. Used this on requests marked with the <span class="label label-warning">Authorized</span> badge.</td>
+								</tr>
+								<tr>
+									<td>Content-Type</td>
+									<td><span class="label label-warning">if doing a POST</span></td>
+									<td>application/json</td>
+									<td>The format of the data in your POST body.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> 
 				</article>
 
 				<article class="api-docs-article">
 					<h2>Response Headers</h2>
 					<p>These headers are returned by the API. The <code>X-RateLimit-*</code> headers are only returned on authenticated requests.</p>
 
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>Header</td>
-								<td>Value</td>
-								<td>Description</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>X-BaelorApi-Version</td>
-								<td>v0</td>
-								<td>The version of the API you're querying.</td>
-							</tr>
-							<tr>
-								<td>X-Bad-Mistakes</td>
-								<td>add me on tinder xox</td>
-								<td>great idea ladies - xoxo gossip girl</td>
-							</tr>
-							<tr>
-								<td>X-Purple-Swag</td>
-								<td>i still sip</td>
-								<td>Purple weed, blunt still lit.</td>
-							</tr>
-							<tr>
-								<td>X-RateLimit-Limit</td>
-								<td>1000</td>
-								<td>The number of requests an api key is allowed to make per hour.</td>
-							</tr>
-							<tr>
-								<td>X-RateLimit-Remaining</td>
-								<td>[0-1000]</td>
-								<td>How many requests this API key has this hour.</td>
-							</tr>
-							<tr>
-								<td>X-RateLimit-Reset</td>
-								<td>2015-02-26T18:00:00</td>
-								<td>When the rate limit will reset - UTC time.</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>Header</td>
+									<td>Value</td>
+									<td>Description</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>X-BaelorApi-Version</td>
+									<td>v0</td>
+									<td>The version of the API you're querying.</td>
+								</tr>
+								<tr>
+									<td>X-Bad-Mistakes</td>
+									<td>add me on tinder xox</td>
+									<td>great idea ladies - xoxo gossip girl</td>
+								</tr>
+								<tr>
+									<td>X-Purple-Swag</td>
+									<td>i still sip</td>
+									<td>Purple weed, blunt still lit.</td>
+								</tr>
+								<tr>
+									<td>X-RateLimit-Limit</td>
+									<td>1000</td>
+									<td>The number of requests an api key is allowed to make per hour.</td>
+								</tr>
+								<tr>
+									<td>X-RateLimit-Remaining</td>
+									<td>[0-1000]</td>
+									<td>How many requests this API key has this hour.</td>
+								</tr>
+								<tr>
+									<td>X-RateLimit-Reset</td>
+									<td>2015-02-26T18:00:00</td>
+									<td>When the rate limit will reset - UTC time.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div> 
 				</article>
 			</section>
 			<section id="response" class="api-docs-section">
@@ -279,80 +283,83 @@
 					<p>
 						The endpoint can return a wide (and increasing) range of errors. Below are a list of all the errors (this list will always be up to date), but be aware that more can be added, and make sure the application logic allows for this. The API returns both a status and a description, the description is designed to be shown to the user in the event that the description is new and hasn't been added to the localization table in the applications logic.
 					</p>
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>
-									Error Status
-								</td>
-								<td>
-									Error Description
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>0x1069</td>
-								<td><code>generic_server_error</code></td>
-							</tr>
-							<tr>
-								<td>0x106A</td>
-								<td><code>invalid_album_slug</code></td>
-							</tr>
-							<tr>
-								<td>0x106B</td>
-								<td><code>invalid_song_slug</code></td>
-							</tr>
-							<tr>
-								<td>0x106C</td>
-								<td><code>song_already_exists</code></td>
-							</tr>
-							<tr>
-								<td>0x106D</td>
-								<td><code>album_already_exists</code></td>
-							</tr>
-							<tr>
-								<td>0x106E</td>
-								<td><code>invalid_image_id</code></td>
-							</tr>
-							<tr>
-								<td>0x106F</td>
-								<td><code>data_validation_failed</code></td>
-							</tr>
-							<tr>
-								<td>0x1070</td>
-								<td><code>request_requires_authentication</code></td>
-							</tr>
-							<tr>
-								<td>0x1071</td>
-								<td><code>invalid_api_key</code></td>
-							</tr>
-							<tr>
-								<td>0x1072</td>
-								<td><code>revoked_api_key</code></td>
-							</tr>
-							<tr>
-								<td>0x1073</td>
-								<td><code>rate_limit_exceeded</code></td>
-							</tr>
-							<tr>
-								<td>0x1074</td>
-								<td><code>insufficient_privileges</code></td>
-							</tr>
-							<tr>
-								<td>0x1075</td>
-								<td><code>song_doesnt_contain_lyrics</code></td>
-							</tr>
-							<tr>
-								<td>0x1076</td>
-								<td><code>song_already_contains_lyrics</code></td>
-							</tr>
-							<tr>
-								<td>0x1077</td>
-								<td><code>unable_to_create_lyrics</code></td>
-							</tr>
-						</tbody>
-					</table>
+
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Error Status
+									</td>
+									<td>
+										Error Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0x1069</td>
+									<td><code>generic_server_error</code></td>
+								</tr>
+								<tr>
+									<td>0x106A</td>
+									<td><code>invalid_album_slug</code></td>
+								</tr>
+								<tr>
+									<td>0x106B</td>
+									<td><code>invalid_song_slug</code></td>
+								</tr>
+								<tr>
+									<td>0x106C</td>
+									<td><code>song_already_exists</code></td>
+								</tr>
+								<tr>
+									<td>0x106D</td>
+									<td><code>album_already_exists</code></td>
+								</tr>
+								<tr>
+									<td>0x106E</td>
+									<td><code>invalid_image_id</code></td>
+								</tr>
+								<tr>
+									<td>0x106F</td>
+									<td><code>data_validation_failed</code></td>
+								</tr>
+								<tr>
+									<td>0x1070</td>
+									<td><code>request_requires_authentication</code></td>
+								</tr>
+								<tr>
+									<td>0x1071</td>
+									<td><code>invalid_api_key</code></td>
+								</tr>
+								<tr>
+									<td>0x1072</td>
+									<td><code>revoked_api_key</code></td>
+								</tr>
+								<tr>
+									<td>0x1073</td>
+									<td><code>rate_limit_exceeded</code></td>
+								</tr>
+								<tr>
+									<td>0x1074</td>
+									<td><code>insufficient_privileges</code></td>
+								</tr>
+								<tr>
+									<td>0x1075</td>
+									<td><code>song_doesnt_contain_lyrics</code></td>
+								</tr>
+								<tr>
+									<td>0x1076</td>
+									<td><code>song_already_contains_lyrics</code></td>
+								</tr>
+								<tr>
+									<td>0x1077</td>
+									<td><code>unable_to_create_lyrics</code></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</article>
 			</section>
 
@@ -373,83 +380,85 @@
 						This endpoint will allow you to create a user.
 					</h3>
 
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>
-									Parameter
-								</td>
-								<td>
-									Required
-								</td>
-								<td>
-									Requirements
-								</td>
-								<td>
-									Description
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									username
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Between 1 and 25 characters long, and match
-									<code>(?![\s])(?!.*[_-]{2})[a-zA-Z0-9-_]+(?<![\s])</code>
-								</td>
-								<td>
-									The friendly identifier of the account.
-								</td>
-							</tr>
-							<tr>
-								<td>
-									email_address
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Well.. Be a valid email address.
-								</td>
-								<td>
-									The email address tied to the account
-								</td>
-							</tr>
-							<tr>
-								<td>
-									password
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Be longer than 8 characters.. Also contain at least two of the following; number, lowercase letter, uppercase letter
-								</td>
-								<td>
-									The password used to log into the account.
-								</td>
-							</tr>
-							<tr>
-								<td>
-									password_confirm
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Be the same as <code>password</code>
-								</td>
-								<td>
-									Secondary imput of the password to validate it was typed in correctly.
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										username
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Between 1 and 25 characters long, and match
+										<code>(?![\s])(?!.*[_-]{2})[a-zA-Z0-9-_]+(?<![\s])</code>
+									</td>
+									<td>
+										The friendly identifier of the account.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										email_address
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Well.. Be a valid email address.
+									</td>
+									<td>
+										The email address tied to the account
+									</td>
+								</tr>
+								<tr>
+									<td>
+										password
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be longer than 8 characters.. Also contain at least two of the following; number, lowercase letter, uppercase letter
+									</td>
+									<td>
+										The password used to log into the account.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										password_confirm
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be the same as <code>password</code>
+									</td>
+									<td>
+										Secondary imput of the password to validate it was typed in correctly.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active">
@@ -1423,40 +1432,42 @@
 						<code>api/v0/song/{song-slug}/lyrics</code>
 					</h3>
 
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>
-									Parameter
-								</td>
-								<td>
-									Required
-								</td>
-								<td>
-									Requirements
-								</td>
-								<td>
-									Description
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									lyrics
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Be a string.
-								</td>
-								<td>
-									The lyrics of the song.
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										lyrics
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The lyrics of the song.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active">
@@ -1540,40 +1551,42 @@
 						<code>api/v0/song/{song-slug}/lyrics</code>
 					</h3>
 
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<td>
-									Parameter
-								</td>
-								<td>
-									Required
-								</td>
-								<td>
-									Requirements
-								</td>
-								<td>
-									Description
-								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									lyrics
-								</td>
-								<td>
-									<span class="label label-success">yes</span>
-								</td>
-								<td>
-									Be a string.
-								</td>
-								<td>
-									The lyrics of the song.
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										lyrics
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The lyrics of the song.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active">

@@ -2,9 +2,24 @@
 	padding-top: 0px;
 	width: 100%;
 
+	@media (max-width: $small-devices-width) {
+		height: 40vh;
+
+		background: url(../images/docs-cover.jpg) no-repeat center center fixed;
+		background-size: cover;
+
+		.splash-box {
+			height: 100%;
+
+			.mask {
+				padding-top: 50px;
+			}
+		}
+	}
+
 	.splash-box {
 		position: relative;
-
+		
 		video {
 			width: 100%;
 			height: 100%;
@@ -72,6 +87,15 @@
 	padding-top: 60px;
 	padding-bottom: 90px;
 
+	@media (max-width: $small-devices-width) {
+		padding-top: 10px;
+		padding-bottom: 30px;
+
+		h3 {
+			text-align: center;
+		}
+	}
+
 	.api-demo {
 		h3 {
 			font-family: $font-stack;
@@ -111,4 +135,28 @@
 
 #top-banner-section {
 	background-color: $primary-red;
+	padding-left: 15px;
+	padding-right: 15px;
+
+	.mobile-api-demo {
+		text-align: center;
+		margin-top: 20px;
+
+		#api-path-prefix {
+			border-radius: 0;
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			padding-top: 8px;
+			padding-bottom: 8px;
+		}
+		.api-preview-path {
+			border-radius: 0;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+			text-align: center;
+		}
+		#api-request-button {
+			margin: 20px auto;
+		}
+	}
 }
