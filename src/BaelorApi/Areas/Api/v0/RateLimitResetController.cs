@@ -42,11 +42,11 @@ namespace BaelorApi.Areas.Api.v0
 			// Check if the header exists
 			if (authTokens == null || !authTokens.Any() || !authTokens.First().ToLowerInvariant().StartsWith("bearer"))
 				throw new BaelorV0Exception(ErrorStatus.RequestRequiredAuthentication, HttpStatusCode.Forbidden);
-			if (string.Format("bearer {0}", authTokens.First()) != Startup.Configuration.Get("Data:AzureJobSecretIdetifier"))
+			if (!authTokens.First().Contains(Startup.Configuration.Get("Data:AzureJobSecretIdetifier")))
 				throw new BaelorV0Exception(ErrorStatus.InvalidApiKey, HttpStatusCode.Forbidden);
 
 			// Reset bro
-			foreach (var rateLimit in _rateLimitRepository.GetAll)
+			foreach (var rateLimit in _rateLimitRepository.GetAll.ToList())
 				_rateLimitRepository.SetRequestCount(rateLimit.Id, 0);
 
 			// All Gucci
