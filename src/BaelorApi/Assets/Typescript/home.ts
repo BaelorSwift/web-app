@@ -1,5 +1,6 @@
 ﻿/// <reference path="Definitions/jquery.d.ts" />
 /// <reference path="Definitions/highlightjs.d.ts" />
+/// <reference path="Definitions/gosquared.d.ts" />
 
 module HomeVisualStateManager {
 	export function loaderVisualModifier(show: boolean) {
@@ -40,6 +41,7 @@ class ApiStuff {
 			description: "generic_server_error"
 		}
 	};
+	demoApiKey: string = "2qz5daQDW0R1cGsyVnjF3cePFYhHEJHsL5hqdfXAxUE=";
 
 	constructor() { }
 	
@@ -72,30 +74,10 @@ class ApiStuff {
 			},
 			beforeSend: this.setXhrHeaders
 		})
-
-		//$.getJSON(this.path + endpoint, function (data) {
-		//	document.getElementById("json-preview").textContent = JSON.stringify(data, null, 4).trim();
-		//	document.getElementById("api-demo-response-header").textContent = "api response - http(200)";
-		//})
-		//.fail(function (jqxhr, textStatus, error) {
-		//	document.getElementById("api-demo-response-header").textContent = "api response - http(" + jqxhr.status + ")";
-		//	if ((<string> jqxhr.responseText).indexOf("{") == 0) {
-		//		document.getElementById("json-preview").textContent = JsonHelpers.formatJsonString(<string> jqxhr.responseText).trim();
-		//	} else {
-		//		document.getElementById("json-preview").textContent = JSON.stringify(this.genericError, null, 4).trim();
-		//	}
-		//})
-		//.always(function () {
-		//	HomeVisualStateManager.loaderVisualModifier(false);
-		//	HomeVisualStateManager.apiDemoResponseVisualModifier(true);
-
-		//	document.getElementById("api-demo-response").style.display = "block";
-		//	hljs.highlightBlock($('pre code')[0]);
-		//});
 	}
 
 	setXhrHeaders(xhr: XMLHttpRequest) {
-		xhr.setRequestHeader("Authorization", "bearer 2qz5daQDW0R1cGsyVnjF3cePFYhHEJHsL5hqdfXAxUE=");
+		xhr.setRequestHeader("Authorization", "bearer " + this.demoApiKey);
 	}
 }
 

@@ -36,7 +36,7 @@ namespace BaelorApi
 			// Enable the MVC framework
 			app.UseMvc(routes =>
 			{
-				routes.MapRoute("Default", "{controller}/{action}/{id?}", new { controller = "Home", action = "Index" });
+                routes.MapRoute("Default", "{controller}/{action}/{id?}", new { controller = "Home", action = "Index" });
 				routes.MapWebApiRoute("v0", "api/v0/{controller}/{id?}");
 			});
 
@@ -88,13 +88,13 @@ namespace BaelorApi
 
 #if DEBUG
 
-			//// Clear RateLimit data
-			//using (var dbContext = new DatabaseContext())
-			//{
-			//	var rateLimitRepo = new RateLimitRepository(dbContext);
-			//	foreach (var rateLimit in rateLimitRepo.GetAll)
-			//		rateLimitRepo.SetRquestCount(rateLimit.Id, 0);
-			//}
+			// Clear RateLimit data
+			using (var dbContext = new DatabaseContext())
+			{
+				var rateLimitRepo = new RateLimitRepository(dbContext);
+				foreach (var rateLimit in rateLimitRepo.GetAll)
+					rateLimitRepo.SetRequestCount(rateLimit.Id, 0);
+			}
 
 #endif
 
