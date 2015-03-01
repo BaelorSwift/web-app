@@ -1,6 +1,5 @@
 ﻿/// <reference path="Definitions/jquery.d.ts" />
 /// <reference path="Definitions/highlightjs.d.ts" />
-/// <reference path="Definitions/gosquared.d.ts" />
 
 module HomeVisualStateManager {
 	export function loaderVisualModifier(show: boolean) {
