@@ -1,0 +1,60 @@
+﻿#about-header {
+	text-align: center;
+	color: #fff;
+	height: 450px;
+	width: 100%;
+	background: url(../images/docs-cover.jpg) no-repeat center center fixed;
+	background-size: cover;
+
+	.mask {
+		background: rgba(164, 164, 164, 0.40);
+		height: 100%;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		position: relative;
+		padding-top: 140px;
+
+		.container {
+			h1 {
+				font-family: $font-stack-header;
+				font-weight: 100;
+				font-size: 60px;
+			}
+
+			h2 {
+				font-family: $font-stack;
+				font-size: 25px;
+			}
+		}
+
+		@media (max-width: $extra-small-devices-width) {
+			.container {
+				h1 {
+					font-family: $font-stack-header;
+					font-weight: 100;
+					font-size: 40px;
+				}
+
+				h2 {
+					font-family: $font-stack;
+					font-size: 18px;
+				}
+			}
+		}
+	}
+}
+
+#about-content {
+	padding: 40px 50px;
+
+	hr {
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.well {
+		margin-top: 20px;
+	}
+}
