@@ -89,13 +89,13 @@ namespace BaelorApi
 
 #if DEBUG
 
-			// Clear RateLimit data
-			using (var dbContext = new DatabaseContext())
-			{
-				var rateLimitRepo = new RateLimitRepository(dbContext);
-				foreach (var rateLimit in rateLimitRepo.GetAll)
-					rateLimitRepo.SetRequestCount(rateLimit.Id, 0);
-			}
+			//// Clear RateLimit data
+			//using (var dbContext = new DatabaseContext())
+			//{
+			//	var rateLimitRepo = new RateLimitRepository(dbContext);
+			//	foreach (var rateLimit in rateLimitRepo.GetAll)
+			//		rateLimitRepo.SetRequestCount(rateLimit.Id, 0);
+			//}
 
 #endif
 
