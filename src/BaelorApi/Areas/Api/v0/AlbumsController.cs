@@ -61,7 +61,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			if (album != null)
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Album.Create(album, true) });
 
-			return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidAlbumSlug), Success = false});
+			return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidAlbumSlug), Success = false });
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			{
 				Genres = string.Join(",", viewModel.Genres),
 				Producers = string.Join(",", viewModel.Producers),
-                Label = viewModel.Label,
+				Label = viewModel.Label,
 				Name = viewModel.Name,
 				Slug = viewModel.Name.ToSlug(),
 				LengthSeconds = viewModel.LengthSeconds,
