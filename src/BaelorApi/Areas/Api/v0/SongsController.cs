@@ -107,10 +107,10 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 
 		/// <summary>
 		///		[PATCH] api/v0/songs/{slug}
-		/// Updates the lyrics to a song based on the PATCH'ed view model.
+		/// Updates the a song with the data in the PATCH'ed view model.
 		/// </summary>
 		/// <param name="slug">The slug of the song.</param>
-		/// <param name="viewModel">The view model containg the data of the updated lyrics.</param>
+		/// <param name="viewModel">The view model containg the data of the updated aong.</param>
 		[RequireAuthentication]
 		[RequireAdminAuthentication]
 		[HttpPatch("{slug}")]

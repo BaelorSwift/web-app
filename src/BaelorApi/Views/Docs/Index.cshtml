@@ -580,8 +580,205 @@
 						::
 						<code>api/v0/album/</code>
 					</h3>
+					<h3>
+						This endpoint will create an album.
+					</h3>
 
-					<p>TODO</p>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										name
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The name of the album.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										label
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The label that published the album.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										producers
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the producers of the album.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										genres
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the genres of the album.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										length_in_seconds
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be an unsigned integer.
+									</td>
+									<td>
+										The length of the album in seconds.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										released_at
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a valid DateTime object.
+									</td>
+									<td>
+										The date the album was released.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										image_id
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a valid Guid.
+									</td>
+									<td>
+										The Id of the image that represents the album cover.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#create-album-request" aria-controls="create-album-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#create-album-response" aria-controls="create-album-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="create-album-request">
+<pre><code class="json">{
+	"name": "1989",
+	"label": "Big Machine",
+	"released_at": "2014-10-27T00:00:00",
+	"length_in_seconds": 4116,
+	"producers": [
+        "Max Martin",
+        "Taylor Swift",
+        "Jack Antonoff",
+        "Nathan Chapman",
+        "Imogen Heap",
+        "Greg Kurstin",
+        "Mattman & Robin",
+        "Ali Payami",
+        "Shellback",
+        "Ryan Tedder",
+        "Noel Zancanella"
+    ],
+	"writers": [
+		"Taylor Swift",
+		"Max Martin",
+		"Shellback",
+		"Ali Payami"
+	],
+	"image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="create-album-response">
+<pre><code class="json">{
+    "result": {
+        "slug": "1989",
+        "name": "1989",
+        "released_at": "2014-10-27T00:00:00",
+        "length": "01:08:36",
+        "label": "Big Machine",
+        "genres": [
+            "Pop",
+            "Synthpop"
+        ],
+        "producers": [
+            "Max Martin",
+            "Taylor Swift",
+            "Jack Antonoff",
+            "Nathan Chapman",
+            "Imogen Heap",
+            "Greg Kurstin",
+            "Mattman & Robin",
+            "Ali Payami",
+            "Shellback",
+            "Ryan Tedder",
+            "Noel Zancanella"
+        ],
+        "songs": [],
+        "album_cover": {
+            "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+        }
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
 				</article>
 				<article id="patch-album" class="api-docs-article">
 					<h2>Patch Album</h2>

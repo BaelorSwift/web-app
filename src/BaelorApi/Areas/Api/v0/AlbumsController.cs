@@ -8,6 +8,8 @@ using BaelorApi.Models.Api.Response.Partials;
 using BaelorApi.Models.Api.Error;
 using BaelorApi.Models.Error.Enums;
 using BaelorApi.Attributes;
+using BaelorApi.Models.ViewModels;
+using BaelorApi.Extentions;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
@@ -60,6 +62,31 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Album.Create(album, true) });
 
 			return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidAlbumSlug), Success = false});
+		}
+
+		/// <summary>
+		///		[POST] api/v0/albums/
+		/// Adds an album by bae based on the POST'ed view model.
+		/// </summary>
+		/// <param name="viewModel">The data of the album to create.</param>
+		[RequireAuthentication]
+		[RequireAdminAuthentication]
+		[HttpPost]
+		public IActionResult Post([FromBody] CreateAlbumViewModel viewModel)
+		{
+			var album = new Models.Database.Album
+			{
+				Genres = string.Join(",", viewModel.Genres),
+				Producers = string.Join(",", viewModel.Producers),
+                Label = viewModel.Label,
+				Name = viewModel.Name,
+				Slug = viewModel.Name.ToSlug(),
+				LengthSeconds = viewModel.LengthSeconds,
+				ImageId = viewModel.ImageId,
+				ReleasedAt = viewModel.ReleasedAt
+			};
+			album = _albumRepository.Add(album);
+			return Content(HttpStatusCode.OK, new ResponseBase { Result = Album.Create(album, true) });
 		}
 	}
 }
