@@ -93,9 +93,9 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		/// </summary>
 		/// <param name="slug">The slug of the song.</param>
 		/// <param name="viewModel">The view model containg the data of the updated lyrics.</param>
-		[HttpPatch]
 		[RequireAdminAuthentication]
-		public IActionResult Post(string slug, [FromBody] PatchLyricViewModel viewModel)
+		[HttpPatch]
+		public IActionResult Patch(string slug, [FromBody] PatchLyricViewModel viewModel)
 		{
 			var song = _songRepository.GetBySlug(slug);
 			if (song == null)

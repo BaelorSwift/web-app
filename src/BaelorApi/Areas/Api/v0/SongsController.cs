@@ -29,22 +29,15 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		private readonly ISongRepository _songRepository;
 
 		/// <summary>
-		/// Repository for interacting with <see cref="Lyric"/> data
-		/// </summary>
-		private readonly ILyricRepository _lyricRepository;
-
-		/// <summary>
 		/// Creates a new instance of the Songs Controller.
 		/// </summary>
 		/// <param name="albumRepository">The repository of <see cref="Album"/> data.</param>
 		/// <param name="songRepository">The repository of <see cref="Song"/> data.</param>
-		/// <param name="lyricRepository">The repository of <see cref="Lyric"/> data.</param>
 		public SongsController(IAlbumRepository albumRepository, 
-			ISongRepository songRepository, ILyricRepository lyricRepository)
+			ISongRepository songRepository)
 		{
 			_albumRepository = albumRepository;
 			_songRepository = songRepository;
-			_lyricRepository = lyricRepository;
 		}
 		
 		/// <summary>
@@ -110,6 +103,32 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 				return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Song.Create(song, true) });
 
 			throw new NotImplementedException("TODO: add error when failing to create song.");
+		}
+
+		/// <summary>
+		///		[PATCH] api/v0/songs/{slug}
+		/// Updates the lyrics to a song based on the PATCH'ed view model.
+		/// </summary>
+		/// <param name="slug">The slug of the song.</param>
+		/// <param name="viewModel">The view model containg the data of the updated lyrics.</param>
+		[RequireAuthentication]
+		[RequireAdminAuthentication]
+		[HttpPatch("{slug}")]
+		public IActionResult Patch(string slug, [FromBody] PatchSongViewModel viewModel)
+		{
+			var song = _songRepository.GetBySlug(slug);
+			if (song == null)
+				return Content(HttpStatusCode.NotFound, new ResponseBase { Error = new ErrorBase(ErrorStatus.InvalidSongSlug), Success = false });
+
+			if (viewModel.Index != null) song.Index = (int) viewModel.Index;
+			if (viewModel.LengthSeconds != null) song.LengthSeconds = (int)viewModel.LengthSeconds;
+			if (viewModel.Producers != null) song.Producers = string.Join(",", viewModel.Producers);
+			if (viewModel.Writers != null) song.Writers = string.Join(",", viewModel.Writers);
+			if (viewModel.Title != null) song.Title = viewModel.Title;
+			if (viewModel.Title != null) song.Slug = viewModel.Title.ToSlug();
+
+			song = _songRepository.Update(song.Id, song);
+			return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Song.Create(song, true) });
 		}
 	}
 }
