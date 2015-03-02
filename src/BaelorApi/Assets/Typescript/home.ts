@@ -40,7 +40,6 @@ class ApiStuff {
 			description: "generic_server_error"
 		}
 	};
-	demoApiKey: string = "2qz5daQDW0R1cGsyVnjF3cePFYhHEJHsL5hqdfXAxUE=";
 
 	constructor() { }
 	
@@ -76,7 +75,7 @@ class ApiStuff {
 	}
 
 	setXhrHeaders(xhr: XMLHttpRequest) {
-		xhr.setRequestHeader("Authorization", "bearer " + this.demoApiKey);
+		xhr.setRequestHeader("Authorization", "bearer 2qz5daQDW0R1cGsyVnjF3cePFYhHEJHsL5hqdfXAxUE=");
 	}
 }
 
