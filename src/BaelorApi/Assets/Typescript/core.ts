@@ -10,7 +10,7 @@ window.onload = () => {
 				? target
 				: $('[name=' + this.hash.slice(1) + ']');
 
-			if (target.length) {
+			if (target.length && this.attr("role") != "tab") {
 				$('html,body').animate({
 					scrollTop: target.offset().top
 				}, 700);

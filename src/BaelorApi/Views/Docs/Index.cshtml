@@ -1016,8 +1016,199 @@
 						::
 						<code>api/v0/song/</code>
 					</h3>
+					<h3>
+						This endpoint will create a song.
+					</h3>
 
-					<p>TODO</p>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										album_slug
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string, and the slug of a valid album.
+									</td>
+									<td>
+										The slug of the album this song belongs too.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										title
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The title of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										producers
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the producers of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										writers
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the writers of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										length_in_seconds
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be an unsigned integer.
+									</td>
+									<td>
+										The length of the song in seconds.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										index
+									</td>
+									<td>
+										<span class="label label-success">yes</span>
+									</td>
+									<td>
+										Be an unsigned integer.
+									</td>
+									<td>
+										The index of the song on the Album.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#create-song-request" aria-controls="create-song-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#create-song-response" aria-controls="create-song-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="create-song-request">
+<pre><code class="json">{
+	"album_slug": "1989",
+	"title": "Style",
+	"producers": [
+		"Max Martin",
+		"Shellback",
+		"Ali Payami"
+	],
+	"writers": [
+		"Taylor Swift",
+		"Max Martin",
+		"Shellback",
+		"Ali Payami"
+	],
+	"length_in_seconds": 231,
+	"index": 3
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="create-song-response">
+<pre><code class="json">{
+	"result": {
+		"index": 3,
+		"slug": "style",
+		"title": "Style",
+		"length": "00:03:51",
+		"writers": [
+			"Taylor Swift",
+			"Max Martin",
+			"Shellback",
+			"Ali Payami"
+		],
+		"producers": [
+			"Max Martin",
+			"Shellback",
+			"Ali Payami"
+		],
+		"album": {
+			"slug": "1989",
+			"name": "1989",
+			"released_at": "2014-10-27T00:00:00",
+			"length": "01:08:36",
+			"label": "Big Machine",
+			"genres": [
+				"Pop",
+				"Synthpop"
+			],
+			"producers": [
+				"Max Martin",
+				"Taylor Swift",
+				"Jack Antonoff",
+				"Nathan Chapman",
+				"Imogen Heap",
+				"Greg Kurstin",
+				"Mattman & Robin",
+				"Ali Payami",
+				"Shellback",
+				"Ryan Tedder",
+				"Noel Zancanella"
+			],
+			"album_cover": {
+				"image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+			}
+		},
+		"has_lyrics": false
+	},
+	"error": null,
+	"success": true
+}</code></pre>
+						</div>
+					</div>
 				</article>
 				<article id="patch-song" class="api-docs-article">
 					<h2>Patch Song</h2>
@@ -1026,10 +1217,186 @@
 						<span class="label label-danger">Admin Authorization</span>
 						<span class="label label-info">PATCH</span>
 						::
-						<code>api/v0/song/</code>
+						<code>api/v0/song/{song-slug}</code>
+					</h3>
+					<h3>
+						This endpoint will patch the details for the song with the specific slug.
 					</h3>
 
-					<p>TODO</p>
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<td>
+										Parameter
+									</td>
+									<td>
+										Required
+									</td>
+									<td>
+										Requirements
+									</td>
+									<td>
+										Description
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										title
+									</td>
+									<td>
+										<span class="label label-danger">no</span>
+									</td>
+									<td>
+										Be a string.
+									</td>
+									<td>
+										The title of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										producers
+									</td>
+									<td>
+										<span class="label label-danger">no</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the producers of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										writers
+									</td>
+									<td>
+										<span class="label label-danger">no</span>
+									</td>
+									<td>
+										Be a string array.
+									</td>
+									<td>
+										A list of the writers of the song.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										length_in_seconds
+									</td>
+									<td>
+										<span class="label label-danger">no</span>
+									</td>
+									<td>
+										Be an unsigned integer.
+									</td>
+									<td>
+										The length of the song in seconds.
+									</td>
+								</tr>
+								<tr>
+									<td>
+										index
+									</td>
+									<td>
+										<span class="label label-danger">no</span>
+									</td>
+									<td>
+										Be an unsigned integer.
+									</td>
+									<td>
+										The index of the song on the Album.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active">
+							<a href="#patch-song-request" aria-controls="patch-song-request" role="tab" data-toggle="tab">Request</a>
+						</li>
+						<li role="presentation">
+							<a href="#patch-song-response" aria-controls="patch-song-response" role="tab" data-toggle="tab">Response</a>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="patch-song-request">
+<pre><code class="json">{
+    "title": "Style",
+	"producers": [
+        "Max Martin",
+        "Shellback",
+        "Ali Payami"
+    ],
+    "writers": [
+		"Taylor Swift",
+		"Max Martin",
+		"Shellback",
+		"Ali Payami"
+	],
+    "length_in_seconds": 231,
+    "index": 3
+}</code></pre>
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="patch-song-response">
+<pre><code class="json">{
+    "result": {
+        "index": 3,
+        "slug": "style",
+        "title": "Style",
+        "length": "00:03:51",
+        "writers": [
+            "Taylor Swift",
+            "Max Martin",
+            "Shellback",
+            "Ali Payami"
+        ],
+        "producers": [
+            "Max Martin",
+            "Shellback",
+            "Ali Payami"
+        ],
+        "album": {
+            "slug": "1989",
+            "name": "1989",
+            "released_at": "2014-10-27T00:00:00",
+            "length": "01:08:36",
+            "label": "Big Machine",
+            "genres": [
+                "Pop",
+                "Synthpop"
+            ],
+            "producers": [
+                "Max Martin",
+                "Taylor Swift",
+                "Jack Antonoff",
+                "Nathan Chapman",
+                "Imogen Heap",
+                "Greg Kurstin",
+                "Mattman & Robin",
+                "Ali Payami",
+                "Shellback",
+                "Ryan Tedder",
+                "Noel Zancanella"
+            ],
+            "album_cover": {
+                "image_id": "ca9232a3-363a-4be6-2870-08d21467e516"
+            }
+        },
+        "has_lyrics": true
+    },
+    "error": null,
+    "success": true
+}</code></pre>
+						</div>
+					</div>
 				</article>
 				<article id="get-songs" class="api-docs-article">
 					<h2>Get Songs</h2>
@@ -1457,6 +1824,9 @@
 						::
 						<code>api/v0/song/{song-slug}/lyrics</code>
 					</h3>
+					<h3>
+						This endpoint will create lyric for the song with the specific slug.
+					</h3>
 
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered">
@@ -1575,6 +1945,9 @@
 						<span class="label label-info">PATCH</span>
 						::
 						<code>api/v0/song/{song-slug}/lyrics</code>
+					</h3>
+					<h3>
+						This endpoint will patch the lyrics for the song with the specific slug.
 					</h3>
 
 					<div class="table-responsive">
