@@ -1,7 +1,7 @@
 ﻿{
 	"webroot": "wwwroot",
 	"version": "1.0-bae-*",
-	"authors": [ "Alex Forbes-Reed" ],
+	"authors": [ "Alex Forbes-Reed <alexforbesreed@outlook.com>" ],
 	"description": "Taylor Swift API - After all, she is bae.",
 	"exclude": [
 		"wwwroot",
