@@ -24,7 +24,7 @@ namespace BaelorApi.Models.Database
 
 		protected override void OnConfiguring(DbContextOptions options)
 		{
-			var config = new Configuration()
+			var config = Startup.Configuration ?? new Configuration()
 				.AddJsonFile("config.json")
 				.AddEnvironmentVariables();
 			
