@@ -21,6 +21,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			"bae",
 			"heather",
 			"macphearson"
+			"chip"
 		};
 
 		/// <summary>
