@@ -20,7 +20,8 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			"swifty",
 			"bae",
 			"heather",
-			"macphearson"
+			"macphearson",
+			"jmie"
 		};
 
 		/// <summary>
