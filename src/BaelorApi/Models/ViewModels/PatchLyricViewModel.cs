@@ -4,7 +4,10 @@ namespace BaelorApi.Models.ViewModels
 {
 	public class PatchLyricViewModel
 	{
-		[JsonProperty("lyrics")]
-		public string Lyrics { get; set; }
+		[JsonProperty("content")]
+		public string Content { get; set; }
+
+		[JsonProperty("time_code")]
+		public int TimeCode { get; set; }
 	}
 }

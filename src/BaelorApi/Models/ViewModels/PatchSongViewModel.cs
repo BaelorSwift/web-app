@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace BaelorApi.Models.ViewModels
 {
@@ -19,5 +20,8 @@ namespace BaelorApi.Models.ViewModels
 
 		[JsonProperty("index")]
 		public Nullable<int> Index { get; set; }
+
+		[JsonProperty("lyrics")]
+		public IEnumerable<PatchLyricViewModel> Lyrics { get; set; }
 	}
 }

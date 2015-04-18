@@ -5,9 +5,9 @@ namespace BaelorApi.Models.Database
 	public class Lyric
 		: Audit
 	{
-		public string Lyrics { get; set; }
+		public string Content { get; set; }
 
-		public string Slug { get; set; }
+		public int TimeCode { get; set; }
 
 		#region [ Song ]
 

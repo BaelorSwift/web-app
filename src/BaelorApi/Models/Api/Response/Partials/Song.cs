@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BaelorApi.Models.Api.Response.Partials
 {
@@ -27,7 +29,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 		public Album Album { get; set; }
 
 		[JsonProperty("has_lyrics")]
-		public bool HasLyrics { get; set; }
+		public IEnumerable<Lyric> Lyrics { get; set; }
 
 		public static Song Create(Database.Song song, bool includeAlbum)
 		{
@@ -39,7 +41,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 				Index = song.Index,
 				Title = song.Title,
 				Slug = song.Slug,
-				HasLyrics = song.Lyric != null,
+				Lyrics = song.Lyrics == null ? null : song.Lyrics.Select(l => Lyric.Create(l)),
 				Album = includeAlbum ? Album.Create(song.Album, false) : null
 			};
 		}

@@ -1,21 +1,22 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace BaelorApi.Models.Api.Response.Partials
 {
 	public class Lyric
 	{
-		[JsonProperty("lyrics")]
-		public string Lyrics { get; set; }
+		[JsonProperty("content")]
+		public string Content { get; set; }
 
-		[JsonProperty("song", NullValueHandling = NullValueHandling.Ignore)]
-		public Song Song { get; set; }
+		[JsonProperty("time_code")]
+		public TimeSpan TimeCode { get; set; }
 
-		public static Lyric Create(Database.Lyric lyric, bool includeSong)
+		public static Lyric Create(Database.Lyric lyric)
 		{
 			return new Lyric
 			{
-				Lyrics = lyric.Lyrics,
-				Song = includeSong ? Song.Create(lyric.Song, true) : null
+				Content = lyric.Content,
+				TimeCode = TimeSpan.FromTicks(lyric.TimeCode)
 			};
 		}
 	}

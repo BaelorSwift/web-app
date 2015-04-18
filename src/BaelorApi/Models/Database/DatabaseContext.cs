@@ -47,10 +47,11 @@ namespace BaelorApi.Models.Database
 			modelBuilder.Entity<RateLimit>()
 				.HasOne(r => r.User);
 
-			modelBuilder.Entity<Lyric>()
-				.HasOne<Song>(l => l.Song)
-				.WithOne(s => s.Lyric)
-				.ForeignKey<Song>(s => s.LyricId);
+			// Songs have many Lyrics
+			modelBuilder.Entity<Song>()
+				.HasMany(s => s.Lyrics)
+				.WithOne(l => l.Song)
+				.ForeignKey(l => l.SongId);
 
 			base.OnModelCreating(modelBuilder);
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BaelorApi.Models.Database
 {
@@ -27,13 +28,7 @@ namespace BaelorApi.Models.Database
 		public Album Album { get; set; }
 
 		#endregion
-
-		#region [ Lyric ]
-
-		public Nullable<Guid> LyricId { get; set; }
-
-		public Lyric Lyric { get; set; }
-
-		#endregion
+		
+		public ICollection<Lyric> Lyrics { get; set; }
 	}
 }

@@ -10,6 +10,7 @@ using System;
 using BaelorApi.Extentions;
 using BaelorApi.Models.ViewModels;
 using BaelorApi.Attributes;
+using System.Linq;
 
 namespace BaelorApi.Areas.Api.v0.Controllers
 {
@@ -29,15 +30,22 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 		private readonly ISongRepository _songRepository;
 
 		/// <summary>
+		/// Repository for interacting with <see cref="Lyric"/> data
+		/// </summary>
+		private readonly ILyricRepository _lyricRepository;
+
+		/// <summary>
 		/// Creates a new instance of the Songs Controller.
 		/// </summary>
 		/// <param name="albumRepository">The repository of <see cref="Album"/> data.</param>
 		/// <param name="songRepository">The repository of <see cref="Song"/> data.</param>
+		/// <param name="lyricRepository">The repository of <see cref="Lyric"/> data.</param>
 		public SongsController(IAlbumRepository albumRepository, 
-			ISongRepository songRepository)
+			ISongRepository songRepository, ILyricRepository lyricRepository)
 		{
 			_albumRepository = albumRepository;
 			_songRepository = songRepository;
+			_lyricRepository = lyricRepository;
 		}
 		
 		/// <summary>
@@ -126,6 +134,24 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			if (viewModel.Writers != null) song.Writers = string.Join(",", viewModel.Writers);
 			if (viewModel.Title != null) song.Title = viewModel.Title;
 			if (viewModel.Title != null) song.Slug = viewModel.Title.ToSlug();
+			if (viewModel.Lyrics != null || viewModel.Lyrics.Any())
+			{
+				// delete old lyrics
+				var lyrics = _lyricRepository.GetAll;
+				foreach (var lyric in lyrics)
+					_lyricRepository.TryDelete(lyric.Id);
+
+				// NEW LYRICS SON
+				foreach (var newLyric in viewModel.Lyrics)
+				{
+					_lyricRepository.Add(new Models.Database.Lyric
+					{
+						Content = newLyric.Content,
+						TimeCode = newLyric.TimeCode,
+						SongId = song.Id
+					});
+				}
+			}
 
 			song = _songRepository.Update(song.Id, song);
 			return Content(HttpStatusCode.OK, new ResponseBase { Result = Models.Api.Response.Partials.Song.Create(song, true) });
