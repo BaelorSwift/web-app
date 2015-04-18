@@ -28,7 +28,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 		[JsonProperty("album", NullValueHandling = NullValueHandling.Ignore)]
 		public Album Album { get; set; }
 
-		[JsonProperty("has_lyrics")]
+		[JsonProperty("lyrics")]
 		public IEnumerable<Lyric> Lyrics { get; set; }
 
 		public static Song Create(Database.Song song, bool includeAlbum)
