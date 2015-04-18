@@ -9,7 +9,7 @@ namespace BaelorApi.Migrations
     {
         public override void Up(MigrationBuilder migrationBuilder)
         {
-			migrationBuilder.Sql("TRUNCATE [dbo].[Lyrics]");
+			migrationBuilder.Sql("TRUNCATE TABLE [dbo].[Lyrics]");
 
             migrationBuilder.DropForeignKey("Song", "FK_Song_Lyric_LyricId");
             
