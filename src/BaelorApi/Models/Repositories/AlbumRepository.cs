@@ -29,7 +29,6 @@ namespace BaelorApi.Models.Repositories
 				return _db.Albums
 					.Include(a => a.Image)
 					.Include(a => a.Songs)
-					.ThenInclude(s => s.Lyrics)
 					.AsEnumerable();
 			}
 		}
@@ -49,7 +48,6 @@ namespace BaelorApi.Models.Repositories
 			return _db.Albums
 					.Include(a => a.Image)
 					.Include(a => a.Songs)
-					.ThenInclude(s => s.Lyrics)
 					.FirstOrDefault(a => a.Id == id);
 		}
 
@@ -58,7 +56,6 @@ namespace BaelorApi.Models.Repositories
 			return _db.Albums
 					.Include(a => a.Image)
 					.Include(a => a.Songs)
-					.ThenInclude(s => s.Lyrics)
 					.FirstOrDefault(a => a.Slug == slug);
 		}
 

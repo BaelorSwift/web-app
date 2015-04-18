@@ -16,7 +16,7 @@ namespace BaelorApi.Models.Api.Response.Partials
 			return new Lyric
 			{
 				Content = lyric.Content,
-				TimeCode = TimeSpan.FromTicks(lyric.TimeCode)
+				TimeCode = TimeSpan.FromSeconds(lyric.TimeCode)
 			};
 		}
 	}

@@ -7,7 +7,7 @@ namespace BaelorApi.Models.Database
 	{
 		public string Content { get; set; }
 
-		public int TimeCode { get; set; }
+		public float TimeCode { get; set; }
 
 		#region [ Song ]
 
