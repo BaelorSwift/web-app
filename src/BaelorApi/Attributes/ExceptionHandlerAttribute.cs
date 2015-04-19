@@ -50,7 +50,7 @@ namespace BaelorApi.Attributes
 				Result = null,
 				Error = new ErrorBase(ErrorStatus.GenericServerError)
 				{
-					//Details = context.Exception
+					Details = context.Exception
 				}
 			});
 
