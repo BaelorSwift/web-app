@@ -27,9 +27,6 @@ namespace BaelorApi.Models.Repositories
 			get
 			{
 				return _db.Lyrics
-					.Include(s => s.Song)
-					.Include(s => s.Song.Album)
-					.Include(s => s.Song.Album.Image)
 					.AsEnumerable();
 			}
 		}
@@ -47,9 +44,6 @@ namespace BaelorApi.Models.Repositories
 		public Lyric GetById(Guid id)
 		{
 			return _db.Lyrics
-					.Include(s => s.Song)
-					.Include(s => s.Song.Album)
-					.Include(s => s.Song.Album.Image)
 					.FirstOrDefault(a => a.Id == id);
 		}
 		
