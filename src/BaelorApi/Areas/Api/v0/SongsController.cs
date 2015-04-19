@@ -138,7 +138,7 @@ namespace BaelorApi.Areas.Api.v0.Controllers
 			{
 				// delete old lyrics
 				var lyrics = _lyricRepository.GetAll;
-				foreach (var lyric in lyrics)
+				foreach (var lyric in lyrics.Where(l => l.SongId == song.Id))
 					_lyricRepository.TryDelete(lyric.Id);
 
 				// NEW LYRICS SON
