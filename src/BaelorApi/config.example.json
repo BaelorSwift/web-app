@@ -1,8 +1,0 @@
-﻿{
-	"Data": {
-		"DefaultConnection": {
-			"ConnectionString": "[sql-connection-string]"
-		},
-		"AzureJobSecretIdetifier": "[secret-azure-job-identifier]"
-	}
-}

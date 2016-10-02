@@ -1,8 +1,0 @@
-﻿{
-	"Data": {
-		"DefaultConnection": {
-			"ConnectionString": "Data Source=(localdb)\\ProjectsV12;Initial Catalog=P_BaelorApi;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;MultipleActiveResultSets=true;"
-		},
-		"AzureJobSecretIdetifier": "heroinaddict420"
-	}
-}
