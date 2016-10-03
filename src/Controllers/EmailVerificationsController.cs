@@ -1,28 +1,26 @@
-using static BCrypt.Net.BCrypt;
-
 using System.Threading.Tasks;
-using Baelor.Database.Models;
-using Baelor.Extensions;
-using Baelor.ViewModels.Users;
+using Baelor.ViewModels.EmailVerifications;
 using Microsoft.AspNetCore.Mvc;
 using Baelor.Database.Repositories.Interfaces;
-using SendGrid;
-using System;
 using SharpRaven.Core;
-using Microsoft.AspNetCore.Hosting;
+using Baelor.Extensions;
 using Baelor.Models.Internal;
+using System;
+using Baelor.Database.Models;
+using Microsoft.AspNetCore.Hosting;
+using SendGrid;
 
 namespace Baelor.Controllers
 {
-	[Route("[controller]")]
-	public class UsersController : Controller
+	[Route("email_verifications")]
+	public class EmailVerificationsController : Controller
 	{
 		private IUserRepository _userRepository;
 		private IEmailVerificationRepository _emailVerificationRepository;
 		private SendGridClient _sendGridClient;
 		private IRavenClient _ravenClient;
 
-		public UsersController(IUserRepository userRepository,
+		public EmailVerificationsController(IUserRepository userRepository,
 			IEmailVerificationRepository emailVerificationRepository,
 			SendGridClient sendGridClient, IRavenClient ravenClient)
 		{
@@ -32,36 +30,21 @@ namespace Baelor.Controllers
 			_ravenClient = ravenClient;
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> GetAllAsync()
-		{
-			return Json(await _userRepository.All());
-		}
-
 		[HttpPost]
-		public async Task<IActionResult> CreateAsync([FromBody] CreateUserViewModel model)
+		public async Task<IActionResult> CreateAsync([FromBody] CreateEmailVerificationViewModel model)
 		{
 			if (!ModelState.IsValid)
 				return Json(new Error("validation_failed", ModelState.Errors()));
 
-			// Check if email or username is already in use
-			var emailAddressTask = _userRepository.GetByEmailAddress(model.EmailAddress);
-			var usernameTask = _userRepository.GetByUsername(model.Username);
-			await Task.WhenAll(emailAddressTask, usernameTask);
+			// Check email is valid, and is not verified already
+			var user = await _userRepository.GetByEmailAddress(model.EmailAddress);
+			if (user == null)
+				return Json(new Error("user_not_found"));
+			if (user.IsVerified)
+				return Json(new Error("user_already_verified"));
 
-			if (emailAddressTask.Result != null)
-				ModelState.AddModelError(nameof(model.EmailAddress), "This Email Address is already in use.");
-			if (usernameTask.Result != null)
-				ModelState.AddModelError(nameof(model.Username), "This Username is already in use.");
-
-			if (!ModelState.IsValid)
-				return Json(new Error("validation_failed", ModelState.Errors()));
-
-			// Hash Password
-			model.Password = HashPassword(model.Password);
-
-			var user = new User(model);
-			await _userRepository.Add(user);
+			// Revoke all old Email Verification Codes
+			await _emailVerificationRepository.RevokeAllCodes(user.Id);
 
 			// Create Email Verification Code
 			var emailVerification = new EmailVerification(user.Id);
@@ -91,7 +74,31 @@ namespace Baelor.Controllers
 				await _ravenClient.CaptureAsync("email_transport_failed", ex);
 			}
 
-			return Json(user);
+			return Ok();
+		}
+
+		[HttpPost("verify")]
+		public async Task<IActionResult> VerifyAsync([FromBody] VerifyUserViewModel model)
+		{
+			if (!ModelState.IsValid)
+				return Json(new Error("validation_failed", ModelState.Errors()));
+
+			// Get Verification
+			var emailVerification = await _emailVerificationRepository.GetByCode(model.Code);
+			if (emailVerification == null)
+				return Json(new Error("invalid_code"));
+
+			// Check Is hasn't been used and hasn't expired
+			if (emailVerification.Used)
+				return Json(new Error("code_used"));
+			if (emailVerification.ExpiresAt < DateTime.UtcNow)
+				return Json(new Error("code_expired"));
+
+			// Flag user as verified
+			await _userRepository.SetUserVerifiedStatus(emailVerification.UserId, true);
+
+			// Return User Model
+			return Json(await _userRepository.GetById(emailVerification.UserId));
 		}
 	}
 }

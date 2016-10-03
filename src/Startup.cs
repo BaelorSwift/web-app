@@ -1,12 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using static System.IO.Directory;
+
+using Baelor.Database;
+using Baelor.Database.Repositories;
+using Baelor.Models.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
+using Baelor.Database.Repositories.Interfaces;
+using SendGrid;
+using SendGrid.Connections;
+using SharpRaven.Core.Configuration;
+using Microsoft.AspNetCore.Http;
+using SharpRaven.Core;
+using Microsoft.Extensions.Options;
 
 namespace Baelor
 {
@@ -20,13 +29,50 @@ namespace Baelor
 				.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
 				.AddEnvironmentVariables();
 			Configuration = builder.Build();
+			HostingEnvironment = env;
 		}
 
-		public IConfigurationRoot Configuration { get; }
+		public static IConfigurationRoot Configuration { get; private set; }
+
+        public static IHostingEnvironment HostingEnvironment { get; private set; }
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc();
+			// Default to snake_case
+			services.AddMvc()
+				.AddJsonOptions(jo =>
+				{
+					jo.SerializerSettings.ContractResolver = new DefaultContractResolver()
+					{
+						NamingStrategy = new SnakeCaseNamingStrategy()
+					};
+				});
+
+			// Add Configurations
+			services.Configure<MongoOptions>(Configuration.GetSection("MongoDB"));
+			services.Configure<RavenOptions>(Configuration.GetSection("RavenOptions"));
+
+			// Add Mongo Repositories
+			services.AddSingleton<MongoDatabase>();
+			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IEmailVerificationRepository, EmailVerificationRepository>();
+			
+			// Add SendGrid
+			services.AddSingleton<SendGridClient>(
+				new SendGridClient(
+					new ApiKeyConnection(Configuration.GetSection("SendGrid").GetValue<string>("ApiKey"))));
+
+			// Add RavenClient
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddScoped<IRavenClient, RavenClient>((s) => {
+				var rc = new RavenClient(s.GetRequiredService<IOptions<RavenOptions>>(), s.GetRequiredService<IHttpContextAccessor>())
+				{
+					Environment = HostingEnvironment.EnvironmentName
+				};
+
+				rc.Tags.Add("Environment", HostingEnvironment.EnvironmentName);
+				return rc;
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -47,7 +93,7 @@ namespace Baelor
 			var host = new WebHostBuilder()
 				.UseConfiguration(config)
 				.UseKestrel()
-				.UseContentRoot(Directory.GetCurrentDirectory())
+				.UseContentRoot(GetCurrentDirectory())
 				.UseStartup<Startup>()
 				.Build();
 
