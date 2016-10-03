@@ -12,6 +12,7 @@ namespace Baelor.Database.Models
 		{
 			Name = name;
 			Key = RandomHelpers.GetUniqueKey(64);
+			Id = ObjectId.GenerateNewId();
 		}
 
 		[BsonElement("name")]

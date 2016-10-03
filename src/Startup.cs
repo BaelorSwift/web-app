@@ -54,8 +54,9 @@ namespace Baelor
 
 			// Add Mongo Repositories
 			services.AddSingleton<MongoDatabase>();
-			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IClientRepository, ClientRepository>();
 			services.AddSingleton<IEmailVerificationRepository, EmailVerificationRepository>();
+			services.AddSingleton<IUserRepository, UserRepository>();
 			
 			// Add SendGrid
 			services.AddSingleton<SendGridClient>(
