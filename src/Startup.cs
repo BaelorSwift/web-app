@@ -16,6 +16,7 @@ using SharpRaven.Core.Configuration;
 using Microsoft.AspNetCore.Http;
 using SharpRaven.Core;
 using Microsoft.Extensions.Options;
+using Baelor.Attributes;
 
 namespace Baelor
 {
@@ -74,6 +75,9 @@ namespace Baelor
 				rc.Tags.Add("Environment", HostingEnvironment.EnvironmentName);
 				return rc;
 			});
+
+			// Add Attribute services
+			services.AddScoped<RequireAuthenticationAttribute>();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

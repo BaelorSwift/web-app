@@ -23,6 +23,9 @@ namespace Baelor.Database.Models
 		[BsonElement("slug")]
 		public string Slug { get; set; }
 
+		[BsonElement("internal")]
+		public bool Internal { get; set; }
+
 		[BsonElement("user_id")]
 		[JsonConverter(typeof(ObjectIdConverter))]
 		public ObjectId UserId { get; set; }

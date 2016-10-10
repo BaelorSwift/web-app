@@ -2,6 +2,7 @@
 	"dependencies": {
 		"BCrypt.Net-Core": "1.1.0",
 		"EncodeDotNet": "1.0.5",
+		"jose-jwt": "2.0.2",
 		"Microsoft.NETCore.App": {
 			"version": "1.0.0",
 			"type": "platform"
