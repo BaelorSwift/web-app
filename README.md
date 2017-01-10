@@ -1,9 +1,6 @@
-# baelor-api
+baelor-api
+===
 
-An API built for bae.
+Lightweight API written in golang for all that t-swifty goodness xoxo
 
-### Tech
-Built using ASP vNext.
-
-### Todo
-Everything. And docs. And readme. :)
+![baelor](http://images6.fanpop.com/image/photos/36400000/Taylor-Swift-Pictures-club-image-taylor-swift-pictures-club-36464929-500-355.jpg)
