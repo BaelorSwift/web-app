@@ -12,8 +12,8 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-// AlbumSafeName contains the escaped name for the controller that can be used
-// to connect to the correct sql table
+// AlbumSafeName contains the escaped name for the controller, used for selecting
+// the correct SQL table and JSON schema
 const AlbumSafeName = "albums"
 
 // AlbumsGet ..
