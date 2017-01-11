@@ -41,7 +41,8 @@ func AlbumsPost(c *gin.Context) {
 	// Validate JSON
 	valid, err := h.Validate(&album, AlbumSafeName)
 	if !valid {
-		log.Fatal(err)
+		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("validation_failed", err))
+		return
 	}
 
 	// Check album is unique
