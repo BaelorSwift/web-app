@@ -203,3 +203,5 @@ ModelManifest.xml
 # Windows Shit
 Thumbs.db
 config.development.json
+/debug
+/config/app.json
