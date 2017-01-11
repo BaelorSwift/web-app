@@ -27,6 +27,9 @@ func AlbumsGet(c *gin.Context) {
 	c.JSON(http.StatusOK, albums)
 }
 
+// AlbumGet ..
+func AlbumGet(c *gin.Context) {}
+
 // AlbumsPost ..
 func AlbumsPost(c *gin.Context) {
 	svc := s.NewDatabaseService(AlbumSafeName)

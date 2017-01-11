@@ -26,6 +26,7 @@ func main() {
 	{
 		albums := v1.Group("albums")
 		{
+			albums.GET("/:id", c.AlbumGet)
 			albums.GET("", c.AlbumsGet)
 			albums.POST("", c.AlbumsPost)
 		}
