@@ -2,8 +2,7 @@ package controllers
 
 import (
 	"net/http"
-
-	"log"
+	"time"
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
@@ -22,7 +21,7 @@ func AlbumsGet(c *gin.Context) {
 	defer svc.Close()
 
 	var albums []m.Album
-	svc.Find(&albums)
+	svc.Db.Find(&albums)
 
 	c.JSON(http.StatusOK, albums)
 }
@@ -36,23 +35,41 @@ func AlbumsPost(c *gin.Context) {
 	defer svc.Close()
 
 	var album m.Album
-	c.BindJSON(&album)
+
+	// Validate Payload
+	if c.BindJSON(&album) != nil {
+		c.JSON(http.StatusUnprocessableEntity,
+			m.NewBaelorError("invalid_json", map[string][]string{}))
+		return
+	}
 
 	// Validate JSON
 	valid, err := h.Validate(&album, AlbumSafeName)
 	if !valid {
-		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("validation_failed", err))
+		c.JSON(http.StatusUnprocessableEntity,
+			m.NewBaelorError("validation_failed", err))
 		return
 	}
 
 	// Check album is unique
-	if svc.Exists(&album) {
-		log.Fatal("album already exists")
+	if svc.Exists("title = ?", album.Title) {
+		c.JSON(http.StatusConflict,
+			m.NewBaelorError("album_already_exists", map[string][]string{}))
+		return
 	}
 
+	// Set metadata fields
+	now := time.Now().UTC()
 	album.ID = uuid.NewV4().String()
-	if !svc.Insert(&album) {
-		log.Fatal("error saving album")
+	album.CreatedAt = now
+	album.UpdatedAt = now
+
+	// Insert into database
+	svc.Db.Create(&album)
+	if svc.Db.NewRecord(album) {
+		c.JSON(http.StatusInternalServerError,
+			m.NewBaelorError("unknown_error_creating_album", map[string][]string{}))
+		return
 	}
 
 	c.JSON(http.StatusOK, album)
