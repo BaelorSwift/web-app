@@ -28,7 +28,7 @@ func (svc DatabaseService) Exists(query interface{}, replacements ...interface{}
 func NewDatabaseService(table string) (svc DatabaseService) {
 	svc = DatabaseService{}
 
-	Db, err := gorm.Open("mysql", "baelor-admin:F88g2H69bj2669E6ZKDr@tcp(127.0.0.1:3306)/baelor_api")
+	Db, err := gorm.Open("mysql", "baelor-admin:F88g2H69bj2669E6ZKDr@tcp(127.0.0.1:3306)/baelor_api?parseTime=true")
 	svc.Db = Db
 	svc.table = table
 	svc.Db.LogMode(true)
