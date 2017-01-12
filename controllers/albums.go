@@ -11,13 +11,14 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-// AlbumSafeName contains the escaped name for the controller, used for selecting
-// the correct SQL table and JSON schema
-const AlbumSafeName = "albums"
+// AlbumsController ..
+type AlbumsController struct{}
+
+const albumSafeName = "albums"
 
 // AlbumsGet ..
-func AlbumsGet(c *gin.Context) {
-	svc := s.NewDatabaseService(AlbumSafeName)
+func (ctrl AlbumsController) AlbumsGet(c *gin.Context) {
+	svc := s.NewDatabaseService(albumSafeName)
 	defer svc.Close()
 
 	var albums []m.Album
@@ -27,11 +28,11 @@ func AlbumsGet(c *gin.Context) {
 }
 
 // AlbumGet ..
-func AlbumGet(c *gin.Context) {}
+func (ctrl AlbumsController) AlbumGet(c *gin.Context) {}
 
 // AlbumsPost ..
-func AlbumsPost(c *gin.Context) {
-	svc := s.NewDatabaseService(AlbumSafeName)
+func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
+	svc := s.NewDatabaseService(albumSafeName)
 	defer svc.Close()
 
 	var album m.Album
@@ -44,7 +45,7 @@ func AlbumsPost(c *gin.Context) {
 	}
 
 	// Validate JSON
-	valid, err := h.Validate(&album, AlbumSafeName)
+	valid, err := h.Validate(&album, albumSafeName)
 	if !valid {
 		c.JSON(http.StatusUnprocessableEntity,
 			m.NewBaelorError("validation_failed", err))
@@ -73,4 +74,13 @@ func AlbumsPost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, album)
+}
+
+// NewAlbumsController ..
+func NewAlbumsController(r *gin.RouterGroup) {
+	ctrl := new(AlbumsController)
+
+	r.GET("albums/:id", ctrl.AlbumGet)
+	r.GET("albums", ctrl.AlbumsGet)
+	r.POST("albums", ctrl.AlbumsPost)
 }

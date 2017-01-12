@@ -13,13 +13,14 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-// GenreSafeName contains the escaped name for the controller, used for selecting
-// the correct SQL table and JSON schema
-const GenreSafeName = "genres"
+// GenresController ..
+type GenresController struct{}
+
+const genreSafeName = "genres"
 
 // GenresGet ..
-func GenresGet(c *gin.Context) {
-	svc := s.NewDatabaseService(GenreSafeName)
+func (ctrl GenresController) GenresGet(c *gin.Context) {
+	svc := s.NewDatabaseService(genreSafeName)
 	defer svc.Close()
 
 	var genres []m.Genre
@@ -29,8 +30,8 @@ func GenresGet(c *gin.Context) {
 }
 
 // GenresPost ...
-func GenresPost(c *gin.Context) {
-	svc := s.NewDatabaseService(GenreSafeName)
+func (ctrl GenresController) GenresPost(c *gin.Context) {
+	svc := s.NewDatabaseService(genreSafeName)
 	defer svc.Close()
 
 	var genre m.Genre
@@ -44,7 +45,7 @@ func GenresPost(c *gin.Context) {
 
 	// Validate JSON
 	fmt.Println(genre)
-	valid, err := h.Validate(&genre, GenreSafeName)
+	valid, err := h.Validate(&genre, genreSafeName)
 	if !valid {
 		c.JSON(http.StatusUnprocessableEntity,
 			m.NewBaelorError("validation_failed", err))
@@ -72,4 +73,12 @@ func GenresPost(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, genre)
+}
+
+// NewGenresController ..
+func NewGenresController(r *gin.RouterGroup) {
+	ctrl := new(GenresController)
+
+	r.GET("genres", ctrl.GenresGet)
+	r.POST("genres", ctrl.GenresPost)
 }

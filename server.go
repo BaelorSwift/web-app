@@ -24,18 +24,8 @@ func main() {
 	//r.Use(sentry.Recovery(raven.DefaultClient, false))
 	v1 := r.Group("v1")
 	{
-		albums := v1.Group("albums")
-		{
-			albums.GET("/:id", c.AlbumGet)
-			albums.GET("", c.AlbumsGet)
-			albums.POST("", c.AlbumsPost)
-		}
-
-		genres := v1.Group("genres")
-		{
-			genres.GET("", c.GenresGet)
-			genres.POST("", c.GenresPost)
-		}
+		c.NewAlbumsController(v1)
+		c.NewGenresController(v1)
 	}
 
 	log.Fatal(r.Run(Config.Address))
