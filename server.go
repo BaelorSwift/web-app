@@ -4,6 +4,7 @@ import (
 	"log"
 
 	c "github.com/baelorswift/api/controllers"
+	m "github.com/baelorswift/api/middleware"
 	raven "github.com/getsentry/raven-go"
 	"github.com/jinzhu/configor"
 
@@ -21,7 +22,7 @@ func main() {
 	raven.SetDSN(Config.Dsn)
 
 	r := gin.New()
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(gin.Logger(), gin.Recovery(), m.JSONOnly())
 	//r.Use(sentry.Recovery(raven.DefaultClient, false))
 	v1 := r.Group("v1")
 	{
