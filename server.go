@@ -20,7 +20,8 @@ func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.Dsn)
 
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger(), gin.Recovery())
 	//r.Use(sentry.Recovery(raven.DefaultClient, false))
 	v1 := r.Group("v1")
 	{
