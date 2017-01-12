@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"nameSlug": {
+			"type": "string",
+			"pattern": "^[a-z0-9]+[a-z0-9-]*$"
+		},
+		"description": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"name",
+		"nameSlug",
+		"description"
+	]
+}
