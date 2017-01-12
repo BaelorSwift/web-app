@@ -44,17 +44,9 @@ func (PeopleController) Post(c *gin.Context) {
 
 	// Validate Payload
 	var person m.Person
-	if c.BindJSON(&person) != nil {
-		c.JSON(http.StatusBadRequest,
-			m.NewBaelorError("invalid_json", nil))
-		return
-	}
-
-	// Validate JSON
-	valid, err := h.Validate(&person, peopleSafeName)
-	if !valid {
-		c.JSON(http.StatusUnprocessableEntity,
-			m.NewBaelorError("validation_failed", err))
+	status, err := h.ValidateJSON(c, &person, peopleSafeName)
+	if err != nil {
+		c.JSON(status, &err)
 		return
 	}
 

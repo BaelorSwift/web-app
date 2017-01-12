@@ -44,17 +44,9 @@ func (GenresController) Post(c *gin.Context) {
 
 	// Validate Payload
 	var genre m.Genre
-	if c.BindJSON(&genre) != nil {
-		c.JSON(http.StatusBadRequest,
-			m.NewBaelorError("invalid_json", nil))
-		return
-	}
-
-	// Validate JSON
-	valid, err := h.Validate(&genre, genreSafeName)
-	if !valid {
-		c.JSON(http.StatusUnprocessableEntity,
-			m.NewBaelorError("validation_failed", err))
+	status, err := h.ValidateJSON(c, &genre, genreSafeName)
+	if err != nil {
+		c.JSON(status, &err)
 		return
 	}
 

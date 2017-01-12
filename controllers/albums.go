@@ -44,17 +44,9 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 
 	// Validate Payload
 	var album m.Album
-	if c.BindJSON(&album) != nil {
-		c.JSON(http.StatusBadRequest,
-			m.NewBaelorError("invalid_json", nil))
-		return
-	}
-
-	// Validate JSON
-	valid, err := h.Validate(&album, albumSafeName)
-	if !valid {
-		c.JSON(http.StatusUnprocessableEntity,
-			m.NewBaelorError("validation_failed", err))
+	status, err := h.ValidateJSON(c, &album, albumSafeName)
+	if err != nil {
+		c.JSON(status, &err)
 		return
 	}
 
