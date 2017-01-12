@@ -14,6 +14,19 @@ type GenresController struct{}
 
 const genreSafeName = "genres"
 
+// GetByID ..
+func (GenresController) GetByID(c *gin.Context) {
+	svc := s.NewDatabaseService(genreSafeName)
+	defer svc.Close()
+
+	var genre m.Genre
+	if svc.Db.First(&genre, "id = ?", c.Param("id")); genre.Name != "" {
+		c.JSON(http.StatusOK, &genre)
+	} else {
+		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
+	}
+}
+
 // Get ..
 func (GenresController) Get(c *gin.Context) {
 	svc := s.NewDatabaseService(genreSafeName)
@@ -21,8 +34,7 @@ func (GenresController) Get(c *gin.Context) {
 
 	var genres []m.Genre
 	svc.Db.Find(&genres)
-
-	c.JSON(http.StatusOK, genres)
+	c.JSON(http.StatusOK, &genres)
 }
 
 // Post ...
@@ -30,12 +42,11 @@ func (GenresController) Post(c *gin.Context) {
 	svc := s.NewDatabaseService(genreSafeName)
 	defer svc.Close()
 
-	var genre m.Genre
-
 	// Validate Payload
+	var genre m.Genre
 	if c.BindJSON(&genre) != nil {
 		c.JSON(http.StatusBadRequest,
-			m.NewBaelorError("invalid_json", map[string][]string{}))
+			m.NewBaelorError("invalid_json", nil))
 		return
 	}
 
@@ -48,9 +59,9 @@ func (GenresController) Post(c *gin.Context) {
 	}
 
 	// Check genre is unique
-	if svc.Exists("name_slug = ?", genre.NameSlug) {
+	if svc.Exists("name_slug = ?", &genre.NameSlug) {
 		c.JSON(http.StatusConflict,
-			m.NewBaelorError("genre_already_exists", map[string][]string{}))
+			m.NewBaelorError("genre_already_exists", nil))
 		return
 	}
 
@@ -59,7 +70,7 @@ func (GenresController) Post(c *gin.Context) {
 	svc.Db.Create(&genre)
 	if svc.Db.NewRecord(genre) {
 		c.JSON(http.StatusInternalServerError,
-			m.NewBaelorError("unknown_error_creating_genre", map[string][]string{}))
+			m.NewBaelorError("unknown_error_creating_genre", nil))
 		return
 	}
 	c.JSON(http.StatusCreated, &genre)
@@ -70,5 +81,6 @@ func NewGenresController(r *gin.RouterGroup) {
 	ctrl := new(GenresController)
 
 	r.GET("genres", ctrl.Get)
+	r.GET("genres/:id", ctrl.GetByID)
 	r.POST("genres", ctrl.Post)
 }

@@ -14,28 +14,36 @@ type AlbumsController struct{}
 
 const albumSafeName = "albums"
 
-// AlbumsGet ..
-func (ctrl AlbumsController) AlbumsGet(c *gin.Context) {
+// GetByID ..
+func (ctrl AlbumsController) GetByID(c *gin.Context) {
+	svc := s.NewDatabaseService(albumSafeName)
+	defer svc.Close()
+
+	var album m.Album
+	if svc.Db.First(&album, "id = ?", c.Param("id")); album.Title != "" {
+		c.JSON(http.StatusOK, &album)
+	} else {
+		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
+	}
+}
+
+// Get ..
+func (ctrl AlbumsController) Get(c *gin.Context) {
 	svc := s.NewDatabaseService(albumSafeName)
 	defer svc.Close()
 
 	var albums []m.Album
 	svc.Db.Find(&albums)
-
-	c.JSON(http.StatusOK, albums)
+	c.JSON(http.StatusOK, &albums)
 }
 
-// AlbumGet ..
-func (ctrl AlbumsController) AlbumGet(c *gin.Context) {}
-
-// AlbumsPost ..
-func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
+// Post ..
+func (ctrl AlbumsController) Post(c *gin.Context) {
 	svc := s.NewDatabaseService(albumSafeName)
 	defer svc.Close()
 
-	var album m.Album
-
 	// Validate Payload
+	var album m.Album
 	if c.BindJSON(&album) != nil {
 		c.JSON(http.StatusBadRequest,
 			m.NewBaelorError("invalid_json", nil))
@@ -51,7 +59,7 @@ func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
 	}
 
 	// Check album is unique
-	if svc.Exists("title_slug = ?", album.TitleSlug) {
+	if svc.Exists("title_slug = ?", &album.TitleSlug) {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("album_already_exists", nil))
 		return
@@ -59,21 +67,19 @@ func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
 
 	// Insert into database
 	album.Init()
-	svc.Db.Create(&album)
-	if svc.Db.NewRecord(album) {
+	if svc.Db.Create(&album); svc.Db.NewRecord(album) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_album", nil))
 		return
 	}
-
-	c.JSON(http.StatusCreated, album)
+	c.JSON(http.StatusCreated, &album)
 }
 
 // NewAlbumsController ..
 func NewAlbumsController(r *gin.RouterGroup) {
 	ctrl := new(AlbumsController)
 
-	r.GET("albums/:id", ctrl.AlbumGet)
-	r.GET("albums", ctrl.AlbumsGet)
-	r.POST("albums", ctrl.AlbumsPost)
+	r.GET("albums", ctrl.Get)
+	r.GET("albums/:id", ctrl.GetByID)
+	r.POST("albums", ctrl.Post)
 }
