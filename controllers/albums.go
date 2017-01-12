@@ -52,7 +52,7 @@ func AlbumsPost(c *gin.Context) {
 	}
 
 	// Check album is unique
-	if svc.Exists("title = ?", album.Title) {
+	if svc.Exists("title_slug = ?", album.TitleSlug) {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("album_already_exists", map[string][]string{}))
 		return
@@ -72,5 +72,5 @@ func AlbumsPost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, album)
+	c.JSON(http.StatusCreated, album)
 }

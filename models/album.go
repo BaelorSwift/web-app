@@ -7,4 +7,6 @@ type Album struct {
 	Title     string `gorm:"not null" form:"title"     json:"title"`
 	TitleSlug string `gorm:"not null" form:"titleSlug" json:"titleSlug"`
 	Length    uint64 `gorm:"not null" form:"length"    json:"length"`
+
+	Genres []Genre `gorm:"many2many:user_languages;" form:"genres" json:"genres"`
 }

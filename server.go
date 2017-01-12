@@ -30,6 +30,12 @@ func main() {
 			albums.GET("", c.AlbumsGet)
 			albums.POST("", c.AlbumsPost)
 		}
+
+		genres := v1.Group("genres")
+		{
+			genres.GET("", c.GenresGet)
+			genres.POST("", c.GenresPost)
+		}
 	}
 
 	log.Fatal(r.Run(Config.Address))
