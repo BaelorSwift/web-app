@@ -7,7 +7,7 @@ type Person struct {
 	Name        string `gorm:"not null" json:"name"`
 	NameSlug    string `gorm:"not null" json:"nameSlug"`
 	Nationality string `gorm:"not null" json:"nationality"`
-	DateOfBirth int64  `gorm:"not null" json:"dateOfBirth"`
+	Occupation  string `gorm:"not null" json:"occupation"`
 }
 
 // TableName ..

@@ -12,14 +12,14 @@
 		"nationality": {
 			"type": "string"
 		},
-		"dateOfBirth": {
-			"type": "integer"
+		"occupation": {
+			"type": "string"
 		}
 	},
 	"required": [
 		"name",
 		"nameSlug",
 		"nationality",
-		"dateOfBirth"
+		"occupation"
 	]
 }
