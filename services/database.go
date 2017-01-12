@@ -3,7 +3,7 @@ package services
 import (
 	m "github.com/baelorswift/api/models"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // so we can actually look at our mysql Db
 )
 
 // DatabaseService ..
