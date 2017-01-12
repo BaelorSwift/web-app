@@ -10,7 +10,7 @@ type BaelorError struct {
 	Metadata map[string][]string `json:"metadata"`
 }
 
-// NewBaelorError creates a new BaelorError based on the inputs
+// NewBaelorError creates a new BaelorError with metadata
 func NewBaelorError(code string, metadata map[string][]string) BaelorError {
 	return BaelorError{
 		Code:     code,
