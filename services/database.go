@@ -9,47 +9,37 @@ import (
 // DatabaseService ..
 type DatabaseService struct {
 	table string
-	db    *gorm.DB
-}
-
-// Find ..
-func (svc DatabaseService) Find(out interface{}, where ...interface{}) {
-	svc.db.Table(svc.table).Find(out, where)
+	Db    *gorm.DB
 }
 
 // Close the database after you have finished with the service
 func (svc DatabaseService) Close() {
-	svc.db.Close()
+	svc.Db.Close()
 }
 
-// Exists checks if a certain model exists in the database
-func (svc DatabaseService) Exists(obj interface{}) bool {
+// Exists checks if a query results in a match in the database
+func (svc DatabaseService) Exists(query interface{}, replacements ...interface{}) bool {
 	count := 0
-	svc.db.Table(svc.table).Model(&obj).Count(&count)
+	svc.Db.Table(svc.table).Where(query, replacements).Count(&count)
 	return count >= 1
-}
-
-// Insert a new record into the database
-func (svc DatabaseService) Insert(obj interface{}) bool {
-	return svc.db.Table(svc.table).NewRecord(obj)
 }
 
 // NewDatabaseService ..
 func NewDatabaseService(table string) (svc DatabaseService) {
 	svc = DatabaseService{}
 
-	db, err := gorm.Open("mysql", "baelor-admin:F88g2H69bj2669E6ZKDr@tcp(127.0.0.1:3306)/baelor_api")
-	svc.db = db
+	Db, err := gorm.Open("mysql", "baelor-admin:F88g2H69bj2669E6ZKDr@tcp(127.0.0.1:3306)/baelor_api")
+	svc.Db = Db
 	svc.table = table
-	svc.db.LogMode(true)
+	svc.Db.LogMode(true)
 
 	if err != nil {
 		panic(err)
 	}
 
 	// Check Album Database Exists
-	if !svc.db.HasTable(&m.Album{}) {
-		svc.db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&m.Album{})
+	if !svc.Db.HasTable(&m.Album{}) {
+		svc.Db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Album{})
 	}
 
 	return
