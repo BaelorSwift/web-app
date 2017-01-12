@@ -37,7 +37,7 @@ func NewDatabaseService(table string) (svc DatabaseService) {
 		panic(err)
 	}
 
-	// Check Album Database Exists
+	// Check Album Table Exists
 	if !svc.Db.HasTable(&m.Album{}) {
 		svc.Db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Album{})
 	}
