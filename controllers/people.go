@@ -14,6 +14,19 @@ type PeopleController struct{}
 
 const peopleSafeName = "people"
 
+// GetByID ..
+func (PeopleController) GetByID(c *gin.Context) {
+	svc := s.NewDatabaseService(peopleSafeName)
+	defer svc.Close()
+
+	var person m.Person
+	if svc.Db.First(&person, "id = ?", c.Param("id")); person.Name != "" {
+		c.JSON(http.StatusOK, &person)
+	} else {
+		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
+	}
+}
+
 // Get ..
 func (PeopleController) Get(c *gin.Context) {
 	svc := s.NewDatabaseService(peopleSafeName)
@@ -67,5 +80,6 @@ func NewPeopleController(r *gin.RouterGroup) {
 	ctrl := new(PeopleController)
 
 	r.GET("people", ctrl.Get)
+	r.GET("people/:id", ctrl.GetByID)
 	r.POST("people", ctrl.Post)
 }
