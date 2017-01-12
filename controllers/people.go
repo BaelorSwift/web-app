@@ -31,8 +31,7 @@ func (PeopleController) Post(c *gin.Context) {
 
 	// Validate Payload
 	var person m.Person
-	x := c.BindJSON(&person)
-	if x != nil {
+	if c.BindJSON(&person) != nil {
 		c.JSON(http.StatusBadRequest,
 			m.NewBaelorError("invalid_json", nil))
 		return
@@ -46,17 +45,16 @@ func (PeopleController) Post(c *gin.Context) {
 		return
 	}
 
-	// Check genre is unique
+	// Check person is unique
 	if svc.Exists("name_slug = ?", &person.NameSlug) {
 		c.JSON(http.StatusConflict,
-			m.NewBaelorError("genre_already_exists", map[string][]string{}))
+			m.NewBaelorError("person_already_exists", nil))
 		return
 	}
 
 	// Insert into database
 	person.Init()
-	svc.Db.Create(&person)
-	if svc.Db.NewRecord(person) {
+	if svc.Db.Create(&person); svc.Db.NewRecord(person) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_person", nil))
 		return
