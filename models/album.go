@@ -4,9 +4,10 @@ package models
 type Album struct {
 	Audit
 
-	Title     string `gorm:"not null" form:"title"     json:"title"`
-	TitleSlug string `gorm:"not null" form:"titleSlug" json:"titleSlug"`
-	Length    uint64 `gorm:"not null" form:"length"    json:"length"`
+	Title     string `gorm:"not null" json:"title"`
+	TitleSlug string `gorm:"not null" json:"titleSlug"`
+	Length    uint64 `gorm:"not null" json:"length"`
 
-	Genres []Genre `gorm:"many2many:user_languages;" form:"genres" json:"genres"`
+	Genres    []Genre  `gorm:"many2many:genres;"    json:"genres"`
+	Producers []Person `gorm:"many2many:producers;" json:"producers"`
 }

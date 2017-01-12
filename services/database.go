@@ -47,5 +47,10 @@ func NewDatabaseService(table string) (svc DatabaseService) {
 		svc.Db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Genre{})
 	}
 
+	// Check Person Table Exists
+	if !svc.Db.HasTable(&m.Person{}) {
+		svc.Db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Person{})
+	}
+
 	return
 }

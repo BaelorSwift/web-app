@@ -2,12 +2,10 @@ package controllers
 
 import (
 	"net/http"
-	"time"
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
 	s "github.com/baelorswift/api/services"
-	uuid "github.com/satori/go.uuid"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -39,8 +37,8 @@ func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
 
 	// Validate Payload
 	if c.BindJSON(&album) != nil {
-		c.JSON(http.StatusUnprocessableEntity,
-			m.NewBaelorError("invalid_json", map[string][]string{}))
+		c.JSON(http.StatusBadRequest,
+			m.NewBaelorError("invalid_json", nil))
 		return
 	}
 
@@ -55,21 +53,16 @@ func (ctrl AlbumsController) AlbumsPost(c *gin.Context) {
 	// Check album is unique
 	if svc.Exists("title_slug = ?", album.TitleSlug) {
 		c.JSON(http.StatusConflict,
-			m.NewBaelorError("album_already_exists", map[string][]string{}))
+			m.NewBaelorError("album_already_exists", nil))
 		return
 	}
 
-	// Set metadata fields
-	now := time.Now().UTC()
-	album.ID = uuid.NewV4().String()
-	album.CreatedAt = now
-	album.UpdatedAt = now
-
 	// Insert into database
+	album.Init()
 	svc.Db.Create(&album)
 	if svc.Db.NewRecord(album) {
 		c.JSON(http.StatusInternalServerError,
-			m.NewBaelorError("unknown_error_creating_album", map[string][]string{}))
+			m.NewBaelorError("unknown_error_creating_album", nil))
 		return
 	}
 

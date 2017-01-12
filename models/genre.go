@@ -4,7 +4,7 @@ package models
 type Genre struct {
 	Audit
 
-	Name        string `gorm:"not null" form:"name" json:"name"`
-	NameSlug    string `gorm:"not null" form:"nameSlug" json:"nameSlug"`
-	Description string `gorm:"not null" form:"description" json:"description"`
+	Name        string `json:"name"`
+	NameSlug    string `json:"nameSlug"`
+	Description string `json:"description"`
 }
