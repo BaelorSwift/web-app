@@ -1,0 +1,28 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"founded": {
+			"type": "integer"
+		},
+		"foundedIn": {
+			"type": "string"
+		},
+		"location": {
+			"type": "string"
+		},
+		"website": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"name",
+		"founded",
+		"foundedIn",
+		"location",
+		"website"
+	]
+}
