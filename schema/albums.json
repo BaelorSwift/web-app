@@ -5,18 +5,52 @@
 		"title": {
 			"type": "string"
 		},
-		"titleSlug": {
-			"type": "string",
-			"pattern": "^[a-z0-9]+[a-z0-9-]*$"
+		"description": {
+			"type": "string"
 		},
 		"length": {
 			"type": "integer",
 			"minimum": 1
+		},
+		"recordedAt": {
+			"type": "string",
+			"maxLength": 4,
+			"minLength": 4
+		},
+		"releasedAt": {
+			"type": "integer"
+		},
+		"studio": {
+			"type": "string"
+		},
+		"coverImage": {
+			"type": "string"
+		},
+
+		"genreIds": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+			}
+		},
+		"producerIds": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+			}
 		}
 	},
 	"required": [
 		"title",
-		"titleSlug",
-		"length"
+		"description",
+		"length",
+		"recordedAt",
+		"releasedAt",
+		"studio",
+		"coverImage",
+		"genreIds",
+		"producerIds"
 	]
 }
