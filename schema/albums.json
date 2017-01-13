@@ -27,18 +27,36 @@
 			"type": "string"
 		},
 
-		"genreIds": {
+		"genres": {
 			"type": "array",
 			"items": {
-				"type": "string",
-				"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+					}
+				},
+				"required": [
+					"id"
+				],
+				"additionalProperties": false
 			}
 		},
-		"producerIds": {
+		"producers": {
 			"type": "array",
 			"items": {
-				"type": "string",
-				"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"pattern": "/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i"
+					}
+				},
+				"required": [
+					"id"
+				],
+				"additionalProperties": false
 			}
 		}
 	},
@@ -50,7 +68,8 @@
 		"releasedAt",
 		"studio",
 		"coverImage",
-		"genreIds",
-		"producerIds"
-	]
+		"genres",
+		"producers"
+	],
+	"additionalProperties": false
 }
