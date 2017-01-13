@@ -30,6 +30,7 @@ func main() {
 		c.NewAlbumsController(v1)
 		c.NewGenresController(v1)
 		c.NewPeopleController(v1)
+		c.NewLabelsController(v1)
 	}
 
 	log.Fatal(r.Run(Config.Address))
