@@ -28,6 +28,7 @@ func main() {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), m.JSONOnly())
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
+	r.Static("/static", "./static/")
 	v1 := r.Group("v1")
 	{
 		c.NewAlbumsController(v1)
