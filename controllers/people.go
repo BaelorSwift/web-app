@@ -20,10 +20,10 @@ func (PeopleController) GetByID(c *gin.Context) {
 	defer svc.Close()
 
 	var person m.Person
-	if svc.Db.First(&person, "id = ?", c.Param("id")); person.Name != "" {
-		c.JSON(http.StatusOK, &person)
-	} else {
+	if svc.Db.First(&person, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, &person)
 	}
 }
 

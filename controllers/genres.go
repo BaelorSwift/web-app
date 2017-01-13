@@ -20,10 +20,10 @@ func (GenresController) GetByID(c *gin.Context) {
 	defer svc.Close()
 
 	var genre m.Genre
-	if svc.Db.First(&genre, "id = ?", c.Param("id")); genre.Name != "" {
-		c.JSON(http.StatusOK, &genre)
-	} else {
+	if svc.Db.First(&genre, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, &genre)
 	}
 }
 

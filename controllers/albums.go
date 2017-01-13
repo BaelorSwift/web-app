@@ -20,10 +20,10 @@ func (ctrl AlbumsController) GetByID(c *gin.Context) {
 	defer svc.Close()
 
 	var album m.Album
-	if svc.Db.First(&album, "id = ?", c.Param("id")); album.Title != "" {
-		c.JSON(http.StatusOK, &album)
-	} else {
+	if svc.Db.First(&album, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, &album)
 	}
 }
 

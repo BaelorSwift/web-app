@@ -20,10 +20,10 @@ func (LabelsController) GetByID(c *gin.Context) {
 	defer svc.Close()
 
 	var label m.Label
-	if svc.Db.First(&label, "id = ?", c.Param("id")); label.ID != "" {
-		c.JSON(http.StatusOK, &label)
-	} else {
+	if svc.Db.First(&label, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("label_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, &label)
 	}
 }
 
