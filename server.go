@@ -6,6 +6,7 @@ import (
 	c "github.com/baelorswift/api/controllers"
 	m "github.com/baelorswift/api/middleware"
 	raven "github.com/getsentry/raven-go"
+	"github.com/gin-contrib/sentry"
 	"github.com/jinzhu/configor"
 
 	"gopkg.in/gin-gonic/gin.v1"
@@ -23,7 +24,7 @@ func main() {
 
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), m.JSONOnly())
-	//r.Use(sentry.Recovery(raven.DefaultClient, false))
+	r.Use(sentry.Recovery(raven.DefaultClient, false))
 	v1 := r.Group("v1")
 	{
 		c.NewAlbumsController(v1)
