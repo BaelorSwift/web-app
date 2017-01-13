@@ -10,4 +10,5 @@ type Album struct {
 
 	Genres    []Genre  `gorm:"many2many:genres;"    json:"genres"`
 	Producers []Person `gorm:"many2many:producers;" json:"producers"`
+	LabelID   string
 }

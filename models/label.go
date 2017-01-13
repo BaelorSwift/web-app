@@ -10,4 +10,6 @@ type Label struct {
 	FoundedIn string `gorm:"not null" json:"foundedIn"`
 	Location  string `gorm:"not null" json:"location"`
 	Website   string `gorm:"not null" json:"website"`
+
+	Albums []Album `gorm:"ForeignKey:LabelID" json:"albums"`
 }
