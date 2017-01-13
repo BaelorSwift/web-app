@@ -5,6 +5,7 @@ import (
 
 	c "github.com/baelorswift/api/controllers"
 	m "github.com/baelorswift/api/middleware"
+	s "github.com/baelorswift/api/services"
 	raven "github.com/getsentry/raven-go"
 	"github.com/gin-contrib/sentry"
 	"github.com/jinzhu/configor"
@@ -14,13 +15,15 @@ import (
 
 // Config contains the loaded configuration
 var Config = struct {
-	Address string
-	Dsn     string
+	Address          string `json:"address"`
+	Dsn              string `json:"dsn"`
+	ConnectionString string `json:"connectionString"`
 }{}
 
 func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.Dsn)
+	s.ConnectionString = Config.ConnectionString
 
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), m.JSONOnly())
