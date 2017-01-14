@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -13,11 +14,11 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-func validateJSONSchema(jsonStr string, schemaName string) *goSchema.Result {
+func validateJSONSchema(bodyData []byte, schemaName string) *goSchema.Result {
 	cacheBuster := strconv.FormatInt(time.Now().Unix(), 10)
 	path := "https://raw.githubusercontent.com/BaelorSwift/api/dev/schema/%s.json?_=%s"
 	schema := goSchema.NewReferenceLoader(fmt.Sprintf(path, schemaName, cacheBuster))
-	doc := goSchema.NewStringLoader(jsonStr)
+	doc := goSchema.NewBytesLoader(bodyData)
 
 	result, err := goSchema.Validate(schema, doc)
 	if err != nil {
@@ -35,12 +36,12 @@ func ValidateJSON(c *gin.Context, obj interface{}, schemaName string) (int, *m.B
 	// Read string Body
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(c.Request.Body)
-	newStr := buf.String()
+	bodyData := buf.Bytes()
 
 	// Validate JSON Schema
-	schemaResult := validateJSONSchema(newStr, schemaName)
+	schemaResult := validateJSONSchema(bodyData, schemaName)
 	if schemaResult.Valid() {
-		c.BindJSON(&obj)
+		json.Unmarshal(buf.Bytes(), obj)
 		return http.StatusOK, baelorError
 	}
 
