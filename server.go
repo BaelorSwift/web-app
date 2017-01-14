@@ -38,6 +38,7 @@ func main() {
 		c.NewGenresController(v1, &context)
 		c.NewPeopleController(v1, &context)
 		c.NewLabelsController(v1, &context)
+		c.NewStudiosController(v1, &context)
 	}
 
 	log.Fatal(r.Run(Config.Address))

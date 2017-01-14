@@ -37,5 +37,10 @@ func NewDatabase(connectionStr string) *gorm.DB {
 		db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Label{})
 	}
 
+	// Check Studio Table Exists
+	if !db.HasTable(&m.Studio{}) {
+		db.Set("gorm:table_options", "ENGINE=InnoDb").CreateTable(&m.Studio{})
+	}
+
 	return db
 }
