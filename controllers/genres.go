@@ -5,22 +5,20 @@ import (
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
-	s "github.com/baelorswift/api/services"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // GenresController ..
-type GenresController struct{}
+type GenresController struct {
+	context *m.Context
+}
 
 const genreSafeName = "genres"
 
 // GetByID ..
-func (GenresController) GetByID(c *gin.Context) {
-	svc := s.NewDatabaseService(genreSafeName)
-	defer svc.Close()
-
+func (ctrl GenresController) GetByID(c *gin.Context) {
 	var genre m.Genre
-	if svc.Db.First(&genre, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&genre, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, &genre)
@@ -28,20 +26,14 @@ func (GenresController) GetByID(c *gin.Context) {
 }
 
 // Get ..
-func (GenresController) Get(c *gin.Context) {
-	svc := s.NewDatabaseService(genreSafeName)
-	defer svc.Close()
-
+func (ctrl GenresController) Get(c *gin.Context) {
 	var genres []m.Genre
-	svc.Db.Find(&genres)
+	ctrl.context.Db.Find(&genres)
 	c.JSON(http.StatusOK, &genres)
 }
 
 // Post ...
-func (GenresController) Post(c *gin.Context) {
-	svc := s.NewDatabaseService(genreSafeName)
-	defer svc.Close()
-
+func (ctrl GenresController) Post(c *gin.Context) {
 	// Validate Payload
 	var genre m.Genre
 	status, err := h.ValidateJSON(c, &genre, genreSafeName)
@@ -51,7 +43,7 @@ func (GenresController) Post(c *gin.Context) {
 	}
 
 	// Check genre is unique
-	if svc.Exists("name_slug = ?", &genre.NameSlug) {
+	if !ctrl.context.Db.Where("name_slug = ?", &genre.NameSlug).RecordNotFound() {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("genre_already_exists", nil))
 		return
@@ -59,8 +51,8 @@ func (GenresController) Post(c *gin.Context) {
 
 	// Insert into database
 	genre.Init()
-	svc.Db.Create(&genre)
-	if svc.Db.NewRecord(genre) {
+	ctrl.context.Db.Create(&genre)
+	if ctrl.context.Db.NewRecord(genre) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_genre", nil))
 		return
@@ -69,8 +61,9 @@ func (GenresController) Post(c *gin.Context) {
 }
 
 // NewGenresController ..
-func NewGenresController(r *gin.RouterGroup) {
+func NewGenresController(r *gin.RouterGroup, c *m.Context) {
 	ctrl := new(GenresController)
+	ctrl.context = c
 
 	r.GET("genres", ctrl.Get)
 	r.GET("genres/:id", ctrl.GetByID)

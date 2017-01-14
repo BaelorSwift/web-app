@@ -5,22 +5,20 @@ import (
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
-	s "github.com/baelorswift/api/services"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // AlbumsController ..
-type AlbumsController struct{}
+type AlbumsController struct {
+	context *m.Context
+}
 
 const albumSafeName = "albums"
 
 // GetByID ..
 func (ctrl AlbumsController) GetByID(c *gin.Context) {
-	svc := s.NewDatabaseService(albumSafeName)
-	defer svc.Close()
-
 	var album m.Album
-	if svc.Db.First(&album, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&album, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, &album)
@@ -29,19 +27,13 @@ func (ctrl AlbumsController) GetByID(c *gin.Context) {
 
 // Get ..
 func (ctrl AlbumsController) Get(c *gin.Context) {
-	svc := s.NewDatabaseService(albumSafeName)
-	defer svc.Close()
-
 	var albums []m.Album
-	svc.Db.Find(&albums)
+	ctrl.context.Db.Find(&albums)
 	c.JSON(http.StatusOK, &albums)
 }
 
 // Post ..
 func (ctrl AlbumsController) Post(c *gin.Context) {
-	svc := s.NewDatabaseService(albumSafeName)
-	defer svc.Close()
-
 	// Validate Payload
 	var album m.Album
 	status, err := h.ValidateJSON(c, &album, albumSafeName)
@@ -51,7 +43,7 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 	}
 
 	// Check album is unique
-	if svc.Exists("title_slug = ?", &album.TitleSlug) {
+	if !ctrl.context.Db.Where("title_slug = ?", &album.TitleSlug).RecordNotFound() {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("album_already_exists", nil))
 		return
@@ -59,7 +51,7 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 
 	// Insert into database
 	album.Init()
-	if svc.Db.Create(&album); svc.Db.NewRecord(album) {
+	if ctrl.context.Db.Create(&album); ctrl.context.Db.NewRecord(album) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_album", nil))
 		return
@@ -68,8 +60,9 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 }
 
 // NewAlbumsController ..
-func NewAlbumsController(r *gin.RouterGroup) {
+func NewAlbumsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl := new(AlbumsController)
+	ctrl.context = c
 
 	r.GET("albums", ctrl.Get)
 	r.GET("albums/:id", ctrl.GetByID)

@@ -5,22 +5,20 @@ import (
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
-	s "github.com/baelorswift/api/services"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // PeopleController ..
-type PeopleController struct{}
+type PeopleController struct {
+	context *m.Context
+}
 
 const peopleSafeName = "people"
 
 // GetByID ..
-func (PeopleController) GetByID(c *gin.Context) {
-	svc := s.NewDatabaseService(peopleSafeName)
-	defer svc.Close()
-
+func (ctrl PeopleController) GetByID(c *gin.Context) {
 	var person m.Person
-	if svc.Db.First(&person, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&person, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, &person)
@@ -28,20 +26,14 @@ func (PeopleController) GetByID(c *gin.Context) {
 }
 
 // Get ..
-func (PeopleController) Get(c *gin.Context) {
-	svc := s.NewDatabaseService(peopleSafeName)
-	defer svc.Close()
-
+func (ctrl PeopleController) Get(c *gin.Context) {
 	var people []m.Person
-	svc.Db.Find(&people)
+	ctrl.context.Db.Find(&people)
 	c.JSON(http.StatusOK, &people)
 }
 
 // Post ..
-func (PeopleController) Post(c *gin.Context) {
-	svc := s.NewDatabaseService(peopleSafeName)
-	defer svc.Close()
-
+func (ctrl PeopleController) Post(c *gin.Context) {
 	// Validate Payload
 	var person m.Person
 	status, err := h.ValidateJSON(c, &person, peopleSafeName)
@@ -51,7 +43,7 @@ func (PeopleController) Post(c *gin.Context) {
 	}
 
 	// Check person is unique
-	if svc.Exists("name_slug = ?", &person.NameSlug) {
+	if !ctrl.context.Db.Where("name_slug = ?", &person.NameSlug).RecordNotFound() {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("person_already_exists", nil))
 		return
@@ -59,7 +51,7 @@ func (PeopleController) Post(c *gin.Context) {
 
 	// Insert into database
 	person.Init()
-	if svc.Db.Create(&person); svc.Db.NewRecord(person) {
+	if ctrl.context.Db.Create(&person); ctrl.context.Db.NewRecord(person) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_person", nil))
 		return
@@ -68,8 +60,9 @@ func (PeopleController) Post(c *gin.Context) {
 }
 
 // NewPeopleController ..
-func NewPeopleController(r *gin.RouterGroup) {
+func NewPeopleController(r *gin.RouterGroup, c *m.Context) {
 	ctrl := new(PeopleController)
+	ctrl.context = c
 
 	r.GET("people", ctrl.Get)
 	r.GET("people/:id", ctrl.GetByID)

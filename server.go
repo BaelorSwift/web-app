@@ -4,7 +4,8 @@ import (
 	"log"
 
 	c "github.com/baelorswift/api/controllers"
-	m "github.com/baelorswift/api/middleware"
+	middleware "github.com/baelorswift/api/middleware"
+	m "github.com/baelorswift/api/models"
 	s "github.com/baelorswift/api/services"
 	raven "github.com/getsentry/raven-go"
 	"github.com/gin-contrib/sentry"
@@ -23,18 +24,20 @@ var Config = struct {
 func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.Dsn)
-	s.ConnectionString = Config.ConnectionString
+
+	context := m.Context{Db: s.NewDatabase(Config.ConnectionString)}
 
 	r := gin.New()
-	r.Use(gin.Logger(), gin.Recovery(), m.JSONOnly())
+	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(middleware.JSONOnly())
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
 	r.Static("/static", "./static/")
 	v1 := r.Group("v1")
 	{
-		c.NewAlbumsController(v1)
-		c.NewGenresController(v1)
-		c.NewPeopleController(v1)
-		c.NewLabelsController(v1)
+		c.NewAlbumsController(v1, &context)
+		c.NewGenresController(v1, &context)
+		c.NewPeopleController(v1, &context)
+		c.NewLabelsController(v1, &context)
 	}
 
 	log.Fatal(r.Run(Config.Address))

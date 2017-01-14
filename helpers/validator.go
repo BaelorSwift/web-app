@@ -2,7 +2,10 @@ package helpers
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 
+	"bytes"
 	"net/http"
 
 	m "github.com/baelorswift/api/models"
@@ -10,14 +13,11 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
-func validateBinding(c *gin.Context, obj interface{}) bool {
-	return c.BindJSON(&obj) == nil
-}
-
-func validateJSONSchema(obj interface{}, schemaName string) *goSchema.Result {
-	path := "https://raw.githubusercontent.com/BaelorSwift/api/dev/schema/%s.json"
-	schema := goSchema.NewReferenceLoader(fmt.Sprintf(path, schemaName))
-	doc := goSchema.NewGoLoader(obj)
+func validateJSONSchema(jsonStr string, schemaName string) *goSchema.Result {
+	cacheBuster := strconv.FormatInt(time.Now().Unix(), 10)
+	path := "https://raw.githubusercontent.com/BaelorSwift/api/dev/schema/%s.json?_=%s"
+	schema := goSchema.NewReferenceLoader(fmt.Sprintf(path, schemaName, cacheBuster))
+	doc := goSchema.NewStringLoader(jsonStr)
 
 	result, err := goSchema.Validate(schema, doc)
 	if err != nil {
@@ -32,17 +32,15 @@ func ValidateJSON(c *gin.Context, obj interface{}, schemaName string) (int, *m.B
 	var baelorError *m.BaelorError
 	metadata := map[string][]string{}
 
-	// Validate Gin JSON Binding
-	bindErr := validateBinding(c, obj)
-	if !bindErr {
-		metadata["json"] = c.Errors.Errors()
-		err := m.NewBaelorError("json_binding_failed", metadata)
-		return http.StatusBadRequest, &err
-	}
+	// Read string Body
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(c.Request.Body)
+	newStr := buf.String()
 
 	// Validate JSON Schema
-	schemaResult := validateJSONSchema(&obj, schemaName)
+	schemaResult := validateJSONSchema(newStr, schemaName)
 	if schemaResult.Valid() {
+		c.BindJSON(&obj)
 		return http.StatusOK, baelorError
 	}
 

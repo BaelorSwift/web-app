@@ -5,22 +5,20 @@ import (
 
 	h "github.com/baelorswift/api/helpers"
 	m "github.com/baelorswift/api/models"
-	s "github.com/baelorswift/api/services"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // LabelsController ..
-type LabelsController struct{}
+type LabelsController struct {
+	context *m.Context
+}
 
 const labelsSafeName = "labels"
 
 // GetByID ..
-func (LabelsController) GetByID(c *gin.Context) {
-	svc := s.NewDatabaseService(labelsSafeName)
-	defer svc.Close()
-
+func (ctrl LabelsController) GetByID(c *gin.Context) {
 	var label m.Label
-	if svc.Db.First(&label, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&label, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("label_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, &label)
@@ -28,20 +26,14 @@ func (LabelsController) GetByID(c *gin.Context) {
 }
 
 // Get ..
-func (LabelsController) Get(c *gin.Context) {
-	svc := s.NewDatabaseService(labelsSafeName)
-	defer svc.Close()
-
+func (ctrl LabelsController) Get(c *gin.Context) {
 	var labels []m.Label
-	svc.Db.Find(&labels)
+	ctrl.context.Db.Find(&labels)
 	c.JSON(http.StatusOK, &labels)
 }
 
 // Post ..
-func (LabelsController) Post(c *gin.Context) {
-	svc := s.NewDatabaseService(labelsSafeName)
-	defer svc.Close()
-
+func (ctrl LabelsController) Post(c *gin.Context) {
 	// Validate Payload
 	var label m.Label
 	status, err := h.ValidateJSON(c, &label, labelsSafeName)
@@ -50,7 +42,7 @@ func (LabelsController) Post(c *gin.Context) {
 	}
 
 	// Check label is unique
-	if svc.Exists("name_slug = ?", h.GenerateSlug(label.Name)) {
+	if !ctrl.context.Db.Where("name_slug = ?", h.GenerateSlug(label.Name)).RecordNotFound() {
 		c.JSON(http.StatusConflict,
 			m.NewBaelorError("genre_already_exists", nil))
 		return
@@ -59,8 +51,8 @@ func (LabelsController) Post(c *gin.Context) {
 	// Insert into database
 	label.Init()
 	label.NameSlug = h.GenerateSlug(label.Name)
-	svc.Db.Create(&label)
-	if svc.Db.NewRecord(label) {
+	ctrl.context.Db.Create(&label)
+	if ctrl.context.Db.NewRecord(label) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_label", nil))
 		return
@@ -69,8 +61,9 @@ func (LabelsController) Post(c *gin.Context) {
 }
 
 // NewLabelsController ..
-func NewLabelsController(r *gin.RouterGroup) {
+func NewLabelsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl := new(LabelsController)
+	ctrl.context = c
 
 	r.GET("labels", ctrl.Get)
 	r.GET("labels/:id", ctrl.GetByID)
