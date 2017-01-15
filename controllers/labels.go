@@ -15,21 +15,25 @@ type LabelsController struct {
 
 const labelsSafeName = "labels"
 
+// Get ..
+func (ctrl LabelsController) Get(c *gin.Context) {
+	var labels []m.Label
+	ctrl.context.Db.Find(&labels)
+	response := make([]m.LabelResponse, len(labels))
+	for i, label := range labels {
+		response[i] = label.Map()
+	}
+	c.JSON(http.StatusOK, &response)
+}
+
 // GetByID ..
 func (ctrl LabelsController) GetByID(c *gin.Context) {
 	var label m.Label
 	if ctrl.context.Db.First(&label, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("label_not_found", nil))
 	} else {
-		c.JSON(http.StatusOK, &label)
+		c.JSON(http.StatusOK, label.Map())
 	}
-}
-
-// Get ..
-func (ctrl LabelsController) Get(c *gin.Context) {
-	var labels []m.Label
-	ctrl.context.Db.Find(&labels)
-	c.JSON(http.StatusOK, &labels)
 }
 
 // Post ..
@@ -42,9 +46,9 @@ func (ctrl LabelsController) Post(c *gin.Context) {
 	}
 
 	// Check label is unique
-	if !ctrl.context.Db.Where("name_slug = ?", h.GenerateSlug(label.Name)).RecordNotFound() {
-		c.JSON(http.StatusConflict,
-			m.NewBaelorError("genre_already_exists", nil))
+	label.NameSlug = h.GenerateSlug(label.Name)
+	if !ctrl.context.Db.First(&m.Label{}, "name_slug = ?", &label.NameSlug).RecordNotFound() {
+		c.JSON(http.StatusConflict, m.NewBaelorError("label_already_exists", nil))
 		return
 	}
 
@@ -57,7 +61,7 @@ func (ctrl LabelsController) Post(c *gin.Context) {
 			m.NewBaelorError("unknown_error_creating_label", nil))
 		return
 	}
-	c.JSON(http.StatusCreated, &label)
+	c.JSON(http.StatusCreated, label.Map())
 }
 
 // NewLabelsController ..

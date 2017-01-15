@@ -15,21 +15,25 @@ type PeopleController struct {
 
 const peopleSafeName = "people"
 
+// Get ..
+func (ctrl PeopleController) Get(c *gin.Context) {
+	var people []m.Person
+	ctrl.context.Db.Find(&people)
+	response := make([]m.PersonResponse, len(people))
+	for i, person := range people {
+		response[i] = person.Map()
+	}
+	c.JSON(http.StatusOK, response)
+}
+
 // GetByID ..
 func (ctrl PeopleController) GetByID(c *gin.Context) {
 	var person m.Person
 	if ctrl.context.Db.First(&person, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
 	} else {
-		c.JSON(http.StatusOK, &person)
+		c.JSON(http.StatusOK, person.Map())
 	}
-}
-
-// Get ..
-func (ctrl PeopleController) Get(c *gin.Context) {
-	var people []m.Person
-	ctrl.context.Db.Find(&people)
-	c.JSON(http.StatusOK, &people)
 }
 
 // Post ..
@@ -44,8 +48,7 @@ func (ctrl PeopleController) Post(c *gin.Context) {
 
 	// Check person is unique
 	if !ctrl.context.Db.Where("name_slug = ?", &person.NameSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict,
-			m.NewBaelorError("person_already_exists", nil))
+		c.JSON(http.StatusConflict, m.NewBaelorError("person_already_exists", nil))
 		return
 	}
 
@@ -56,7 +59,7 @@ func (ctrl PeopleController) Post(c *gin.Context) {
 			m.NewBaelorError("unknown_error_creating_person", nil))
 		return
 	}
-	c.JSON(http.StatusCreated, &person)
+	c.JSON(http.StatusCreated, person.Map())
 }
 
 // NewPeopleController ..

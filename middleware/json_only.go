@@ -11,7 +11,7 @@ var relevantHTTPMethods = []string{"POST", "PUT", "PATCH"}
 // JSONOnly ..
 func JSONOnly() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !h.InArray(relevantHTTPMethods, c.Request.Method) {
+		if !h.InSlice(relevantHTTPMethods, c.Request.Method) {
 			c.Next()
 			return
 		}

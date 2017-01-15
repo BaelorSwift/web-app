@@ -15,21 +15,25 @@ type GenresController struct {
 
 const genreSafeName = "genres"
 
+// Get ..
+func (ctrl GenresController) Get(c *gin.Context) {
+	var genres []m.Genre
+	ctrl.context.Db.Find(&genres)
+	response := make([]m.GenreResponse, len(genres))
+	for i, genre := range genres {
+		response[i] = genre.Map()
+	}
+	c.JSON(http.StatusOK, &response)
+}
+
 // GetByID ..
 func (ctrl GenresController) GetByID(c *gin.Context) {
 	var genre m.Genre
 	if ctrl.context.Db.First(&genre, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
 	} else {
-		c.JSON(http.StatusOK, &genre)
+		c.JSON(http.StatusOK, genre.Map())
 	}
-}
-
-// Get ..
-func (ctrl GenresController) Get(c *gin.Context) {
-	var genres []m.Genre
-	ctrl.context.Db.Find(&genres)
-	c.JSON(http.StatusOK, &genres)
 }
 
 // Post ...
@@ -43,9 +47,9 @@ func (ctrl GenresController) Post(c *gin.Context) {
 	}
 
 	// Check genre is unique
-	if !ctrl.context.Db.Where("name_slug = ?", &genre.NameSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict,
-			m.NewBaelorError("genre_already_exists", nil))
+	genre.NameSlug = h.GenerateSlug(genre.Name)
+	if !ctrl.context.Db.First(&m.Genre{}, "name_slug = ?", genre.NameSlug).RecordNotFound() {
+		c.JSON(http.StatusConflict, m.NewBaelorError("album_already_exists", nil))
 		return
 	}
 
@@ -57,7 +61,7 @@ func (ctrl GenresController) Post(c *gin.Context) {
 			m.NewBaelorError("unknown_error_creating_genre", nil))
 		return
 	}
-	c.JSON(http.StatusCreated, &genre)
+	c.JSON(http.StatusCreated, genre.Map())
 }
 
 // NewGenresController ..

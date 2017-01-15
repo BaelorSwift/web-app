@@ -20,7 +20,12 @@ const studioSafeName = "studios"
 func (ctrl StudiosController) Get(c *gin.Context) {
 	var studios []m.Studio
 	ctrl.context.Db.Find(&studios)
-	c.JSON(http.StatusOK, &studios)
+	response := make([]m.StudioResponse, len(studios))
+	for i, studio := range studios {
+		response[i] = studio.Map()
+	}
+
+	c.JSON(http.StatusOK, &response)
 }
 
 // GetByID ..
@@ -29,7 +34,7 @@ func (ctrl StudiosController) GetByID(c *gin.Context) {
 	if ctrl.context.Db.First(&studio, "id = ?", c.Param("id")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("studio_not_found", nil))
 	} else {
-		c.JSON(http.StatusOK, &studio)
+		c.JSON(http.StatusOK, studio.Map())
 	}
 }
 
@@ -46,8 +51,7 @@ func (ctrl StudiosController) Post(c *gin.Context) {
 	// Check studio is unique
 	studio.NameSlug = h.GenerateSlug(studio.Name)
 	if !ctrl.context.Db.First(&m.Studio{}, "name_slug = ?", studio.NameSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict,
-			m.NewBaelorError("studio_already_exists", nil))
+		c.JSON(http.StatusConflict, m.NewBaelorError("studio_already_exists", nil))
 		return
 	}
 
@@ -59,7 +63,7 @@ func (ctrl StudiosController) Post(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, &studio)
+	c.JSON(http.StatusCreated, studio.Map())
 }
 
 // NewStudiosController ..

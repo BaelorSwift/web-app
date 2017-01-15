@@ -15,21 +15,30 @@ type AlbumsController struct {
 
 const albumSafeName = "albums"
 
-// GetByID ..
-func (ctrl AlbumsController) GetByID(c *gin.Context) {
-	var album m.Album
-	if ctrl.context.Db.First(&album, "id = ?", c.Param("id")).RecordNotFound() {
-		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
-	} else {
-		c.JSON(http.StatusOK, &album)
-	}
-}
-
 // Get ..
 func (ctrl AlbumsController) Get(c *gin.Context) {
 	var albums []m.Album
-	ctrl.context.Db.Find(&albums)
-	c.JSON(http.StatusOK, &albums)
+	ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios").Preload("Label").Find(&albums)
+	response := make([]m.AlbumResponse, len(albums))
+	for i, album := range albums {
+		response[i] = album.Map()
+	}
+	c.JSON(http.StatusOK, &response)
+}
+
+// GetByID ..
+func (ctrl AlbumsController) GetByID(c *gin.Context) {
+	var album m.Album
+
+	// I don't like this, at all. it's awful
+	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
+	query = query.Preload("Label").First(&album, "id = ?", c.Param("id")).Related(&[]m.Genre{})
+
+	if query.RecordNotFound() {
+		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, album.Map())
+	}
 }
 
 // Post ..
@@ -43,20 +52,37 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 	}
 
 	// Check album is unique
-	if !ctrl.context.Db.Where("title_slug = ?", &album.TitleSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict,
-			m.NewBaelorError("album_already_exists", nil))
+	album.TitleSlug = h.GenerateSlug(album.Title)
+	if !ctrl.context.Db.First(&m.Album{}, "title_slug = ?", &album.TitleSlug).RecordNotFound() {
+		c.JSON(http.StatusConflict, m.NewBaelorError("album_already_exists", nil))
+		return
+	}
+
+	// Check ids exists
+	wrongIdsCh := make(chan map[string][]string)
+	go h.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producerIds")
+	go h.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genreIds")
+	go h.CheckIDsExist(album.StudioIDs, ctrl.context.Db.Table("studios"), wrongIdsCh, "studioIds")
+	go h.CheckIDsExist([]string{album.LabelID}, ctrl.context.Db.Table("labels"), wrongIdsCh, "labelId")
+	wrongIds := h.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
+	if len(wrongIds) > 0 {
+		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("invalid_ids", wrongIds))
 		return
 	}
 
 	// Insert into database
 	album.Init()
+	ctrl.context.Db.Where("id IN (?)", album.ProducerIDs).Find(&album.Producers)
+	ctrl.context.Db.Where("id IN (?)", album.GenreIDs).Find(&album.Genres)
+	ctrl.context.Db.Where("id IN (?)", album.StudioIDs).Find(&album.Studios)
+	ctrl.context.Db.Where("id = ?", album.LabelID).First(&album.Label)
 	if ctrl.context.Db.Create(&album); ctrl.context.Db.NewRecord(album) {
 		c.JSON(http.StatusInternalServerError,
 			m.NewBaelorError("unknown_error_creating_album", nil))
 		return
 	}
-	c.JSON(http.StatusCreated, &album)
+
+	c.JSON(http.StatusCreated, album.Map())
 }
 
 // NewAlbumsController ..

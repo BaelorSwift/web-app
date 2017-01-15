@@ -8,10 +8,10 @@ import (
 
 // Audit contains all the base audit info of a model
 type Audit struct {
-	ID        string     `gorm:"type:varchar(100);primary_key"               json:"id"`
+	ID        string     `gorm:"type:varchar(36);primary_key"                json:"id"`
 	CreatedAt time.Time  `gorm:"not null"    sql:"default:current_timestamp" json:"createdAt"`
 	UpdatedAt time.Time  `gorm:"not null"    sql:"default:current_timestamp" json:"updatedAt"`
-	DeletedAt *time.Time `                                                   json:"deletedAt"`
+	DeletedAt *time.Time `                                                   json:"-"`
 }
 
 // Init ..
