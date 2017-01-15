@@ -5,7 +5,7 @@ type Genre struct {
 	Audit
 
 	Name        string `gorm:"not null" json:"name"`
-	NameSlug    string `gorm:"not null" json:"nameSlug"`
+	NameSlug    string `gorm:"not null" json:"name_slug"`
 	Description string `gorm:"not null" json:"description"`
 }
 
@@ -14,7 +14,7 @@ type GenreResponse struct {
 	Audit
 
 	Name        string `json:"name"`
-	NameSlug    string `json:"nameSlug"`
+	NameSlug    string `json:"name_slug"`
 	Description string `json:"description"`
 }
 

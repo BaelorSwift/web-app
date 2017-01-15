@@ -5,7 +5,7 @@ type Person struct {
 	Audit
 
 	Name        string `gorm:"not null" json:"name"`
-	NameSlug    string `gorm:"not null" json:"nameSlug"`
+	NameSlug    string `gorm:"not null" json:"name_slug"`
 	Nationality string `gorm:"not null" json:"nationality"`
 	Occupation  string `gorm:"not null" json:"occupation"`
 }
@@ -15,7 +15,7 @@ type PersonResponse struct {
 	Audit
 
 	Name        string `json:"name"`
-	NameSlug    string `json:"nameSlug"`
+	NameSlug    string `json:"name_slug"`
 	Nationality string `json:"nationality"`
 	Occupation  string `json:"occupation"`
 }

@@ -1,14 +1,23 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
+	"required": [
+		"name",
+		"founded_at",
+		"founded_in",
+		"location",
+		"website"
+	],
+	"additionalProperties": false,
+
 	"properties": {
 		"name": {
 			"type": "string"
 		},
-		"founded": {
+		"founded_at": {
 			"type": "integer"
 		},
-		"foundedIn": {
+		"founded_in": {
 			"type": "string"
 		},
 		"location": {
@@ -17,12 +26,5 @@
 		"website": {
 			"type": "string"
 		}
-	},
-	"required": [
-		"name",
-		"founded",
-		"foundedIn",
-		"location",
-		"website"
-	]
+	}
 }

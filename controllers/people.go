@@ -47,7 +47,8 @@ func (ctrl PeopleController) Post(c *gin.Context) {
 	}
 
 	// Check person is unique
-	if !ctrl.context.Db.Where("name_slug = ?", &person.NameSlug).RecordNotFound() {
+	person.NameSlug = h.GenerateSlug(person.Name)
+	if !ctrl.context.Db.First(&m.Person{}, "name_slug = ?", person.NameSlug).RecordNotFound() {
 		c.JSON(http.StatusConflict, m.NewBaelorError("person_already_exists", nil))
 		return
 	}

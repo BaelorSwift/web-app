@@ -1,13 +1,16 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
+	"required": [
+		"name",
+		"nationality",
+		"occupation"
+	],
+	"additionalProperties": false,
+
 	"properties": {
 		"name": {
 			"type": "string"
-		},
-		"nameSlug": {
-			"type": "string",
-			"pattern": "^[a-z0-9]+[a-z0-9-]*$"
 		},
 		"nationality": {
 			"type": "string"
@@ -15,11 +18,5 @@
 		"occupation": {
 			"type": "string"
 		}
-	},
-	"required": [
-		"name",
-		"nameSlug",
-		"nationality",
-		"occupation"
-	]
+	}
 }

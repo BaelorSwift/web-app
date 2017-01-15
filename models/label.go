@@ -5,9 +5,9 @@ type Label struct {
 	Audit
 
 	Name      string `gorm:"not null" json:"name"`
-	NameSlug  string `gorm:"not null" json:"nameSlug"`
-	FoundedAt uint64 `gorm:"not null" json:"founded"`
-	FoundedIn string `gorm:"not null" json:"foundedIn"`
+	NameSlug  string `gorm:"not null" json:"name_slug"`
+	FoundedAt uint64 `gorm:"not null" json:"founded_at"`
+	FoundedIn string `gorm:"not null" json:"founded_in"`
 	Location  string `gorm:"not null" json:"location"`
 	Website   string `gorm:"not null" json:"website"`
 
@@ -19,9 +19,9 @@ type LabelResponse struct {
 	Audit
 
 	Name      string  `json:"name"`
-	NameSlug  string  `json:"nameSlug"`
-	FoundedAt uint64  `json:"founded"`
-	FoundedIn string  `json:"foundedIn"`
+	NameSlug  string  `json:"name_slug"`
+	FoundedAt uint64  `json:"founded_at"`
+	FoundedIn string  `json:"founded_in"`
 	Location  string  `json:"location"`
 	Website   string  `json:"website"`
 	Albums    []Album `json:"albums"`

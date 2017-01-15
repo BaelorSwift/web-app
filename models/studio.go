@@ -5,9 +5,9 @@ type Studio struct {
 	Audit
 
 	Name      string `gorm:"not null" json:"name"`
-	NameSlug  string `gorm:"not null" json:"nameSlug"`
-	FoundedIn string `gorm:"not null" json:"foundedIn"`
-	FoundedAt int64  `gorm:"not null" json:"foundedAt"`
+	NameSlug  string `gorm:"not null" json:"name_slug"`
+	FoundedIn string `gorm:"not null" json:"founded_in"`
+	FoundedAt int64  `gorm:"not null" json:"founded_at"`
 	Website   string `gorm:"not null" json:"website"`
 
 	Albums []Album `json:"albums"`
@@ -18,9 +18,9 @@ type StudioResponse struct {
 	Audit
 
 	Name      string `json:"name"`
-	NameSlug  string `json:"nameSlug"`
-	FoundedIn string `json:"foundedIn"`
-	FoundedAt int64  `json:"foundedAt"`
+	NameSlug  string `json:"name_slug"`
+	FoundedIn string `json:"founded_in"`
+	FoundedAt int64  `json:"founded_at"`
 	Website   string `json:"website"`
 
 	Albums []Album `json:"albums,omitempty"`

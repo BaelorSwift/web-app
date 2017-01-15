@@ -3,8 +3,8 @@
 	"type": "object",
 	"required": [
 		"name",
-		"foundedIn",
-		"foundedAt",
+		"founded_in",
+		"founded_at",
 		"website"
 	],
 	"additionalProperties": false,
@@ -13,10 +13,10 @@
 		"name": {
 			"type": "string"
 		},
-		"foundedIn": {
+		"founded_in": {
 			"type": "string"
 		},
-		"foundedAt": {
+		"founded_at": {
 			"type": "integer"
 		},
 		"website": {
