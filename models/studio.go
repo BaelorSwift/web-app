@@ -23,7 +23,7 @@ type StudioResponse struct {
 	FoundedAt int64  `json:"founded_at"`
 	Website   string `json:"website"`
 
-	Albums []Album `json:"albums,omitempty"`
+	Albums []Album `json:"albums"`
 }
 
 // Map ..
