@@ -60,10 +60,10 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 
 	// Check ids exists
 	wrongIdsCh := make(chan map[string][]string)
-	go h.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producerIds")
-	go h.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genreIds")
-	go h.CheckIDsExist(album.StudioIDs, ctrl.context.Db.Table("studios"), wrongIdsCh, "studioIds")
-	go h.CheckIDsExist([]string{album.LabelID}, ctrl.context.Db.Table("labels"), wrongIdsCh, "labelId")
+	go h.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producer_ids")
+	go h.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genre_ids")
+	go h.CheckIDsExist(album.StudioIDs, ctrl.context.Db.Table("studios"), wrongIdsCh, "studio_ids")
+	go h.CheckIDsExist([]string{album.LabelID}, ctrl.context.Db.Table("labels"), wrongIdsCh, "label_id")
 	wrongIds := h.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
 	if len(wrongIds) > 0 {
 		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("invalid_ids", wrongIds))

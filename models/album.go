@@ -19,9 +19,9 @@ type Album struct {
 	LabelID   string   `gorm:"not null;index"             json:"label_id"`
 	Label     Label    `                                  json:"label"`
 
-	ProducerIDs []string `gorm:"-" json:"producerIds"`
-	GenreIDs    []string `gorm:"-" json:"genreIds"`
-	StudioIDs   []string `gorm:"-" json:"studioIds"`
+	ProducerIDs []string `gorm:"-" json:"producer_ids"`
+	GenreIDs    []string `gorm:"-" json:"genre_ids"`
+	StudioIDs   []string `gorm:"-" json:"studio_ids"`
 }
 
 // AlbumResponse ..

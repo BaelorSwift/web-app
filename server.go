@@ -17,13 +17,13 @@ import (
 // Config contains the loaded configuration
 var Config = struct {
 	Address          string `json:"address"`
-	Dsn              string `json:"dsn"`
-	ConnectionString string `json:"connectionString"`
+	DSN              string `json:"dsn"`
+	ConnectionString string `json:"connection_string"`
 }{}
 
 func main() {
 	configor.Load(&Config, "config/app.json")
-	raven.SetDSN(Config.Dsn)
+	raven.SetDSN(Config.DSN)
 
 	context := m.Context{Db: h.NewDatabase(Config.ConnectionString)}
 
