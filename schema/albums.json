@@ -48,7 +48,7 @@
 			"pattern": "[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}"
 		},
 
-		"genresIds": {
+		"genreIds": {
 			"type": "array",
 			"minItems": 1,
 			"items": {
