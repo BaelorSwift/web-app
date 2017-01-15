@@ -58,7 +58,7 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 		return
 	}
 
-	// Check ids exists
+	// Check ids exist
 	wrongIdsCh := make(chan map[string][]string)
 	go h.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producer_ids")
 	go h.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genre_ids")
