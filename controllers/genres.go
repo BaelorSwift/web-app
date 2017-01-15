@@ -49,7 +49,7 @@ func (ctrl GenresController) Post(c *gin.Context) {
 	// Check genre is unique
 	genre.NameSlug = h.GenerateSlug(genre.Name)
 	if !ctrl.context.Db.First(&m.Genre{}, "name_slug = ?", genre.NameSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict, m.NewBaelorError("album_already_exists", nil))
+		c.JSON(http.StatusConflict, m.NewBaelorError("genre_already_exists", nil))
 		return
 	}
 
