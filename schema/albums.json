@@ -10,8 +10,9 @@
 		"studio",
 		"coverImage",
 		"labelId",
-		"genres",
-		"producers"
+		"genreIds",
+		"producerIds",
+		"studioIds"
 	],
 	"additionalProperties": false,
 
