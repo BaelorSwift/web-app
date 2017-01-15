@@ -23,12 +23,12 @@ type StudioResponse struct {
 	FoundedAt int64  `json:"founded_at"`
 	Website   string `json:"website"`
 
-	Albums []Album `json:"albums"`
+	Albums []AlbumResponse `json:"albums"`
 }
 
 // Map ..
 func (studio Studio) Map() StudioResponse {
-	return StudioResponse{
+	stdio := StudioResponse{
 		Audit: studio.Audit,
 
 		Name:      studio.Name,
@@ -36,6 +36,12 @@ func (studio Studio) Map() StudioResponse {
 		FoundedIn: studio.FoundedIn,
 		FoundedAt: studio.FoundedAt,
 		Website:   studio.Website,
-		Albums:    studio.Albums,
+		Albums:    make([]AlbumResponse, len(studio.Albums)),
 	}
+
+	for i, album := range studio.Albums {
+		stdio.Albums[i] = album.Map()
+	}
+
+	return stdio
 }

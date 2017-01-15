@@ -18,18 +18,18 @@ type Label struct {
 type LabelResponse struct {
 	Audit
 
-	Name      string  `json:"name"`
-	NameSlug  string  `json:"name_slug"`
-	FoundedAt uint64  `json:"founded_at"`
-	FoundedIn string  `json:"founded_in"`
-	Location  string  `json:"location"`
-	Website   string  `json:"website"`
-	Albums    []Album `json:"albums"`
+	Name      string          `json:"name"`
+	NameSlug  string          `json:"name_slug"`
+	FoundedAt uint64          `json:"founded_at"`
+	FoundedIn string          `json:"founded_in"`
+	Location  string          `json:"location"`
+	Website   string          `json:"website"`
+	Albums    []AlbumResponse `json:"albums"`
 }
 
 // Map ..
 func (label Label) Map() LabelResponse {
-	return LabelResponse{
+	lbl := LabelResponse{
 		Audit: label.Audit,
 
 		Name:      label.Name,
@@ -38,6 +38,12 @@ func (label Label) Map() LabelResponse {
 		FoundedIn: label.FoundedIn,
 		Location:  label.Location,
 		Website:   label.Website,
-		Albums:    label.Albums,
+		Albums:    make([]AlbumResponse, len(label.Albums)),
 	}
+
+	for i, album := range label.Albums {
+		lbl.Albums[i] = album.Map()
+	}
+
+	return lbl
 }

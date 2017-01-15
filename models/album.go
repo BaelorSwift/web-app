@@ -36,15 +36,15 @@ type AlbumResponse struct {
 	ReleasedAt  uint64 `json:"released_at"`
 	CoverImage  string `json:"cover_image"`
 
-	Genres    []Genre  `json:"genres"`
-	Producers []Person `json:"producers"`
-	Studios   []Studio `json:"studios"`
-	Label     Label    `json:"label"`
+	Genres    []GenreResponse  `json:"genres"`
+	Producers []PersonResponse `json:"producers"`
+	Studios   []StudioResponse `json:"studios"`
+	Label     Label            `json:"label"`
 }
 
 // Map ..
 func (album Album) Map() AlbumResponse {
-	return AlbumResponse{
+	albm := AlbumResponse{
 		Audit: album.Audit,
 
 		Title:       album.Title,
@@ -55,9 +55,21 @@ func (album Album) Map() AlbumResponse {
 		ReleasedAt:  album.ReleasedAt,
 		CoverImage:  album.CoverImage,
 
-		Genres:    album.Genres,
-		Producers: album.Producers,
-		Studios:   album.Studios,
+		Genres:    make([]GenreResponse, len(album.Genres)),
+		Producers: make([]PersonResponse, len(album.Producers)),
+		Studios:   make([]StudioResponse, len(album.Studios)),
 		Label:     album.Label,
 	}
+
+	for i, genre := range album.Genres {
+		albm.Genres[i] = genre.Map()
+	}
+	for i, producer := range album.Producers {
+		albm.Producers[i] = producer.Map()
+	}
+	for i, studio := range album.Studios {
+		albm.Studios[i] = studio.Map()
+	}
+
+	return albm
 }
