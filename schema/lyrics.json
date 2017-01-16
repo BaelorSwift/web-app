@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"required": [
+		"index",
+		"content",
+		"song_id"
+	],
+	"additionalProperties": false,
+
+	"properties": {
+		"index": {
+			"type": "integer",
+			"minimum": 1
+		},
+		"content": {
+			"type": "string",
+			"minLength": 1
+		},
+		"song_id": {
+			"type": "string",
+			"pattern": "[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}"
+		}
+	}
+}
