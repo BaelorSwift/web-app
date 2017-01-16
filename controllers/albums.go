@@ -18,7 +18,7 @@ const albumSafeName = "albums"
 // Get ..
 func (ctrl AlbumsController) Get(c *gin.Context) {
 	var albums []m.Album
-	ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios").Preload("Label").Find(&albums)
+	ctrl.context.Db.Preload("Songs").Preload("Genres").Preload("Producers").Preload("Studios").Preload("Label").Find(&albums)
 	response := make([]m.AlbumResponse, len(albums))
 	for i, album := range albums {
 		response[i] = album.Map()
@@ -32,7 +32,7 @@ func (ctrl AlbumsController) GetByID(c *gin.Context) {
 
 	// I don't like this, at all. it's awful
 	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
-	query = query.Preload("Label").First(&album, "id = ?", c.Param("id")).Related(&[]m.Genre{})
+	query = query.Preload("Label").First(&album, "id = ?", c.Param("id")).Preload("Songs")
 
 	if query.RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))

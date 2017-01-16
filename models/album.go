@@ -13,6 +13,7 @@ type Album struct {
 	Studio      string `gorm:"not null"                    json:"studio"`
 	CoverImage  string `gorm:"not null"                    json:"cover_image"`
 
+	Songs     []Song   `gorm:"ForeignKey:AlbumID"         json:"albums"`
 	Genres    []Genre  `gorm:"many2many:album_genres;"    json:"genres"`
 	Producers []Person `gorm:"many2many:album_producers;" json:"producers"`
 	Studios   []Studio `gorm:"many2many:album_studios;"   json:"studios"`
@@ -36,6 +37,7 @@ type AlbumResponse struct {
 	ReleasedAt  uint64 `json:"released_at"`
 	CoverImage  string `json:"cover_image"`
 
+	Songs     []SongResponse   `json:"songs"`
 	Genres    []GenreResponse  `json:"genres"`
 	Producers []PersonResponse `json:"producers"`
 	Studios   []StudioResponse `json:"studios"`
@@ -55,12 +57,16 @@ func (album Album) Map() AlbumResponse {
 		ReleasedAt:  album.ReleasedAt,
 		CoverImage:  album.CoverImage,
 
+		Songs:     make([]SongResponse, len(album.Songs)),
 		Genres:    make([]GenreResponse, len(album.Genres)),
 		Producers: make([]PersonResponse, len(album.Producers)),
 		Studios:   make([]StudioResponse, len(album.Studios)),
 		Label:     album.Label,
 	}
 
+	for i, song := range album.Songs {
+		albm.Songs[i] = song.Map()
+	}
 	for i, genre := range album.Genres {
 		albm.Genres[i] = genre.Map()
 	}

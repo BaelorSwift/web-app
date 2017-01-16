@@ -18,7 +18,7 @@ func NewDatabase(connectionStr string) *gorm.DB {
 	}
 
 	// Run those migrations
-	db.AutoMigrate(&m.Album{}, &m.Genre{}, &m.Label{}, &m.Person{}, &m.Studio{})
+	db.AutoMigrate(&m.Album{}, &m.Genre{}, &m.Label{}, &m.Person{}, &m.Studio{}, &m.Song{})
 
 	return db
 }
