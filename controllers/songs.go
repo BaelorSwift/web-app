@@ -19,7 +19,7 @@ const songSafeName = "songs"
 func (ctrl SongsController) Get(c *gin.Context) {
 	var songs []m.Song
 	ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers").Preload("Genres").First(&songs)
-	response := make([]m.SongResponse, len(songs))
+	response := make([]*m.SongResponse, len(songs))
 	for i, song := range songs {
 		response[i] = song.Map()
 	}

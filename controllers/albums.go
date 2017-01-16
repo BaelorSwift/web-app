@@ -19,7 +19,7 @@ const albumSafeName = "albums"
 func (ctrl AlbumsController) Get(c *gin.Context) {
 	var albums []m.Album
 	ctrl.context.Db.Preload("Songs").Preload("Genres").Preload("Producers").Preload("Studios").Preload("Label").Find(&albums)
-	response := make([]m.AlbumResponse, len(albums))
+	response := make([]*m.AlbumResponse, len(albums))
 	for i, album := range albums {
 		response[i] = album.Map()
 	}

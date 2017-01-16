@@ -20,7 +20,7 @@ const studioSafeName = "studios"
 func (ctrl StudiosController) Get(c *gin.Context) {
 	var studios []m.Studio
 	ctrl.context.Db.Find(&studios)
-	response := make([]m.StudioResponse, len(studios))
+	response := make([]*m.StudioResponse, len(studios))
 	for i, studio := range studios {
 		response[i] = studio.Map()
 	}

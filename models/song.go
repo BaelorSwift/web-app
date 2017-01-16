@@ -25,20 +25,24 @@ type Song struct {
 type SongResponse struct {
 	Audit
 
-	Index     uint16        `json:"index"`
-	Title     string        `json:"title"`
-	TitleSlug string        `json:"title_slug"`
-	Length    uint32        `json:"length"`
-	IsSingle  bool          `json:"is_single"`
-	Album     AlbumResponse `json:"album"`
+	Index     uint16         `json:"index"`
+	Title     string         `json:"title"`
+	TitleSlug string         `json:"title_slug"`
+	Length    uint32         `json:"length"`
+	IsSingle  bool           `json:"is_single"`
+	Album     *AlbumResponse `json:"album,omitempty"`
 
-	Producers []PersonResponse `json:"producers"`
-	Genres    []GenreResponse  `json:"genres"`
-	Writers   []PersonResponse `json:"writers"`
+	Producers []*PersonResponse `json:"producers"`
+	Genres    []*GenreResponse  `json:"genres"`
+	Writers   []*PersonResponse `json:"writers"`
 }
 
 // Map ..
-func (song Song) Map() SongResponse {
+func (song Song) Map() *SongResponse {
+	if song.ID == "" {
+		return nil
+	}
+
 	sng := SongResponse{
 		Audit: song.Audit,
 
@@ -48,9 +52,9 @@ func (song Song) Map() SongResponse {
 		IsSingle: song.IsSingle,
 
 		Album:     song.Album.Map(),
-		Producers: make([]PersonResponse, len(song.Producers)),
-		Genres:    make([]GenreResponse, len(song.Genres)),
-		Writers:   make([]PersonResponse, len(song.Writers)),
+		Producers: make([]*PersonResponse, len(song.Producers)),
+		Genres:    make([]*GenreResponse, len(song.Genres)),
+		Writers:   make([]*PersonResponse, len(song.Writers)),
 	}
 
 	for i, producer := range song.Producers {
@@ -63,5 +67,5 @@ func (song Song) Map() SongResponse {
 		sng.Writers[i] = writer.Map()
 	}
 
-	return sng
+	return &sng
 }

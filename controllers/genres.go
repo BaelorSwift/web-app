@@ -19,7 +19,7 @@ const genreSafeName = "genres"
 func (ctrl GenresController) Get(c *gin.Context) {
 	var genres []m.Genre
 	ctrl.context.Db.Find(&genres)
-	response := make([]m.GenreResponse, len(genres))
+	response := make([]*m.GenreResponse, len(genres))
 	for i, genre := range genres {
 		response[i] = genre.Map()
 	}

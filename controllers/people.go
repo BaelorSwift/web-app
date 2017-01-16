@@ -19,7 +19,7 @@ const peopleSafeName = "people"
 func (ctrl PeopleController) Get(c *gin.Context) {
 	var people []m.Person
 	ctrl.context.Db.Find(&people)
-	response := make([]m.PersonResponse, len(people))
+	response := make([]*m.PersonResponse, len(people))
 	for i, person := range people {
 		response[i] = person.Map()
 	}

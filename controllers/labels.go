@@ -19,7 +19,7 @@ const labelsSafeName = "labels"
 func (ctrl LabelsController) Get(c *gin.Context) {
 	var labels []m.Label
 	ctrl.context.Db.Find(&labels)
-	response := make([]m.LabelResponse, len(labels))
+	response := make([]*m.LabelResponse, len(labels))
 	for i, label := range labels {
 		response[i] = label.Map()
 	}

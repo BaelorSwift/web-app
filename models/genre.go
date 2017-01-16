@@ -19,8 +19,12 @@ type GenreResponse struct {
 }
 
 // Map ..
-func (genre Genre) Map() GenreResponse {
-	return GenreResponse{
+func (genre Genre) Map() *GenreResponse {
+	if genre.ID == "" {
+		return nil
+	}
+
+	return &GenreResponse{
 		Audit: genre.Audit,
 
 		Name:        genre.Name,

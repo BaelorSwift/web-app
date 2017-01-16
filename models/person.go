@@ -26,8 +26,12 @@ func (Person) TableName() string {
 }
 
 // Map ..
-func (person Person) Map() PersonResponse {
-	return PersonResponse{
+func (person Person) Map() *PersonResponse {
+	if person.ID == "" {
+		return nil
+	}
+
+	return &PersonResponse{
 		Audit: person.Audit,
 
 		Name:        person.Name,
