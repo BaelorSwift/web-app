@@ -4,12 +4,12 @@ package models
 type Label struct {
 	Audit
 
-	Name      string `gorm:"not null" json:"name"`
-	NameSlug  string `gorm:"not null" json:"name_slug"`
-	FoundedAt uint64 `gorm:"not null" json:"founded_at"`
-	FoundedIn string `gorm:"not null" json:"founded_in"`
-	Location  string `gorm:"not null" json:"location"`
-	Website   string `gorm:"not null" json:"website"`
+	Name      string `gorm:"not null"              json:"name"`
+	NameSlug  string `gorm:"not null;unique_index" json:"name_slug"`
+	FoundedAt uint64 `gorm:"not null"              json:"founded_at"`
+	FoundedIn string `gorm:"not null"              json:"founded_in"`
+	Location  string `gorm:"not null"              json:"location"`
+	Website   string `gorm:"not null"              json:"website"`
 
 	Albums []Album `gorm:"ForeignKey:LabelID" json:"albums"`
 }

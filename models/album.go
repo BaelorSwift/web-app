@@ -5,7 +5,7 @@ type Album struct {
 	Audit
 
 	Title       string `gorm:"not null"                    json:"title"`
-	TitleSlug   string `gorm:"not null"                    json:"title_slug"`
+	TitleSlug   string `gorm:"not null;unique_index"       json:"title_slug"`
 	Description string `gorm:"not null;type:varchar(1500)" json:"description"`
 	Length      uint64 `gorm:"not null"                    json:"length"`
 	RecordedAt  string `gorm:"not null"                    json:"recorded_at"`

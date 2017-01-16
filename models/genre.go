@@ -5,7 +5,7 @@ type Genre struct {
 	Audit
 
 	Name        string `gorm:"not null"                    json:"name"`
-	NameSlug    string `gorm:"not null"                    json:"name_slug"`
+	NameSlug    string `gorm:"not null;unique_index"       json:"name_slug"`
 	Description string `gorm:"not null;type:varchar(1500)" json:"description"`
 }
 

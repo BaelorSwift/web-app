@@ -6,7 +6,7 @@ type Song struct {
 
 	Index     uint16 `gorm:"not null"                    json:"index"`
 	Title     string `gorm:"not null"                    json:"title"`
-	TitleSlug string `gorm:"not null"                    json:"title_slug"`
+	TitleSlug string `gorm:"not null;unique_index"       json:"title_slug"`
 	Length    uint32 `gorm:"not null"                    json:"length"`
 	IsSingle  bool   `gorm:"not null"                    json:"is_single"`
 	AlbumID   string `gorm:"not null"                    json:"album_id"`
