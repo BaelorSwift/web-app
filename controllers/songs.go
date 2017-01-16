@@ -18,7 +18,8 @@ const songSafeName = "songs"
 // Get ..
 func (ctrl SongsController) Get(c *gin.Context) {
 	var songs []m.Song
-	ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers").Preload("Genres").First(&songs)
+	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
+	query = query.Preload("Genres").Preload("Lyrics").First(&songs)
 	response := make([]*m.SongResponse, len(songs))
 	for i, song := range songs {
 		response[i] = song.Map()
@@ -31,9 +32,9 @@ func (ctrl SongsController) GetBySlug(c *gin.Context) {
 	var song m.Song
 
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
-	query = query.Preload("Genres").First(&song, "title_slug = ?", c.Param("slug"))
+	query = query.Preload("Genres").Preload("Lyrics")
 
-	if query.RecordNotFound() {
+	if query.First(&song, "title_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("song_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, song.Map())

@@ -40,6 +40,7 @@ func main() {
 		c.NewLabelsController(v1, context)
 		c.NewStudiosController(v1, context)
 		c.NewSongsController(v1, context)
+		c.NewLyricsController(v1, context)
 	}
 
 	log.Fatal(r.Run(Config.Address))

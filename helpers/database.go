@@ -3,9 +3,7 @@ package helpers
 import (
 	m "github.com/baelorswift/api/models"
 	"github.com/jinzhu/gorm"
-
-	// so we can actually look at our mysql db
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // Required for gorm to deal with mysql
 )
 
 // NewDatabase ..
@@ -18,7 +16,8 @@ func NewDatabase(connectionStr string) *gorm.DB {
 	}
 
 	// Run those migrations
-	db.AutoMigrate(&m.Album{}, &m.Genre{}, &m.Label{}, &m.Person{}, &m.Studio{}, &m.Song{})
+	db.AutoMigrate(&m.Album{}, &m.Genre{}, &m.Label{}, &m.Person{})
+	db.AutoMigrate(&m.Studio{}, &m.Song{}, &m.Lyric{})
 
 	return db
 }
