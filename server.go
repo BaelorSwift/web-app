@@ -25,7 +25,7 @@ func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.DSN)
 
-	context := m.Context{Db: h.NewDatabase(Config.ConnectionString)}
+	context := &m.Context{Db: h.NewDatabase(Config.ConnectionString)}
 
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery())
@@ -34,12 +34,12 @@ func main() {
 	r.Static("/static", "./static/")
 	v1 := r.Group("v1")
 	{
-		c.NewAlbumsController(v1, &context)
-		c.NewGenresController(v1, &context)
-		c.NewPeopleController(v1, &context)
-		c.NewLabelsController(v1, &context)
-		c.NewStudiosController(v1, &context)
-		c.NewSongsController(v1, &context)
+		c.NewAlbumsController(v1, context)
+		c.NewGenresController(v1, context)
+		c.NewPeopleController(v1, context)
+		c.NewLabelsController(v1, context)
+		c.NewStudiosController(v1, context)
+		c.NewSongsController(v1, context)
 	}
 
 	log.Fatal(r.Run(Config.Address))
