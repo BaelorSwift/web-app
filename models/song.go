@@ -46,10 +46,11 @@ func (song Song) Map() *SongResponse {
 	sng := SongResponse{
 		Audit: song.Audit,
 
-		Index:    song.Index,
-		Title:    song.Title,
-		Length:   song.Length,
-		IsSingle: song.IsSingle,
+		Index:     song.Index,
+		Title:     song.Title,
+		TitleSlug: song.TitleSlug,
+		Length:    song.Length,
+		IsSingle:  song.IsSingle,
 
 		Album:     song.Album.Map(),
 		Producers: make([]*PersonResponse, len(song.Producers)),
