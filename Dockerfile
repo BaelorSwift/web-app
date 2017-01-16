@@ -1,4 +1,4 @@
-FROM golang:1.4.2
+FROM golang:1.7.4
 
 # Create a directory inside the container to store all our application and then make it the working directory.
 RUN mkdir -p /go/src/github.com/baelorswift/api
