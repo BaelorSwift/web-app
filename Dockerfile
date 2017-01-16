@@ -11,4 +11,4 @@ RUN go-wrapper install
 
 EXPOSE 3000
 
-CMD gin run
+CMD go run ./server.go
