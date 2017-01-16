@@ -26,10 +26,10 @@ func (ctrl GenresController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetByID ..
-func (ctrl GenresController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl GenresController) GetBySlug(c *gin.Context) {
 	var genre m.Genre
-	if ctrl.context.Db.First(&genre, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&genre, "name_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, genre.Map())
@@ -70,6 +70,6 @@ func NewGenresController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("genres", ctrl.Get)
-	r.GET("genres/:id", ctrl.GetByID)
+	r.GET("genres/:slug", ctrl.GetBySlug)
 	r.POST("genres", ctrl.Post)
 }

@@ -28,10 +28,10 @@ func (ctrl StudiosController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetByID ..
-func (ctrl StudiosController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl StudiosController) GetBySlug(c *gin.Context) {
 	var studio m.Studio
-	if ctrl.context.Db.First(&studio, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&studio, "name_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("studio_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, studio.Map())
@@ -72,6 +72,6 @@ func NewStudiosController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("studios", ctrl.Get)
-	r.GET("studios/:id", ctrl.GetByID)
+	r.GET("studios/:slug", ctrl.GetBySlug)
 	r.POST("studios", ctrl.Post)
 }

@@ -26,10 +26,10 @@ func (ctrl PeopleController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// GetByID ..
-func (ctrl PeopleController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl PeopleController) GetBySlug(c *gin.Context) {
 	var person m.Person
-	if ctrl.context.Db.First(&person, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&person, "name_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, person.Map())
@@ -69,6 +69,6 @@ func NewPeopleController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("people", ctrl.Get)
-	r.GET("people/:id", ctrl.GetByID)
+	r.GET("people/:slug", ctrl.GetBySlug)
 	r.POST("people", ctrl.Post)
 }

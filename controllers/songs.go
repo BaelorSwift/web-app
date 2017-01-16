@@ -26,12 +26,12 @@ func (ctrl SongsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetByID ..
-func (ctrl SongsController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl SongsController) GetBySlug(c *gin.Context) {
 	var song m.Song
 
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
-	query = query.Preload("Genres").First(&song, "id = ?", c.Param("id"))
+	query = query.Preload("Genres").First(&song, "title_slug = ?", c.Param("slug"))
 
 	if query.RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("song_not_found", nil))
@@ -90,6 +90,6 @@ func NewSongsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("songs", ctrl.Get)
-	r.GET("songs/:id", ctrl.GetByID)
+	r.GET("songs/:slug", ctrl.GetBySlug)
 	r.POST("songs", ctrl.Post)
 }

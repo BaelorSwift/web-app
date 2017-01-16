@@ -26,13 +26,13 @@ func (ctrl AlbumsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetByID ..
-func (ctrl AlbumsController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl AlbumsController) GetBySlug(c *gin.Context) {
 	var album m.Album
 
 	// I don't like this, at all. it's awful
 	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
-	query = query.Preload("Label").First(&album, "id = ?", c.Param("id")).Preload("Songs")
+	query = query.Preload("Label").Preload("Songs").First(&album, "title_slug = ?", c.Param("slug"))
 
 	if query.RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
@@ -91,6 +91,6 @@ func NewAlbumsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("albums", ctrl.Get)
-	r.GET("albums/:id", ctrl.GetByID)
+	r.GET("albums/:slug", ctrl.GetBySlug)
 	r.POST("albums", ctrl.Post)
 }

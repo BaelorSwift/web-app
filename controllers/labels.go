@@ -26,10 +26,10 @@ func (ctrl LabelsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetByID ..
-func (ctrl LabelsController) GetByID(c *gin.Context) {
+// GetBySlug ..
+func (ctrl LabelsController) GetBySlug(c *gin.Context) {
 	var label m.Label
-	if ctrl.context.Db.First(&label, "id = ?", c.Param("id")).RecordNotFound() {
+	if ctrl.context.Db.First(&label, "name_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("label_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, label.Map())
@@ -70,6 +70,6 @@ func NewLabelsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("labels", ctrl.Get)
-	r.GET("labels/:id", ctrl.GetByID)
+	r.GET("labels/:slug", ctrl.GetBySlug)
 	r.POST("labels", ctrl.Post)
 }
