@@ -1,13 +1,18 @@
-FROM microsoft/dotnet:latest
+FROM golang:1.4.2
 
-COPY /src /app
+# Create a directory inside the container to store all our application and then make it the working directory.
+RUN mkdir -p /go/src/github.com/baelorswift/api
+WORKDIR /go/src/github.com/baelorswift/api
+COPY . /go/src/github.com/baelorswift/api
 
-WORKDIR /app
+RUN go get gopkg.in/gin-gonic/gin.v1
+RUN go-wrapper download
+RUN go-wrapper install
 
-RUN ["dotnet", "restore"]
+ENV CONFIGOR_ENV_PREFIX BAE
+ENV BAE_ADDRESS ":3000"
+ENV BAE_DSN "https://5f4087eadcf04e9daf4afc35a519f60a@sentry.io/103366"
 
-RUN ["dotnet", "build"]
+EXPOSE 3000
 
-EXPOSE 5000/tcp
-
-CMD ["dotnet", "run", "--server.urls", "http://*:5000"]
+CMD gin run
