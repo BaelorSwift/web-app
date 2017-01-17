@@ -16,7 +16,7 @@ type LyricResponse struct {
 
 	Index   uint          `json:"index"`
 	Content string        `json:"content"`
-	Song    *SongResponse `json:"song"`
+	Song    *SongResponse `json:"song,omitempty"`
 }
 
 // Map ..
