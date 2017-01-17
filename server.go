@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	c "github.com/baelorswift/api/controllers"
 	h "github.com/baelorswift/api/helpers"
@@ -10,7 +11,7 @@ import (
 	raven "github.com/getsentry/raven-go"
 	"github.com/gin-contrib/sentry"
 	"github.com/jinzhu/configor"
-
+	"gopkg.in/gin-contrib/cors.v1"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -28,6 +29,20 @@ func main() {
 	context := &m.Context{Db: h.NewDatabase(Config.ConnectionString)}
 
 	r := gin.New()
+
+	// Setup CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3001", "https://baelor.io"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+
 	r.Use(gin.Logger(), gin.Recovery())
 	r.Use(middleware.JSONOnly())
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
