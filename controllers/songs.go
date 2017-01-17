@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -92,5 +93,5 @@ func NewSongsController(r *gin.RouterGroup, c *m.Context) {
 
 	r.GET("songs", ctrl.Get)
 	r.GET("songs/:slug", ctrl.GetBySlug)
-	r.POST("songs", ctrl.Post)
+	r.POST("songs", middleware.BearerAuth(c), ctrl.Post)
 }

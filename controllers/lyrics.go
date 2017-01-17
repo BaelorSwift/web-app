@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -63,5 +64,5 @@ func NewLyricsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("lyrics", ctrl.Get)
-	r.POST("lyrics", ctrl.Post)
+	r.POST("lyrics", middleware.BearerAuth(c), ctrl.Post)
 }

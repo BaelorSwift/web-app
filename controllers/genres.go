@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -71,5 +72,5 @@ func NewGenresController(r *gin.RouterGroup, c *m.Context) {
 
 	r.GET("genres", ctrl.Get)
 	r.GET("genres/:slug", ctrl.GetBySlug)
-	r.POST("genres", ctrl.Post)
+	r.POST("genres", middleware.BearerAuth(c), ctrl.Post)
 }

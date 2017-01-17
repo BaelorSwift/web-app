@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -70,5 +71,5 @@ func NewPeopleController(r *gin.RouterGroup, c *m.Context) {
 
 	r.GET("people", ctrl.Get)
 	r.GET("people/:slug", ctrl.GetBySlug)
-	r.POST("people", ctrl.Post)
+	r.POST("people", middleware.BearerAuth(c), ctrl.Post)
 }

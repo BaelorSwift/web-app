@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"github.com/jmcvetta/randutil"
 	"golang.org/x/crypto/bcrypt"
@@ -85,5 +86,5 @@ func NewUsersController(r *gin.RouterGroup, c *m.Context) {
 
 	r.GET("users", ctrl.Get)
 	r.GET("users/:id", ctrl.GetByID)
-	r.POST("users", ctrl.Post)
+	r.POST("users", middleware.BearerAuth(c), ctrl.Post)
 }

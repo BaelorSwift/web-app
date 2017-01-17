@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -71,5 +72,5 @@ func NewLabelsController(r *gin.RouterGroup, c *m.Context) {
 
 	r.GET("labels", ctrl.Get)
 	r.GET("labels/:slug", ctrl.GetBySlug)
-	r.POST("labels", ctrl.Post)
+	r.POST("labels", middleware.BearerAuth(c), ctrl.Post)
 }
