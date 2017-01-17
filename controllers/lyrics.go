@@ -46,6 +46,13 @@ func (ctrl LyricsController) Post(c *gin.Context) {
 		return
 	}
 
+	// Check there isn't already a lyric with this index and song_id
+	query := ctrl.context.Db.First(&m.Lyric{}, "`lyrics`.song_id = ? AND `lyrics`.index = ?", lyric.SongID, lyric.Index)
+	if !query.RecordNotFound() {
+		c.JSON(http.StatusConflict, m.NewBaelorError("lyric_line_already_exists", nil))
+		return
+	}
+
 	// Insert into database
 	lyric.Init()
 	ctrl.context.Db.Where("id = ?", &lyric.SongID).First(&lyric.Song)
