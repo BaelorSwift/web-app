@@ -14,8 +14,10 @@
 			"minimum": 0
 		},
 		"content": {
-			"type": "string",
-			"minLength": 1
+			"type": "string"
+		},
+		"is_structure_gap": {
+			"type": "boolean"
 		},
 		"song_id": {
 			"type": "string",
