@@ -30,8 +30,9 @@ func (lyric Lyric) Map() *LyricResponse {
 	return &LyricResponse{
 		Audit: lyric.Audit,
 
-		Index:   lyric.Index,
-		Content: lyric.Content,
-		Song:    lyric.Song.Map(),
+		Index:          lyric.Index,
+		Content:        lyric.Content,
+		IsStructureGap: lyric.IsStructureGap,
+		Song:           lyric.Song.Map(),
 	}
 }
