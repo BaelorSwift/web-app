@@ -27,11 +27,11 @@ func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.DSN)
 
+	r := gin.New()
 	context := &m.Context{
-		Db:    h.NewDatabase(Config.ConnectionString),
+		Db:    h.NewDatabase(Config.ConnectionString, gin.Mode() != gin.ReleaseMode),
 		Cache: cache.New(60*time.Minute, 30*time.Second),
 	}
-	r := gin.New()
 
 	// Setup CORS
 	r.Use(cors.New(cors.Config{

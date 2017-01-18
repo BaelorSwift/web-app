@@ -7,7 +7,7 @@ import (
 )
 
 // NewDatabase ..
-func NewDatabase(connectionStr string) *gorm.DB {
+func NewDatabase(connectionStr string, release bool) *gorm.DB {
 	db, err := gorm.Open("mysql", connectionStr)
 	db.LogMode(true)
 
