@@ -71,7 +71,7 @@ func (song Song) Map() *SongResponse {
 	for i, genre := range song.Genres {
 		sng.Genres[i] = genre.Map()
 	}
-	for i, writer := range song.Producers {
+	for i, writer := range song.Writers {
 		sng.Writers[i] = writer.Map()
 	}
 	for i, lyrics := range song.Lyrics {
