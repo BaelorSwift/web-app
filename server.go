@@ -11,6 +11,7 @@ import (
 	raven "github.com/getsentry/raven-go"
 	"github.com/gin-contrib/sentry"
 	"github.com/jinzhu/configor"
+	cache "github.com/patrickmn/go-cache"
 	"gopkg.in/gin-contrib/cors.v1"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -26,8 +27,10 @@ func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.DSN)
 
-	context := &m.Context{Db: h.NewDatabase(Config.ConnectionString)}
-
+	context := &m.Context{
+		Db:    h.NewDatabase(Config.ConnectionString),
+		Cache: cache.New(60*time.Minute, 30*time.Second),
+	}
 	r := gin.New()
 
 	// Setup CORS
@@ -44,7 +47,7 @@ func main() {
 	}))
 
 	r.Use(gin.Logger(), gin.Recovery())
-	r.Use(middleware.JSONOnly())
+	r.Use(middleware.JSONOnly(), middleware.IPRateLimit(context))
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
 	r.Static("/static", "./static/")
 	v1 := r.Group("v1")
