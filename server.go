@@ -47,6 +47,7 @@ func main() {
 	}))
 
 	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(middleware.RequestAnalytics(context))
 	r.Use(middleware.JSONOnly(), middleware.IPRateLimit(context))
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
 	r.Static("/static", "./static/")
