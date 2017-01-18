@@ -50,6 +50,7 @@ func main() {
 	r.Use(middleware.JSONOnly(), middleware.IPRateLimit(context))
 	r.Use(sentry.Recovery(raven.DefaultClient, false))
 	r.Static("/static", "./static/")
+	r.StaticFile("/favicon.ico", "./static/favicon.ico")
 	v1 := r.Group("v1")
 	{
 		c.NewAlbumsController(v1, context)
