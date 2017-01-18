@@ -15,11 +15,13 @@ type Song struct {
 	Producers []Person `gorm:"not null;many2many:song_producers;" json:"producers"`
 	Genres    []Genre  `gorm:"not null;many2many:song_genres;"    json:"genres"`
 	Writers   []Person `gorm:"not null;many2many:song_writers;"   json:"writers"`
+	Featuring []Person `gorm:"not null;many2many:song_featuring;" json:"featuring"`
 	Lyrics    []Lyric  `gorm:"not null;ForeignKey:SongID"         json:"lyrics"`
 
-	ProducerIDs []string `gorm:"-" json:"producer_ids"`
-	GenreIDs    []string `gorm:"-" json:"genre_ids"`
-	WriterIDs   []string `gorm:"-" json:"writer_ids"`
+	ProducerIDs  []string `gorm:"-" json:"producer_ids"`
+	GenreIDs     []string `gorm:"-" json:"genre_ids"`
+	WriterIDs    []string `gorm:"-" json:"writer_ids"`
+	FeaturingIDs []string `gorm:"-" json:"featuring_ids"`
 }
 
 // SongResponse ..
@@ -37,6 +39,7 @@ type SongResponse struct {
 	Genres    []*GenreResponse  `json:"genres"`
 	Writers   []*PersonResponse `json:"writers"`
 	Lyrics    []*LyricResponse  `json:"lyrics"`
+	Featuring []*PersonResponse `json:"featuring"`
 }
 
 // Map ..
@@ -59,6 +62,7 @@ func (song Song) Map() *SongResponse {
 		Genres:    make([]*GenreResponse, len(song.Genres)),
 		Writers:   make([]*PersonResponse, len(song.Writers)),
 		Lyrics:    make([]*LyricResponse, len(song.Lyrics)),
+		Featuring: make([]*PersonResponse, len(song.Featuring)),
 	}
 
 	for i, producer := range song.Producers {
@@ -72,6 +76,9 @@ func (song Song) Map() *SongResponse {
 	}
 	for i, lyrics := range song.Lyrics {
 		sng.Lyrics[i] = lyrics.Map()
+	}
+	for i, featuring := range song.Featuring {
+		sng.Featuring[i] = featuring.Map()
 	}
 
 	return &sng

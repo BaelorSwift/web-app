@@ -20,7 +20,7 @@ const songSafeName = "songs"
 func (ctrl SongsController) Get(c *gin.Context) {
 	var songs []m.Song
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
-	query = query.Preload("Genres").Preload("Lyrics").First(&songs)
+	query = query.Preload("Genres").Preload("Lyrics").Preload("Featuring").First(&songs)
 	response := make([]*m.SongResponse, len(songs))
 	for i, song := range songs {
 		response[i] = song.Map()
@@ -33,7 +33,7 @@ func (ctrl SongsController) GetBySlug(c *gin.Context) {
 	var song m.Song
 
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
-	query = query.Preload("Genres").Preload("Lyrics")
+	query = query.Preload("Genres").Preload("Lyrics").Preload("Featuring")
 
 	if query.First(&song, "title_slug = ?", c.Param("slug")).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("song_not_found", nil))
@@ -64,8 +64,9 @@ func (ctrl SongsController) Post(c *gin.Context) {
 	go h.CheckIDsExist(song.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producer_ids")
 	go h.CheckIDsExist(song.WriterIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "writer_ids")
 	go h.CheckIDsExist(song.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genre_ids")
+	go h.CheckIDsExist(song.FeaturingIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "featuring_ids")
 	go h.CheckIDsExist([]string{song.AlbumID}, ctrl.context.Db.Table("albums"), wrongIdsCh, "album_id")
-	wrongIds := h.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
+	wrongIds := h.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
 	if len(wrongIds) > 0 {
 		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("invalid_ids", wrongIds))
 		return
@@ -76,6 +77,7 @@ func (ctrl SongsController) Post(c *gin.Context) {
 	ctrl.context.Db.Where("id IN (?)", song.ProducerIDs).Find(&song.Producers)
 	ctrl.context.Db.Where("id IN (?)", song.GenreIDs).Find(&song.Genres)
 	ctrl.context.Db.Where("id IN (?)", song.WriterIDs).Find(&song.Writers)
+	ctrl.context.Db.Where("id IN (?)", song.FeaturingIDs).Find(&song.Featuring)
 	ctrl.context.Db.Where("id = ?", song.AlbumID).First(&song.Album)
 	if ctrl.context.Db.Create(&song); ctrl.context.Db.NewRecord(song) {
 		c.JSON(http.StatusInternalServerError,
