@@ -7,7 +7,6 @@
 		"length",
 		"recorded_at",
 		"released_at",
-		"studio",
 		"cover_image",
 		
 		"label_id",
@@ -36,10 +35,6 @@
 		},
 		"released_at": {
 			"type": "integer"
-		},
-		"studio": {
-			"type": "string",
-			"minLength": 1
 		},
 		"cover_image": {
 			"type": "string",

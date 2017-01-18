@@ -10,7 +10,6 @@ type Album struct {
 	Length      uint64 `gorm:"not null"                    json:"length"`
 	RecordedAt  string `gorm:"not null"                    json:"recorded_at"`
 	ReleasedAt  uint64 `gorm:"not null"                    json:"released_at"`
-	Studio      string `gorm:"not null"                    json:"studio"`
 	CoverImage  string `gorm:"not null"                    json:"cover_image"`
 
 	Songs     []Song   `gorm:"ForeignKey:AlbumID"         json:"albums"`
