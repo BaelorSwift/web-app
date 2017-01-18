@@ -28,6 +28,7 @@ func main() {
 	raven.SetDSN(Config.DSN)
 
 	r := gin.New()
+	r.RedirectTrailingSlash = true
 	context := &m.Context{
 		Db:    h.NewDatabase(Config.ConnectionString, gin.Mode() != gin.ReleaseMode),
 		Cache: cache.New(60*time.Minute, 30*time.Second),
