@@ -24,6 +24,11 @@ func NewDatabase(connectionStr string) *gorm.DB {
 
 // CheckIDsExist ..
 func CheckIDsExist(ids []string, db *gorm.DB, wrongIdsCh chan map[string][]string, jsonFieldName string) {
+	if len(ids) == 0 {
+		wrongIdsCh <- map[string][]string{}
+		return
+	}
+
 	wrongIds := map[string][]string{}
 	var items []m.Audit
 	db.Where("id IN (?)", ids).Select("id").Find(&items)
