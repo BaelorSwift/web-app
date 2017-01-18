@@ -10,8 +10,7 @@
 		
 		"producer_ids",
 		"genre_ids",
-		"writer_ids",
-		"featuring_ids"
+		"writer_ids"
 	],
 	"additionalProperties": false,
 
