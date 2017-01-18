@@ -11,7 +11,6 @@ import (
 
 const (
 	analyticIDContextKey = "analytic_id"
-	analyticContextKey   = "analytic"
 )
 
 type responseWriter struct {
