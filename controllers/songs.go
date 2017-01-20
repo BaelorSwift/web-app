@@ -3,6 +3,8 @@ package controllers
 import (
 	"net/http"
 
+	"fmt"
+
 	h "github.com/baelorswift/api/helpers"
 	"github.com/baelorswift/api/middleware"
 	m "github.com/baelorswift/api/models"
@@ -28,14 +30,15 @@ func (ctrl SongsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetBySlug ..
-func (ctrl SongsController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl SongsController) GetByIdent(c *gin.Context) {
 	var song m.Song
+	identType, ident := h.DetectParamType(c.Param("ident"), "title")
 
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
 	query = query.Preload("Genres").Preload("Lyrics").Preload("Featuring")
 
-	if query.First(&song, "title_slug = ?", c.Param("slug")).RecordNotFound() {
+	if query.First(&song, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("song_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, song.Map())
@@ -94,6 +97,6 @@ func NewSongsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("songs", ctrl.Get)
-	r.GET("songs/:slug", ctrl.GetBySlug)
+	r.GET("songs/:ident", ctrl.GetByIdent)
 	r.POST("songs", middleware.BearerAuth(c), ctrl.Post)
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
@@ -27,10 +28,12 @@ func (ctrl PeopleController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// GetBySlug ..
-func (ctrl PeopleController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl PeopleController) GetByIdent(c *gin.Context) {
 	var person m.Person
-	if ctrl.context.Db.First(&person, "name_slug = ?", c.Param("slug")).RecordNotFound() {
+	identType, ident := h.DetectParamType(c.Param("ident"), "title")
+
+	if ctrl.context.Db.First(&person, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("person_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, person.Map())
@@ -70,6 +73,6 @@ func NewPeopleController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("people", ctrl.Get)
-	r.GET("people/:slug", ctrl.GetBySlug)
+	r.GET("people/:ident", ctrl.GetByIdent)
 	r.POST("people", middleware.BearerAuth(c), ctrl.Post)
 }

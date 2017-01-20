@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
@@ -27,15 +28,16 @@ func (ctrl AlbumsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetBySlug ..
-func (ctrl AlbumsController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl AlbumsController) GetByIdent(c *gin.Context) {
 	var album m.Album
+	identType, ident := h.DetectParamType(c.Param("ident"), "title")
 
 	// I don't like this, at all. it's awful
 	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
-	query = query.Preload("Label").Preload("Songs").First(&album, "title_slug = ?", c.Param("slug"))
+	query = query.Preload("Label").Preload("Songs")
 
-	if query.RecordNotFound() {
+	if query.First(&album, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, album.Map())
@@ -92,6 +94,6 @@ func NewAlbumsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("albums", ctrl.Get)
-	r.GET("albums/:slug", ctrl.GetBySlug)
+	r.GET("albums/:ident", ctrl.GetByIdent)
 	r.POST("albums", middleware.BearerAuth(c), ctrl.Post)
 }

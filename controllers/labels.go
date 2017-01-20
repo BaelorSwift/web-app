@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
@@ -27,10 +28,12 @@ func (ctrl LabelsController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetBySlug ..
-func (ctrl LabelsController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl LabelsController) GetByIdent(c *gin.Context) {
 	var label m.Label
-	if ctrl.context.Db.First(&label, "name_slug = ?", c.Param("slug")).RecordNotFound() {
+	identType, ident := h.DetectParamType(c.Param("ident"), "name")
+
+	if ctrl.context.Db.First(&label, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("label_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, label.Map())
@@ -71,6 +74,6 @@ func NewLabelsController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("labels", ctrl.Get)
-	r.GET("labels/:slug", ctrl.GetBySlug)
+	r.GET("labels/:ident", ctrl.GetByIdent)
 	r.POST("labels", middleware.BearerAuth(c), ctrl.Post)
 }

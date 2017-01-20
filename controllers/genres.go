@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
@@ -27,10 +28,12 @@ func (ctrl GenresController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetBySlug ..
-func (ctrl GenresController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl GenresController) GetByIdent(c *gin.Context) {
 	var genre m.Genre
-	if ctrl.context.Db.First(&genre, "name_slug = ?", c.Param("slug")).RecordNotFound() {
+	identType, ident := h.DetectParamType(c.Param("ident"), "name")
+
+	if ctrl.context.Db.First(&genre, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, genre.Map())
@@ -71,6 +74,6 @@ func NewGenresController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("genres", ctrl.Get)
-	r.GET("genres/:slug", ctrl.GetBySlug)
+	r.GET("genres/:ident", ctrl.GetByIdent)
 	r.POST("genres", middleware.BearerAuth(c), ctrl.Post)
 }

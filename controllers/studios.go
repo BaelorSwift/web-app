@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	h "github.com/baelorswift/api/helpers"
@@ -29,10 +30,12 @@ func (ctrl StudiosController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &response)
 }
 
-// GetBySlug ..
-func (ctrl StudiosController) GetBySlug(c *gin.Context) {
+// GetByIdent ..
+func (ctrl StudiosController) GetByIdent(c *gin.Context) {
 	var studio m.Studio
-	if ctrl.context.Db.First(&studio, "name_slug = ?", c.Param("slug")).RecordNotFound() {
+	identType, ident := h.DetectParamType(c.Param("ident"), "name")
+
+	if ctrl.context.Db.First(&studio, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, m.NewBaelorError("studio_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, studio.Map())
@@ -73,6 +76,6 @@ func NewStudiosController(r *gin.RouterGroup, c *m.Context) {
 	ctrl.context = c
 
 	r.GET("studios", ctrl.Get)
-	r.GET("studios/:slug", ctrl.GetBySlug)
+	r.GET("studios/:ident", ctrl.GetByIdent)
 	r.POST("studios", middleware.BearerAuth(c), ctrl.Post)
 }
