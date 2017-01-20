@@ -36,7 +36,7 @@ func main() {
 
 	// Setup CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3001", "https://baelor.io"},
+		AllowOrigins:     []string{"http://localhost:3001", "https://baelor.io", "https://taylorswift.io/"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
