@@ -1,9 +1,10 @@
 package helpers
 
 import (
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Required for gorm to deal with mysql
+	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // NewDatabase ..
@@ -16,9 +17,9 @@ func NewDatabase(connectionStr string, release bool) *gorm.DB {
 	}
 
 	// Run those dank migrations
-	db.AutoMigrate(&m.Album{}, &m.Genre{}, &m.Label{}, &m.Person{})
-	db.AutoMigrate(&m.Studio{}, &m.Song{}, &m.Lyric{}, &m.User{})
-	db.AutoMigrate(&m.Analytic{})
+	db.AutoMigrate(&models.Album{}, &models.Genre{}, &models.Label{}, &models.Person{})
+	db.AutoMigrate(&models.Studio{}, &models.Song{}, &models.Lyric{}, &models.User{})
+	db.AutoMigrate(&models.Analytic{})
 
 	return db
 }
@@ -31,7 +32,7 @@ func CheckIDsExist(ids []string, db *gorm.DB, wrongIdsCh chan map[string][]strin
 	}
 
 	wrongIds := map[string][]string{}
-	var items []m.Audit
+	var items []models.Audit
 	db.Where("id IN (?)", ids).Select("id").Find(&items)
 
 	if len(items) == 0 {
