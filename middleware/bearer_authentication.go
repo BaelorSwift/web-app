@@ -26,6 +26,7 @@ func BearerAuth(context *m.Context) gin.HandlerFunc {
 		if !strings.HasPrefix(tokenLower, tokenType) {
 			c.JSON(http.StatusUnauthorized, err)
 			c.Abort()
+			return
 		}
 
 		// Get api key and compare with database
@@ -34,6 +35,7 @@ func BearerAuth(context *m.Context) gin.HandlerFunc {
 		if query.RecordNotFound() {
 			c.JSON(http.StatusUnauthorized, err)
 			c.Abort()
+			return
 		}
 
 		// Set user id to gin context
