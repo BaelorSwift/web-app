@@ -4,37 +4,37 @@ import (
 	"fmt"
 	"net/http"
 
-	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/helpers"
 	"github.com/baelorswift/api/middleware"
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // GenresController ..
 type GenresController struct {
-	context *m.Context
+	context *models.Context
 }
 
 const genreSafeName = "genres"
 
 // Get ..
 func (ctrl GenresController) Get(c *gin.Context) {
-	var genres []m.Genre
-	ctrl.context.Db.Find(&genres)
-	response := make([]*m.GenreResponse, len(genres))
+	var genres []models.Genre
+	start, count := helpers.FindWithPagination(ctrl.context.Db, &genres, c, genreSafeName)
+	response := make([]*models.GenreResponse, len(genres))
 	for i, genre := range genres {
 		response[i] = genre.Map()
 	}
-	c.JSON(http.StatusOK, &response)
+	c.JSON(http.StatusOK, models.NewPaginationResponse(&response, genreSafeName, start, count))
 }
 
 // GetByIdent ..
 func (ctrl GenresController) GetByIdent(c *gin.Context) {
-	var genre m.Genre
-	identType, ident := h.DetectParamType(c.Param("ident"), "name")
+	var genre models.Genre
+	identType, ident := helpers.DetectParamType(c.Param("ident"), "name")
 
 	if ctrl.context.Db.First(&genre, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
-		c.JSON(http.StatusNotFound, m.NewBaelorError("genre_not_found", nil))
+		c.JSON(http.StatusNotFound, models.NewBaelorError("genre_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, genre.Map())
 	}
@@ -43,17 +43,17 @@ func (ctrl GenresController) GetByIdent(c *gin.Context) {
 // Post ...
 func (ctrl GenresController) Post(c *gin.Context) {
 	// Validate Payload
-	var genre m.Genre
-	status, err := h.ValidateJSON(c, &genre, genreSafeName)
+	var genre models.Genre
+	status, err := helpers.ValidateJSON(c, &genre, genreSafeName)
 	if err != nil {
 		c.JSON(status, &err)
 		return
 	}
 
 	// Check genre is unique
-	genre.NameSlug = h.GenerateSlug(genre.Name)
-	if !ctrl.context.Db.First(&m.Genre{}, "name_slug = ?", genre.NameSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict, m.NewBaelorError("genre_already_exists", nil))
+	genre.NameSlug = helpers.GenerateSlug(genre.Name)
+	if !ctrl.context.Db.First(&models.Genre{}, "name_slug = ?", genre.NameSlug).RecordNotFound() {
+		c.JSON(http.StatusConflict, models.NewBaelorError("genre_already_exists", nil))
 		return
 	}
 
@@ -62,14 +62,14 @@ func (ctrl GenresController) Post(c *gin.Context) {
 	ctrl.context.Db.Create(&genre)
 	if ctrl.context.Db.NewRecord(genre) {
 		c.JSON(http.StatusInternalServerError,
-			m.NewBaelorError("unknown_error_creating_genre", nil))
+			models.NewBaelorError("unknown_error_creating_genre", nil))
 		return
 	}
 	c.JSON(http.StatusCreated, genre.Map())
 }
 
 // NewGenresController ..
-func NewGenresController(r *gin.RouterGroup, c *m.Context) {
+func NewGenresController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(GenresController)
 	ctrl.context = c
 

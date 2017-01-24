@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/helpers"
 	"github.com/baelorswift/api/middleware"
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	"github.com/jmcvetta/randutil"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/gin-gonic/gin.v1"
@@ -13,28 +13,27 @@ import (
 
 // UsersController ..
 type UsersController struct {
-	context *m.Context
+	context *models.Context
 }
 
 const userSafeName = "users"
 
 // Get ..
 func (ctrl UsersController) Get(c *gin.Context) {
-	var users []m.User
-	ctrl.context.Db.Find(&users)
-	response := make([]*m.UserResponse, len(users))
+	var users []models.User
+	start, count := helpers.FindWithPagination(ctrl.context.Db, &users, c, userSafeName)
+	response := make([]*models.UserResponse, len(users))
 	for i, user := range users {
 		response[i] = user.Map()
 	}
-
-	c.JSON(http.StatusOK, &response)
+	c.JSON(http.StatusOK, models.NewPaginationResponse(&response, userSafeName, start, count))
 }
 
 // GetByID ..
 func (ctrl UsersController) GetByID(c *gin.Context) {
-	var user m.User
+	var user models.User
 	if ctrl.context.Db.First(&user, "id = ?", c.Param("id")).RecordNotFound() {
-		c.JSON(http.StatusNotFound, m.NewBaelorError("user_not_found", nil))
+		c.JSON(http.StatusNotFound, models.NewBaelorError("user_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, user.Map())
 	}
@@ -43,23 +42,23 @@ func (ctrl UsersController) GetByID(c *gin.Context) {
 // Post ..
 func (ctrl UsersController) Post(c *gin.Context) {
 	// Validate Payload
-	var user m.User
-	status, err := h.ValidateJSON(c, &user, userSafeName)
+	var user models.User
+	status, err := helpers.ValidateJSON(c, &user, userSafeName)
 	if err != nil {
 		c.JSON(status, &err)
 		return
 	}
 
 	// Check album is unique
-	if !ctrl.context.Db.First(&m.User{}, "email_address = ?", &user.EmailAddress).RecordNotFound() {
-		c.JSON(http.StatusConflict, m.NewBaelorError("email_address_already_exists", nil))
+	if !ctrl.context.Db.First(&models.User{}, "email_address = ?", &user.EmailAddress).RecordNotFound() {
+		c.JSON(http.StatusConflict, models.NewBaelorError("email_address_already_exists", nil))
 		return
 	}
 
 	// Hash Password
 	password, bcryptErr := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if bcryptErr != nil {
-		c.JSON(http.StatusInternalServerError, m.NewBaelorError("error_hashing_password", nil))
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("error_hashing_password", nil))
 		return
 	}
 	user.Password = string(password[:])
@@ -72,7 +71,7 @@ func (ctrl UsersController) Post(c *gin.Context) {
 	user.Init()
 	if ctrl.context.Db.Create(&user); ctrl.context.Db.NewRecord(user) {
 		c.JSON(http.StatusInternalServerError,
-			m.NewBaelorError("unknown_error_creating_user", nil))
+			models.NewBaelorError("unknown_error_creating_user", nil))
 		return
 	}
 
@@ -80,7 +79,7 @@ func (ctrl UsersController) Post(c *gin.Context) {
 }
 
 // NewUsersController ..
-func NewUsersController(r *gin.RouterGroup, c *m.Context) {
+func NewUsersController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(UsersController)
 	ctrl.context = c
 

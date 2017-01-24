@@ -4,41 +4,42 @@ import (
 	"fmt"
 	"net/http"
 
-	h "github.com/baelorswift/api/helpers"
+	"github.com/baelorswift/api/helpers"
 	"github.com/baelorswift/api/middleware"
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
 // AlbumsController ..
 type AlbumsController struct {
-	context *m.Context
+	context *models.Context
 }
 
 const albumSafeName = "albums"
 
 // Get ..
 func (ctrl AlbumsController) Get(c *gin.Context) {
-	var albums []m.Album
-	ctrl.context.Db.Preload("Songs").Preload("Genres").Preload("Producers").Preload("Studios").Preload("Label").Find(&albums)
-	response := make([]*m.AlbumResponse, len(albums))
+	var albums []models.Album
+	preloads := []string{"Songs", "Genres", "Producers", "Studios", "Label"}
+	start, count := helpers.FindWithPagination(ctrl.context.Db, &albums, c, albumSafeName, preloads...)
+	response := make([]*models.AlbumResponse, len(albums))
 	for i, album := range albums {
 		response[i] = album.Map()
 	}
-	c.JSON(http.StatusOK, &response)
+	c.JSON(http.StatusOK, models.NewPaginationResponse(&response, albumSafeName, start, count))
 }
 
 // GetByIdent ..
 func (ctrl AlbumsController) GetByIdent(c *gin.Context) {
-	var album m.Album
-	identType, ident := h.DetectParamType(c.Param("ident"), "title")
+	var album models.Album
+	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
 
 	// I don't like this, at all. it's awful
 	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
 	query = query.Preload("Label").Preload("Songs")
 
 	if query.First(&album, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
-		c.JSON(http.StatusNotFound, m.NewBaelorError("album_not_found", nil))
+		c.JSON(http.StatusNotFound, models.NewBaelorError("album_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, album.Map())
 	}
@@ -47,29 +48,29 @@ func (ctrl AlbumsController) GetByIdent(c *gin.Context) {
 // Post ..
 func (ctrl AlbumsController) Post(c *gin.Context) {
 	// Validate Payload
-	var album m.Album
-	status, err := h.ValidateJSON(c, &album, albumSafeName)
+	var album models.Album
+	status, err := helpers.ValidateJSON(c, &album, albumSafeName)
 	if err != nil {
 		c.JSON(status, &err)
 		return
 	}
 
 	// Check album is unique
-	album.TitleSlug = h.GenerateSlug(album.Title)
-	if !ctrl.context.Db.First(&m.Album{}, "title_slug = ?", &album.TitleSlug).RecordNotFound() {
-		c.JSON(http.StatusConflict, m.NewBaelorError("album_already_exists", nil))
+	album.TitleSlug = helpers.GenerateSlug(album.Title)
+	if !ctrl.context.Db.First(&models.Album{}, "title_slug = ?", &album.TitleSlug).RecordNotFound() {
+		c.JSON(http.StatusConflict, models.NewBaelorError("album_already_exists", nil))
 		return
 	}
 
 	// Check ids exist
 	wrongIdsCh := make(chan map[string][]string)
-	go h.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producer_ids")
-	go h.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genre_ids")
-	go h.CheckIDsExist(album.StudioIDs, ctrl.context.Db.Table("studios"), wrongIdsCh, "studio_ids")
-	go h.CheckIDsExist([]string{album.LabelID}, ctrl.context.Db.Table("labels"), wrongIdsCh, "label_id")
-	wrongIds := h.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
+	go helpers.CheckIDsExist(album.ProducerIDs, ctrl.context.Db.Table("people"), wrongIdsCh, "producer_ids")
+	go helpers.CheckIDsExist(album.GenreIDs, ctrl.context.Db.Table("genres"), wrongIdsCh, "genre_ids")
+	go helpers.CheckIDsExist(album.StudioIDs, ctrl.context.Db.Table("studios"), wrongIdsCh, "studio_ids")
+	go helpers.CheckIDsExist([]string{album.LabelID}, ctrl.context.Db.Table("labels"), wrongIdsCh, "label_id")
+	wrongIds := helpers.UnionMaps(<-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh, <-wrongIdsCh)
 	if len(wrongIds) > 0 {
-		c.JSON(http.StatusUnprocessableEntity, m.NewBaelorError("invalid_ids", wrongIds))
+		c.JSON(http.StatusUnprocessableEntity, models.NewBaelorError("invalid_ids", wrongIds))
 		return
 	}
 
@@ -81,7 +82,7 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 	ctrl.context.Db.Where("id = ?", album.LabelID).First(&album.Label)
 	if ctrl.context.Db.Create(&album); ctrl.context.Db.NewRecord(album) {
 		c.JSON(http.StatusInternalServerError,
-			m.NewBaelorError("unknown_error_creating_album", nil))
+			models.NewBaelorError("unknown_error_creating_album", nil))
 		return
 	}
 
@@ -89,7 +90,7 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 }
 
 // NewAlbumsController ..
-func NewAlbumsController(r *gin.RouterGroup, c *m.Context) {
+func NewAlbumsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(AlbumsController)
 	ctrl.context = c
 
