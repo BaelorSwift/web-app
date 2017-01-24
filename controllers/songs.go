@@ -91,6 +91,24 @@ func (ctrl SongsController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, song.Map())
 }
 
+// Delete ..
+func (ctrl SongsController) Delete(c *gin.Context) {
+	var song models.Song
+	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
+	if ctrl.context.Db.First(&song, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("song_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&song).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_song", nil))
+	}
+}
+
 // NewSongsController ..
 func NewSongsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(SongsController)
@@ -98,5 +116,6 @@ func NewSongsController(r *gin.RouterGroup, c *models.Context) {
 
 	r.GET("songs", ctrl.Get)
 	r.GET("songs/:ident", ctrl.GetByIdent)
+	r.DELETE("songs/:ident", middleware.BearerAuth(c), ctrl.Delete)
 	r.POST("songs", middleware.BearerAuth(c), ctrl.Post)
 }
