@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/baelorswift/api/helpers"
@@ -11,7 +12,8 @@ import (
 
 // LyricsController ..
 type LyricsController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const lyricSafeName = "lyrics"
@@ -25,6 +27,19 @@ func (ctrl LyricsController) Get(c *gin.Context) {
 		response[i] = lyric.Map()
 	}
 	c.JSON(http.StatusOK, models.NewPaginationResponse(&response, lyricSafeName, start, count))
+}
+
+// GetByIdent ..
+func (ctrl LyricsController) GetByIdent(c *gin.Context) {
+	var lyric models.Lyric
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+
+	query := ctrl.context.Db.Preload("Song")
+	if query.First(&lyric, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("lyric_not_found", nil))
+	} else {
+		c.JSON(http.StatusOK, lyric.Map())
+	}
 }
 
 // Post ..
@@ -69,7 +84,11 @@ func (ctrl LyricsController) Post(c *gin.Context) {
 func NewLyricsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(LyricsController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id": "id",
+	}
 
 	r.GET("lyrics", ctrl.Get)
+	r.GET("lyrics/:ident", ctrl.GetByIdent)
 	r.POST("lyrics", middleware.BearerAuth(c), ctrl.Post)
 }
