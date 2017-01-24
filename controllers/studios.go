@@ -13,7 +13,8 @@ import (
 
 // StudiosController ..
 type StudiosController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const studioSafeName = "studios"
@@ -32,7 +33,7 @@ func (ctrl StudiosController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl StudiosController) GetByIdent(c *gin.Context) {
 	var studio models.Studio
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "name")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	if ctrl.context.Db.First(&studio, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("studio_not_found", nil))
@@ -73,6 +74,10 @@ func (ctrl StudiosController) Post(c *gin.Context) {
 func NewStudiosController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(StudiosController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "name_slug",
+	}
 
 	r.GET("studios", ctrl.Get)
 	r.GET("studios/:ident", ctrl.GetByIdent)

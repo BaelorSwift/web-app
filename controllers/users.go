@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/baelorswift/api/helpers"
@@ -13,7 +14,8 @@ import (
 
 // UsersController ..
 type UsersController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const userSafeName = "users"
@@ -29,10 +31,12 @@ func (ctrl UsersController) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, models.NewPaginationResponse(&response, userSafeName, start, count))
 }
 
-// GetByID ..
-func (ctrl UsersController) GetByID(c *gin.Context) {
+// GetByIdent ..
+func (ctrl UsersController) GetByIdent(c *gin.Context) {
 	var user models.User
-	if ctrl.context.Db.First(&user, "id = ?", c.Param("id")).RecordNotFound() {
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+
+	if ctrl.context.Db.First(&user, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("user_not_found", nil))
 	} else {
 		c.JSON(http.StatusOK, user.Map())
@@ -82,8 +86,11 @@ func (ctrl UsersController) Post(c *gin.Context) {
 func NewUsersController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(UsersController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id": "id",
+	}
 
 	r.GET("users", middleware.BearerAuth(c), ctrl.Get)
-	r.GET("users/:id", middleware.BearerAuth(c), ctrl.GetByID)
+	r.GET("users/:ident", middleware.BearerAuth(c), ctrl.GetByIdent)
 	r.POST("users", middleware.BearerAuth(c), ctrl.Post)
 }

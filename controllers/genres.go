@@ -12,7 +12,8 @@ import (
 
 // GenresController ..
 type GenresController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const genreSafeName = "genres"
@@ -31,7 +32,7 @@ func (ctrl GenresController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl GenresController) GetByIdent(c *gin.Context) {
 	var genre models.Genre
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "name")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	if ctrl.context.Db.First(&genre, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("genre_not_found", nil))
@@ -72,6 +73,10 @@ func (ctrl GenresController) Post(c *gin.Context) {
 func NewGenresController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(GenresController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "name_slug",
+	}
 
 	r.GET("genres", ctrl.Get)
 	r.GET("genres/:ident", ctrl.GetByIdent)

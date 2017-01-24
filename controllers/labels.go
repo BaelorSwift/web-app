@@ -12,7 +12,8 @@ import (
 
 // LabelsController ..
 type LabelsController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const labelsSafeName = "labels"
@@ -31,7 +32,7 @@ func (ctrl LabelsController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl LabelsController) GetByIdent(c *gin.Context) {
 	var label models.Label
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "name")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	if ctrl.context.Db.First(&label, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("label_not_found", nil))
@@ -72,6 +73,10 @@ func (ctrl LabelsController) Post(c *gin.Context) {
 func NewLabelsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(LabelsController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "name_slug",
+	}
 
 	r.GET("labels", ctrl.Get)
 	r.GET("labels/:ident", ctrl.GetByIdent)

@@ -12,7 +12,8 @@ import (
 
 // PeopleController ..
 type PeopleController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const peopleSafeName = "people"
@@ -31,7 +32,7 @@ func (ctrl PeopleController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl PeopleController) GetByIdent(c *gin.Context) {
 	var person models.Person
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	if ctrl.context.Db.First(&person, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("person_not_found", nil))
@@ -71,6 +72,10 @@ func (ctrl PeopleController) Post(c *gin.Context) {
 func NewPeopleController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(PeopleController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "name_slug",
+	}
 
 	r.GET("people", ctrl.Get)
 	r.GET("people/:ident", ctrl.GetByIdent)

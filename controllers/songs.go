@@ -13,7 +13,8 @@ import (
 
 // SongsController ..
 type SongsController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const songSafeName = "songs"
@@ -33,7 +34,7 @@ func (ctrl SongsController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl SongsController) GetByIdent(c *gin.Context) {
 	var song models.Song
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	query := ctrl.context.Db.Preload("Album").Preload("Producers").Preload("Writers")
 	query = query.Preload("Genres").Preload("Lyrics").Preload("Featuring")
@@ -94,7 +95,7 @@ func (ctrl SongsController) Post(c *gin.Context) {
 // Delete ..
 func (ctrl SongsController) Delete(c *gin.Context) {
 	var song models.Song
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 	if ctrl.context.Db.First(&song, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
 		c.JSON(http.StatusNotFound, models.NewBaelorError("song_not_found", nil))
 		return
@@ -113,6 +114,10 @@ func (ctrl SongsController) Delete(c *gin.Context) {
 func NewSongsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(SongsController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "title_slug",
+	}
 
 	r.GET("songs", ctrl.Get)
 	r.GET("songs/:ident", ctrl.GetByIdent)

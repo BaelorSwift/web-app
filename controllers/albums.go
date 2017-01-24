@@ -12,7 +12,8 @@ import (
 
 // AlbumsController ..
 type AlbumsController struct {
-	context *models.Context
+	context    *models.Context
+	identTypes map[string]string
 }
 
 const albumSafeName = "albums"
@@ -32,7 +33,7 @@ func (ctrl AlbumsController) Get(c *gin.Context) {
 // GetByIdent ..
 func (ctrl AlbumsController) GetByIdent(c *gin.Context) {
 	var album models.Album
-	identType, ident := helpers.DetectParamType(c.Param("ident"), "title")
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
 
 	// I don't like this, at all. it's awful
 	query := ctrl.context.Db.Preload("Genres").Preload("Producers").Preload("Studios")
@@ -93,6 +94,10 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 func NewAlbumsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(AlbumsController)
 	ctrl.context = c
+	ctrl.identTypes = map[string]string{
+		"id":   "id",
+		"slug": "title_slug",
+	}
 
 	r.GET("albums", ctrl.Get)
 	r.GET("albums/:ident", ctrl.GetByIdent)
