@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -19,4 +20,15 @@ func GenerateSlug(str string) string {
 		}
 
 	}, strings.ToLower(strings.TrimSpace(str)))
+}
+
+// StrToInt converts a string to an int with the specified Base and Bit. If there is an
+// error, it will return that error with the default specified value.
+func StrToInt(str string, def int64, base, bit int) (int64, error) {
+	i, err := strconv.ParseInt(str, base, bit)
+	if err != nil {
+		return def, err
+	}
+
+	return i, nil
 }
