@@ -32,6 +32,7 @@ func main() {
 	context := &m.Context{
 		Db:    h.NewDatabase(Config.ConnectionString, gin.Mode() != gin.ReleaseMode),
 		Cache: cache.New(60*time.Minute, 30*time.Second),
+		Raven: raven.DefaultClient,
 	}
 
 	// Setup CORS
