@@ -84,7 +84,7 @@ func NewUsersController(r *gin.RouterGroup, c *m.Context) {
 	ctrl := new(UsersController)
 	ctrl.context = c
 
-	r.GET("users", ctrl.Get)
-	r.GET("users/:id", ctrl.GetByID)
+	r.GET("users", middleware.BearerAuth(c), ctrl.Get)
+	r.GET("users/:id", middleware.BearerAuth(c), ctrl.GetByID)
 	r.POST("users", middleware.BearerAuth(c), ctrl.Post)
 }
