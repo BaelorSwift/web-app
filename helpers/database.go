@@ -24,6 +24,33 @@ func NewDatabase(connectionStr string, release bool) *gorm.DB {
 	return db
 }
 
+// FindWithPagination retrieves start and count (offset and limit) from the url query,
+// loads in preloads and pulls the results from the database
+func FindWithPagination(db *gorm.DB, out interface{}, c *gin.Context, safeName string, preloads ...string) (start, count int64) {
+	// Parse start and count from query string
+	start, _ = StrToInt(c.DefaultQuery("start", "0"), 0, 10, 32)
+	count, _ = StrToInt(c.DefaultQuery("count", "25"), 25, 10, 32)
+
+	// Force start and count to be within bounds
+	if count > 100 {
+		count = 100
+	}
+	if count <= 0 {
+		count = 1
+	}
+	if start < 0 {
+		start = 0
+	}
+
+	// Construct query
+	query := db.Offset(start).Limit(count).Order("created_at desc")
+	for _, preload := range preloads {
+		query = query.Preload(preload)
+	}
+	query.Find(out)
+	return
+}
+
 // CheckIDsExist ..
 func CheckIDsExist(ids []string, db *gorm.DB, wrongIdsCh chan map[string][]string, jsonFieldName string) {
 	if len(ids) == 0 {
