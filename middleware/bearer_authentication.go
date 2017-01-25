@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	// AuthUserKey is the key in the gin context that stores the id of the authenticated user
-	AuthUserKey = "authenticated_user"
-	tokenType   = "bearer "
+	// AuthUserIDKey is the key in the gin context that stores the id of the authenticated user
+	AuthUserIDKey = "authenticated_user"
+	tokenType     = "bearer "
 )
 
 // BearerAuth ..
