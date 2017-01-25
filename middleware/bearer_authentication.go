@@ -39,6 +39,6 @@ func BearerAuth(context *m.Context) gin.HandlerFunc {
 		}
 
 		// Set user id to gin context
-		c.Set(AuthUserKey, user.ID)
+		c.Set(AuthUserIDKey, user.ID)
 	}
 }
