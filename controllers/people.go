@@ -68,6 +68,24 @@ func (ctrl PeopleController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, person.Map())
 }
 
+// Delete ..
+func (ctrl PeopleController) Delete(c *gin.Context) {
+	var person models.Person
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&person, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("person_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&person).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_person", nil))
+	}
+}
+
 // NewPeopleController ..
 func NewPeopleController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(PeopleController)
@@ -80,4 +98,5 @@ func NewPeopleController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("people", ctrl.Get)
 	r.GET("people/:ident", ctrl.GetByIdent)
 	r.POST("people", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("people/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

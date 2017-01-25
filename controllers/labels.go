@@ -69,6 +69,24 @@ func (ctrl LabelsController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, label.Map())
 }
 
+// Delete ..
+func (ctrl LabelsController) Delete(c *gin.Context) {
+	var label models.Label
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&label, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("label_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&label).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_label", nil))
+	}
+}
+
 // NewLabelsController ..
 func NewLabelsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(LabelsController)
@@ -81,4 +99,5 @@ func NewLabelsController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("labels", ctrl.Get)
 	r.GET("labels/:ident", ctrl.GetByIdent)
 	r.POST("labels", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("labels/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

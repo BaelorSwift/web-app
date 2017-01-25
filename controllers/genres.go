@@ -69,6 +69,24 @@ func (ctrl GenresController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, genre.Map())
 }
 
+// Delete ..
+func (ctrl GenresController) Delete(c *gin.Context) {
+	var genre models.Genre
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&genre, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("genre_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&genre).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_genre", nil))
+	}
+}
+
 // NewGenresController ..
 func NewGenresController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(GenresController)
@@ -81,4 +99,5 @@ func NewGenresController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("genres", ctrl.Get)
 	r.GET("genres/:ident", ctrl.GetByIdent)
 	r.POST("genres", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("genres/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

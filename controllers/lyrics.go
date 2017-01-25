@@ -80,6 +80,24 @@ func (ctrl LyricsController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, lyric.Map())
 }
 
+// Delete ..
+func (ctrl LyricsController) Delete(c *gin.Context) {
+	var lyric models.Lyric
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&lyric, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("lyric_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&lyric).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_lyric", nil))
+	}
+}
+
 // NewLyricsController ..
 func NewLyricsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(LyricsController)
@@ -91,4 +109,5 @@ func NewLyricsController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("lyrics", ctrl.Get)
 	r.GET("lyrics/:ident", ctrl.GetByIdent)
 	r.POST("lyrics", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("lyrics/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

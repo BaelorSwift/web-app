@@ -82,6 +82,29 @@ func (ctrl UsersController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, user.Map())
 }
 
+// Delete ..
+func (ctrl UsersController) Delete(c *gin.Context) {
+	var user models.User
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&user, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("user_not_found", nil))
+		return
+	}
+
+	// Validate user id matches the authenticated user id
+	if user.ID != c.Get(middleware.AuthUserKey) {
+		c.JSON(http.StatusForbidden, models.NewBaelorError("cannot_delete_foreign_user", nil))
+	}
+
+	errs := ctrl.context.Db.Delete(&user).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_user", nil))
+	}
+}
+
 // NewUsersController ..
 func NewUsersController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(UsersController)
@@ -93,4 +116,5 @@ func NewUsersController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("users", middleware.BearerAuth(c), ctrl.Get)
 	r.GET("users/:ident", middleware.BearerAuth(c), ctrl.GetByIdent)
 	r.POST("users", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("users/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

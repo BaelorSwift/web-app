@@ -121,6 +121,6 @@ func NewSongsController(r *gin.RouterGroup, c *models.Context) {
 
 	r.GET("songs", ctrl.Get)
 	r.GET("songs/:ident", ctrl.GetByIdent)
-	r.DELETE("songs/:ident", middleware.BearerAuth(c), ctrl.Delete)
 	r.POST("songs", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("songs/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

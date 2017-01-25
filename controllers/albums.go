@@ -90,6 +90,24 @@ func (ctrl AlbumsController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, album.Map())
 }
 
+// Delete ..
+func (ctrl AlbumsController) Delete(c *gin.Context) {
+	var album models.Album
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&album, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("album_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&album).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_album", nil))
+	}
+}
+
 // NewAlbumsController ..
 func NewAlbumsController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(AlbumsController)
@@ -102,4 +120,5 @@ func NewAlbumsController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("albums", ctrl.Get)
 	r.GET("albums/:ident", ctrl.GetByIdent)
 	r.POST("albums", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("albums/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }

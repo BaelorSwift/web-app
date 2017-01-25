@@ -70,6 +70,24 @@ func (ctrl StudiosController) Post(c *gin.Context) {
 	c.JSON(http.StatusCreated, studio.Map())
 }
 
+// Delete ..
+func (ctrl StudiosController) Delete(c *gin.Context) {
+	var studio models.Studio
+	identType, ident := helpers.DetectParamType(c.Param("ident"), ctrl.identTypes)
+	if ctrl.context.Db.First(&studio, fmt.Sprintf("`%s` = ?", identType), ident).RecordNotFound() {
+		c.JSON(http.StatusNotFound, models.NewBaelorError("studio_not_found", nil))
+		return
+	}
+
+	errs := ctrl.context.Db.Delete(&studio).GetErrors()
+	if len(errs) == 0 {
+		c.Status(http.StatusNoContent)
+	} else {
+		ctrl.context.Raven.CaptureError(errs[0], nil)
+		c.JSON(http.StatusInternalServerError, models.NewBaelorError("unknown_error_deleting_studio", nil))
+	}
+}
+
 // NewStudiosController ..
 func NewStudiosController(r *gin.RouterGroup, c *models.Context) {
 	ctrl := new(StudiosController)
@@ -82,4 +100,5 @@ func NewStudiosController(r *gin.RouterGroup, c *models.Context) {
 	r.GET("studios", ctrl.Get)
 	r.GET("studios/:ident", ctrl.GetByIdent)
 	r.POST("studios", middleware.BearerAuth(c), ctrl.Post)
+	r.DELETE("studios/:ident", middleware.BearerAuth(c), ctrl.Delete)
 }
