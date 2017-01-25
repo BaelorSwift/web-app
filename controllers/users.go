@@ -92,7 +92,8 @@ func (ctrl UsersController) Delete(c *gin.Context) {
 	}
 
 	// Validate user id matches the authenticated user id
-	if user.ID != c.Get(middleware.AuthUserKey) {
+	id, _ := c.Get(middleware.AuthUserIDKey)
+	if user.ID != id.(string) {
 		c.JSON(http.StatusForbidden, models.NewBaelorError("cannot_delete_foreign_user", nil))
 	}
 
