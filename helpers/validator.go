@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"net/http"
 
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	goSchema "github.com/xeipuuv/gojsonschema"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -29,8 +29,8 @@ func validateJSONSchema(bodyData []byte, schemaName string) *goSchema.Result {
 }
 
 // ValidateJSON on an object based on gin binding, and JSON Schema
-func ValidateJSON(c *gin.Context, obj interface{}, schemaName string) (int, *m.BaelorError) {
-	var baelorError *m.BaelorError
+func ValidateJSON(c *gin.Context, obj interface{}, schemaName string) (int, *models.BaelorError) {
+	var baelorError *models.BaelorError
 	metadata := map[string][]string{}
 
 	// Read string Body
@@ -50,6 +50,6 @@ func ValidateJSON(c *gin.Context, obj interface{}, schemaName string) (int, *m.B
 		metadata[desc.Field()] = append(fieldSlice, desc.Description())
 	}
 
-	err := m.NewBaelorError("validation_failed", metadata)
+	err := models.NewBaelorError("validation_failed", metadata)
 	return http.StatusUnprocessableEntity, &err
 }

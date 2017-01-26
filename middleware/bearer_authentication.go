@@ -5,7 +5,7 @@ import (
 
 	"net/http"
 
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -16,9 +16,9 @@ const (
 )
 
 // BearerAuth ..
-func BearerAuth(context *m.Context) gin.HandlerFunc {
+func BearerAuth(context *models.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := m.NewBaelorError("invalid_authentication", nil)
+		err := models.NewBaelorError("invalid_authentication", nil)
 		token := c.Request.Header.Get("Authorization")
 
 		// Check auth starts with 'bearer'
@@ -30,7 +30,7 @@ func BearerAuth(context *m.Context) gin.HandlerFunc {
 		}
 
 		// Get api key and compare with database
-		user := &m.User{}
+		user := &models.User{}
 		query := context.Db.First(user, "api_key = ?", token[len(tokenType):])
 		if query.RecordNotFound() {
 			c.JSON(http.StatusUnauthorized, err)

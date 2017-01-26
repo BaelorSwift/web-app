@@ -6,7 +6,7 @@ import (
 
 	"net/http"
 
-	m "github.com/baelorswift/api/models"
+	"github.com/baelorswift/api/models"
 	cache "github.com/patrickmn/go-cache"
 	"gopkg.in/gin-gonic/gin.v1"
 )
@@ -21,7 +21,7 @@ const (
 )
 
 // IPRateLimit ..
-func IPRateLimit(context *m.Context) gin.HandlerFunc {
+func IPRateLimit(context *models.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Check if we need to get the client up from cloudflare
 		clientIP := c.Request.Header.Get("CF-Connecting-IP")
@@ -57,7 +57,7 @@ func IPRateLimit(context *m.Context) gin.HandlerFunc {
 
 		// Check if we hit that rate limit
 		if remaining == 0 {
-			c.JSON(http.StatusTooManyRequests, m.NewBaelorError("rate_limit_exceeded", nil))
+			c.JSON(http.StatusTooManyRequests, models.NewBaelorError("rate_limit_exceeded", nil))
 			c.Abort()
 			return
 		}
