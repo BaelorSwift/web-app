@@ -4,7 +4,8 @@
 	"required": [
 		"index",
 		"content",
-		"song_id"
+		"song_id",
+		"is_structure_gap"
 	],
 	"additionalProperties": false,
 
