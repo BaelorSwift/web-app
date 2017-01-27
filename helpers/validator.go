@@ -3,8 +3,6 @@ package helpers
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
-	"time"
 
 	"bytes"
 	"net/http"
@@ -14,10 +12,10 @@ import (
 	"gopkg.in/gin-gonic/gin.v1"
 )
 
+const schemaPath = "file:///schema/%s.json"
+
 func validateJSONSchema(bodyData []byte, schemaName string) *goSchema.Result {
-	cacheBuster := strconv.FormatInt(time.Now().Unix(), 10)
-	path := "https://raw.githubusercontent.com/BaelorSwift/api/dev/schema/%s.json?_=%s"
-	schema := goSchema.NewReferenceLoader(fmt.Sprintf(path, schemaName, cacheBuster))
+	schema := goSchema.NewReferenceLoader(fmt.Sprintf(schemaPath, schemaName))
 	doc := goSchema.NewBytesLoader(bodyData)
 
 	result, err := goSchema.Validate(schema, doc)
