@@ -10,7 +10,7 @@ import (
 // NewDatabase ..
 func NewDatabase(connectionStr string, release bool) *gorm.DB {
 	db, err := gorm.Open("mysql", connectionStr)
-	db.LogMode(true)
+	db.LogMode(!release)
 
 	if err != nil {
 		panic(err)
