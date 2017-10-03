@@ -26,6 +26,8 @@ var Config = struct {
 func main() {
 	configor.Load(&Config, "config/app.json")
 	raven.SetDSN(Config.DSN)
+	
+	fmt.Println(Config)
 
 	r := gin.New()
 	r.RedirectTrailingSlash = true
