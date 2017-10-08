@@ -195,7 +195,7 @@ class Home extends Component {
 						{demo.payload &&
 							<SyntaxHighlighter
 								title={'Api response payload'}
-								maxLines={20}
+								maxLines={100}
 								value={JSON.stringify(demo.payload, null, '  ')}
 							/>
 						}
