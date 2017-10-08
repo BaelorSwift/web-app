@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "debug": "nodemon --exec babel-node -- boot/debug.js disable-csp",
+    "build": "rm -rf ./build && babel ./src --out-dir=build --source-maps --copy-files --quiet",
+    "debug": "nodemon --exec babel-node -- ./src/boot/debug.js disable-csp",
+    "start": "node ./build/boot/start.js",
     "test": "echo \"no tests yet\" && exit 0"
   },
   "dependencies": {
