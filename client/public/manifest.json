@@ -1,0 +1,15 @@
+{
+	"short_name": "Baelor.io",
+	"name": "The RPC(ish) api for Taylor Swift.",
+	"icons": [
+		{
+			"src": "favicon.ico",
+			"sizes": "256x256",
+			"type": "image/png"
+		}
+	],
+	"start_url": "./index.html",
+	"display": "standalone",
+	"theme_color": "#000000",
+	"background_color": "#ffffff"
+}

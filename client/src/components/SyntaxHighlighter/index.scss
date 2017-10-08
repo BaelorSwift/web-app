@@ -1,0 +1,44 @@
+.syntax-highlighter {
+	margin-top: 10px;
+	border-radius: 0.25rem;
+	background-color: rgb(32, 35, 42);
+
+	> .header {
+		font-weight: 700;
+		font-size: 14px;
+		line-height: 3;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 0 10px;
+		color: #999;
+	}
+
+	> .ace_editor {
+		width: 100% !important;
+		background-color: rgb(40, 44, 52) !important;
+		border-radius: 0 0 0.25rem 0.25rem;
+		padding: 16px;
+		font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace !important;
+
+		> .ace_gutter {
+			background-color: rgb(40, 44, 52) !important;
+			width: 16px !important;
+
+			.ace_fold-widget {
+				display: none;
+			}
+
+			> .ace_gutter-active-line {
+				display: none;
+			}
+		}
+
+		> .ace_scroller {
+			left: 16px !important;
+		}
+
+		.ace_selection {
+			background-color: rgba(185, 214, 251, 0.65) !important;
+		}
+	}
+}

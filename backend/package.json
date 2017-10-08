@@ -1,0 +1,36 @@
+{
+  "name": "react-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf ./build && babel ./src --out-dir=build --source-maps --copy-files --quiet",
+    "debug": "nodemon --exec babel-node -- ./src/boot/debug.js disable-csp",
+    "start": "node ./build/boot/start.js",
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "camelcase": "^4.1.0",
+    "camelcase-keys-recursive": "^0.8.2",
+    "cuvva-log": "^0.9.1",
+    "cuvva-log-sentry": "^0.5.2",
+    "express": "~4.16.1",
+    "is-my-json-valid": "^2.16.1",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.31",
+    "raven": "^0.9.0",
+    "snakeize": "^0.1.0",
+    "type-is": "^1.6.15"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-typecheck": "^3.9.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "nodemon": "^1.12.1"
+  }
+}
