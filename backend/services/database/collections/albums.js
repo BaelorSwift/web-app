@@ -1,4 +1,6 @@
 import Collection from '../collection';
+import { Song } from './songs';
+import log from 'cuvva-log';
 
 export type AlbumLabel = {
 	name: string,
@@ -20,20 +22,13 @@ export type Album = {
 	releasedAt: Date,
 	coverImage: string,
 	label: AlbumLabel,
+	songs: Song[],
 };
 
 export default class Albums extends Collection<Album> {
 	async setupIndexes(): Promise<void> {
 		await Promise.all([
-			this.index(['id'], { unique: true }),
 			this.index(['slug'], { unique: true }),
 		]);
-	}
-
-	async createOneSimple(key: string): Promise<Album> {
-		return await this.createOne({
-			key,
-			createdAt: new Date(),
-		});
 	}
 }

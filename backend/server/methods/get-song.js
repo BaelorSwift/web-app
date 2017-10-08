@@ -1,11 +1,11 @@
 import validator from './_validate';
 
-const validate = validator('get-albums');
+const validate = validator('get-song');
 
 export default async function (ctx) {
 	const { app, input } = ctx;
 
 	validate(input);
 
-	return await app.getAlbums();
+	return await app.getSong(input.songSlug);
 }

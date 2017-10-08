@@ -2,6 +2,7 @@ import Express from 'express';
 import camelcase from 'camelcase';
 import camelcaseRecursive from 'camelcase-keys-recursive';
 import log from 'cuvva-log';
+import moment from 'moment';
 import path from 'path';
 import snakecaseKeys from 'snakeize';
 import * as Methods from './methods';
@@ -31,7 +32,7 @@ export default class Server {
 		e.use(Middleware.types);
 		e.use(Middleware.body);
 		e.get('/system/health', wrap(this._healthCheck, this));
-		e.use('/api/1/:version/:method', wrap(this._handler, this));
+		e.use('/api/:version/:method', wrap(this._handler, this));
 		e.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../', '/client/build/index.html')));
 		e.use(Middleware.notFound);
 		e.use(Middleware.error);
@@ -44,12 +45,17 @@ export default class Server {
 	async _handler(req, res) {
 		const method = Methods[camelcase(req.params.method)];
 		const date = getVersionDate(req.params.version);
+		const parsedDate = moment(date, 'YYYY-MM-DD');
+		const parsedNow = moment.utc();
 
 		if (!method)
 			throw log.info('function_not_found');
 
 		if (date === null)
 			throw log.info('preview_not_available');
+
+		if (!parsedDate.isValid() || parsedNow.isBefore(parsedDate))
+			throw log.info('version_invalid');
 
 		if (req.method.toLowerCase() !== 'post')
 			throw log.info('method_not_allowed');

@@ -1,0 +1,16 @@
+{
+	"type": "object",
+	"additionalProperties": false,
+
+	"required": [
+		"songSlug"
+	],
+
+	"properties": {
+		"songSlug": {
+			"type": "string",
+			"pattern": "[a-zA-Z0-9-]+",
+			"minLength": 1
+		}
+	}
+}

@@ -39,28 +39,16 @@ export default class Collection<T> {
 		}));
 	}
 
-	// create one document
-	// returns new document
-	async createOne(input: T): Promise<T> {
-		const mappedInput = mapObjIn(input, true, this);
-		const result = await this._collection.insertOne(mappedInput);
-
-		return mapObjOut(result.ops[0], this);
-	}
-
-	// creates many documents
-	// returns new documents
-	async createMany(input: T[]): Promise<T[]> {
-		const mappedInput = input.map(i => mapObjIn(i, true, this));
-		const result = await this._collection.insertMany(mappedInput);
-
-		return result.ops.map(o => mapObjOut(o, this));
+	// gets all the documents in the
+	// collection
+	async all(): Promise<T[]> {
+		return await this.findMany({ });
 	}
 
 	// retrieve one document by id
 	// returns found document
 	async retrieveOne(id: string): Promise<T> {
-		const mappedId = parseIdForFind(id, this);
+		const mappedId = this.parseIdForFind(id);
 
 		return await this.findOne({ _id: mappedId });
 	}
@@ -68,7 +56,7 @@ export default class Collection<T> {
 	// retrieves many documents by id
 	// returns found documents
 	async retrieveMany(ids: string[]): Promise<T[]> {
-		const mappedIds = ids.map(i => parseIdForFind(i, this));
+		const mappedIds = ids.map(i => this.parseIdForFind(i));
 
 		return await this.findMany({ _id: { $in: mappedIds } });
 	}
@@ -101,94 +89,17 @@ export default class Collection<T> {
 		return await this._collection.count(filter);
 	}
 
-	// update one document by id
-	// returns updated document
-	// input not mapped because Mongo operators are used
-	async updateOne(id: string, update: {}): Promise<T> {
-		const filter = { _id: parseIdForFind(id, this) };
-		const options = { returnOriginal: false };
-		const result = await this._collection.findOneAndUpdate(filter, update, options);
+	parseIdForFind(input: string): {} {
+		const idp = this.constructor.idProvider;
 
-		if (!result.ok || !result.value)
-			throw log.warn('not_found', { result });
-
-		return mapObjOut(result.value, this);
+		try {
+			return idp.parse(input);
+		} catch (error) {
+			if (error.code === 'invalid_id')
+				throw log.info('not_found');
+			throw error;
+		}
 	}
-
-	// update many documents by filter
-	// returns number of documents updated
-	// input not mapped because Mongo operators are used
-	async updateMany(filter: {}, update: {}): Promise<number> {
-		const result = await this._collection.updateMany(filter, update);
-
-		return result.matchedCount;
-	}
-
-	// create or update one document by filter
-	// returns new or updated document
-	// input not mapped because Mongo operators are used
-	async upsertOne(filter: {}, update: {}): Promise<T> {
-		const options = { upsert: true, returnOriginal: false };
-		const result = await this._collection.findOneAndUpdate(filter, update, options);
-
-		if (!result.ok || !result.value)
-			throw log.warn('not_found', { result });
-
-		return mapObjOut(result.value, this);
-	}
-
-	// todo: is upsertMany possible?
-
-	// delete one document by id
-	async deleteOne(id: string): Promise<void> {
-		const mappedId = parseIdForFind(id, this);
-		const result = await this._collection.deleteOne({ _id: mappedId });
-
-		if (!result.deletedCount)
-			throw log.info('not_found', { result });
-	}
-
-	// deletes many documents by filter
-	// returns number of documents deleted
-	// input not mapped because Mongo operators are used
-	async deleteMany(filter: {}): Promise<number> {
-		const result = await this._collection.deleteMany(filter);
-
-		return result.deletedCount;
-	}
-}
-
-function parseIdForFind<T>(input: string, obj: Collection<T>): {} {
-	const idp = obj.constructor.idProvider;
-
-	try {
-		return idp.parse(input);
-	} catch (error) {
-		if (error.code === 'invalid_id')
-			throw log.info('not_found');
-		throw error;
-	}
-}
-
-// maps input from the application to the MongoDB fields
-function mapObjIn<T>(input: T, idNeeded: boolean, obj: Collection<T>): {} {
-	if (input._id)
-		throw log.error('id_rules_violated', { input });
-
-	// shallow copy
-	const inputCopy = { ...input };
-
-	const idp = obj.constructor.idProvider;
-
-	if (inputCopy.id) {
-		inputCopy._id = idp.parse(inputCopy.id);
-		inputCopy.id = void 0;
-	}
-
-	if (!inputCopy._id && idNeeded)
-		inputCopy._id = idp.generate();
-
-	return obj.mapInput(inputCopy);
 }
 
 // maps MongoDB output to the application-friendly format
@@ -199,12 +110,22 @@ function mapObjOut<T>(output: {}, obj: Collection<T>): T {
 	// shallow copy
 	const outputCopy = { ...output };
 
-	if (output._id) {
-		const idp = obj.constructor.idProvider;
+	// Fix up all ids
+	Object
+		.keys(outputCopy)
+		.filter(k => k === '_id' || k.endsWith('Id'))
+		.forEach(k => {
+			const provider = obj.constructor.idProvider;
+			const id = outputCopy[k];
+			const fixedId = provider.stringify(id);
 
-		outputCopy.id = idp.stringify(outputCopy._id);
-		outputCopy._id = void 0;
-	}
+			if (k === '_id') {
+				outputCopy.id = fixedId;
+				delete outputCopy._id;
+			} else {
+				outputCopy[k] = fixedId;
+			}
+		});
 
 	return obj.mapOutput(outputCopy);
 }
