@@ -207,3 +207,4 @@ config.development.json
 /config/app.json
 /gomon_spawn
 .DS_Store
+*.css
