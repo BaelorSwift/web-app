@@ -19,7 +19,7 @@ RUN mkdir -p /usr/local/backend
 WORKDIR /usr/local/backend
 COPY backend/package.json /usr/local/backend
 COPY backend/package-lock.json /usr/local/backend
-RUN npm install --production=true --silent
+RUN npm install --production=false --silent
 COPY backend/ /usr/local/backend
 RUN npm run build
 
