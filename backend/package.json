@@ -17,6 +17,7 @@
     "is-my-json-valid": "^2.16.1",
     "moment": "^2.18.1",
     "mongodb": "^2.2.31",
+    "raven": "^2.2.1",
     "snakeize": "^0.1.0",
     "type-is": "^1.6.15"
   },
