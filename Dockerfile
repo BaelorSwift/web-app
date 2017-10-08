@@ -4,7 +4,6 @@ LABEL author="Alex Forbes-Reed"
 ENV NODE_ENV="production" \
 	PORT="80"
 
-
 # Move and build the react client code
 RUN mkdir -p /usr/local/client
 WORKDIR /usr/local/client
