@@ -13,11 +13,12 @@
     "camelcase": "^4.1.0",
     "camelcase-keys-recursive": "^0.8.2",
     "cuvva-log": "^0.9.1",
+    "cuvva-log-sentry": "^0.5.2",
     "express": "~4.16.1",
     "is-my-json-valid": "^2.16.1",
     "moment": "^2.18.1",
     "mongodb": "^2.2.31",
-    "raven": "^2.2.1",
+    "raven": "^0.9.0",
     "snakeize": "^0.1.0",
     "type-is": "^1.6.15"
   },

@@ -1,6 +1,6 @@
-import Express from 'express';
 import camelcase from 'camelcase';
 import camelcaseRecursive from 'camelcase-keys-recursive';
+import express from 'express';
 import log from 'cuvva-log';
 import moment from 'moment';
 import path from 'path';
@@ -11,7 +11,7 @@ import * as Middleware from './middleware';
 export default class Server {
 	constructor(app, options = {}) {
 		this.app = app;
-		this.express = Express();
+		this.express = express();
 		this.options = options;
 	}
 
@@ -28,6 +28,7 @@ export default class Server {
 	async _setupMiddleware() {
 		const e = this.express;
 
+		e.use(express.static(path.join(__dirname, '../', '/client/build')));
 		e.use(Middleware.headers);
 		e.use(Middleware.types);
 		e.use(Middleware.body);
@@ -45,17 +46,12 @@ export default class Server {
 	async _handler(req, res) {
 		const method = Methods[camelcase(req.params.method)];
 		const date = getVersionDate(req.params.version);
-		const parsedDate = moment(date, 'YYYY-MM-DD');
-		const parsedNow = moment.utc();
 
 		if (!method)
 			throw log.info('function_not_found');
 
 		if (date === null)
 			throw log.info('preview_not_available');
-
-		if (!parsedDate.isValid() || parsedNow.isBefore(parsedDate))
-			throw log.info('version_invalid');
 
 		if (req.method.toLowerCase() !== 'post')
 			throw log.info('method_not_allowed');
