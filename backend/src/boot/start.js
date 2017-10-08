@@ -18,7 +18,7 @@ log.setHandler(logSentry(sentry));
 log.setHandler('fatal', logSentry(sentry, () => process.exit(1)));
 
 const run = async () => {
-	const database = await Services.Database.connect({ uri: 'mongodb://localhost/baelor' });
+	const database = await Services.Database.connect({ uri: config.mongo.uri});
 	const app = new App(database);
 	const server = new Server(app, { port, ...config });
 
