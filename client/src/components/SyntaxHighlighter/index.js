@@ -28,7 +28,6 @@ class SyntaxHighlighter extends Component {
 					readOnly={this.props.readOnly}
 					highlightActiveLine={false}
 					maxLines={this.props.maxLines}
-					showFoldWidgets={false}
 					minLines={this.props.minLines}
 					wrapEnabled={true}
 					scrollMargin={[16, 16, 0, 0]}
@@ -39,6 +38,7 @@ class SyntaxHighlighter extends Component {
 						enableLiveAutocompletion: true,
 						enableSnippets: false,
 						showLineNumbers: false,
+						scrollPastEnd: true,
 					}}
 				/>
 			</div>

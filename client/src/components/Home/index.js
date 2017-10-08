@@ -10,6 +10,7 @@ import {
 import LoadingRipple from '../LoadingRipple';
 import SyntaxHighlighter from '../SyntaxHighlighter';
 import { connect } from 'react-redux';
+import { getDate } from '../../helpers/date';
 import propTypes from 'prop-types';
 import exact from 'prop-types-exact';
 import AceEditor from 'react-ace';
@@ -35,7 +36,7 @@ class Home extends Component {
 		this.makeRequest = this.makeRequest.bind(this);
 
 		this.state = {
-			endpoint: '/2017-10-08/get_album',
+			endpoint: 'get_album',
 			payload: initialPayload,
 			flash: void 0,
 		};
@@ -162,7 +163,7 @@ class Home extends Component {
 						}
 
 						<InputGroup>
-							<InputGroupAddon>{'https://api.baelor.io/1'}</InputGroupAddon>
+							<InputGroupAddon>{`https://api.baelor.io/${getDate()}/`}</InputGroupAddon>
 							<Input
 								value={this.state.endpoint}
 								onChange={this.handleChange.bind(this, 'endpoint')}
@@ -195,7 +196,7 @@ class Home extends Component {
 						{demo.payload &&
 							<SyntaxHighlighter
 								title={'Api response payload'}
-								maxLines={100}
+								maxLines={40}
 								value={JSON.stringify(demo.payload, null, '  ')}
 							/>
 						}

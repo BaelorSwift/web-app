@@ -1,4 +1,6 @@
-const API_BASE = '/api/1';
+import { getDate } from '../helpers/date';
+
+const API_BASE = `/api/${getDate()}/`;
 
 export function demo(endpoint: string, payload: {}) {
 	const opts = {
