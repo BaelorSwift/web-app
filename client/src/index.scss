@@ -1,0 +1,39 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+	color: #ffb241;
+	transition: .5s;
+
+	&:hover {
+		color: #ffd634;
+		text-decoration: none;
+	}
+}
+
+footer {
+	padding-top: 1px;
+	padding-bottom: 20px;
+	background-color: #e45a5a;
+	color: white;
+
+	> hr {
+		border-top: 1px solid white;
+	}
+
+	> .container {
+		padding-top: 10px;
+
+		> ul {
+			list-style: none;
+			padding-left: 0;
+		}
+
+		> .legal {
+
+		}
+	}
+}
