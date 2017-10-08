@@ -206,3 +206,4 @@ config.development.json
 /debug
 /config/app.json
 /gomon_spawn
+.DS_Store
