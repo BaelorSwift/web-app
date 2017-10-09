@@ -60,6 +60,32 @@
 				border: 1px solid #c6c9cb;
 			}
 
+			> .mobile-input {
+				> .prefix {
+					padding: 0.5rem 0.75rem;
+					margin-bottom: 0;
+					font-size: 1rem;
+					font-weight: normal;
+					line-height: 1.25;
+					color: #495057;
+					text-align: center;
+					background-color: #e9ecef;
+					border: 1px solid rgba(0, 0, 0, 0.15);
+					border-radius: 0;
+					border-top-left-radius: 0.25rem;
+					border-top-right-radius: 0.25rem;
+				}
+
+				> input {
+					border-radius: 0;
+					border-bottom-left-radius: 0.25rem;
+					border-bottom-right-radius: 0.25rem;
+					border: 1px solid rgb(198, 201, 203);
+					border-top: 0;
+					text-align: center;
+				}
+			}
+
 			> .shake-it-off {
 				margin-top: 10px;
 				width: 100%;

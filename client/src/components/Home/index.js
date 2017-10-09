@@ -164,13 +164,21 @@ class Home extends Component {
 							</Alert>
 						}
 
-						<InputGroup>
+						<InputGroup className={'d-none d-md-flex desktop-input'}>
 							<InputGroupAddon>{`https://api.baelor.io/${getDate()}/`}</InputGroupAddon>
 							<Input
 								value={this.state.endpoint}
 								onChange={this.handleChange.bind(this, 'endpoint')}
 							/>
 						</InputGroup>
+
+						<div className={'d-md-none mobile-input'}>
+							<div className={'prefix'}>{`https://api.baelor.io/${getDate()}/`}</div>
+							<Input
+								value={this.state.endpoint}
+								onChange={this.handleChange.bind(this, 'endpoint')}
+							/>
+						</div>
 
 						<SyntaxHighlighter
 							title={'API request payload'}
