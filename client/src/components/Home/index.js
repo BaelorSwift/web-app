@@ -10,16 +10,11 @@ import {
 import LoadingRipple from '../LoadingRipple';
 import SyntaxHighlighter from '../SyntaxHighlighter';
 import { connect } from 'react-redux';
-import { getDate } from '../../helpers/date';
-import propTypes from 'prop-types';
-import exact from 'prop-types-exact';
-import AceEditor from 'react-ace';
 import { fetchDemo } from '../../actions/demo'
-
-import 'brace';
+import { getDate } from '../../helpers/date';
+import exact from 'prop-types-exact';
+import propTypes from 'prop-types';
 import './index.css';
-import 'brace/mode/json';
-import 'brace/theme/monokai';
 
 const initialPayload = `{
 	"album_slug": "1989"
@@ -129,9 +124,15 @@ class Home extends Component {
 					<video
 						autoPlay
 						loop
+						poster={'/images/baelor-cover.jpg'}
 					>
 						<source
+							src={'/videos/baelor-home.webm'}
+							type={'video/webm'}
+						/>
+						<source
 							src={'/videos/baelor-home.mp4'}
+							type={'video/mp4'}
 						/>
 						<img
 							alt={'Taylor Swift'}
@@ -144,6 +145,7 @@ class Home extends Component {
 						<h2>The <strong>RPC</strong><sup>ish</sup> api for Taylor Swift</h2>
 					</div>
 				</section>
+
 				<section className={'api-demo'}>
 					<Container>
 						<h3>{'API demo'}</h3>
@@ -174,7 +176,7 @@ class Home extends Component {
 							title={'API request payload'}
 							onChange={this.handleChange.bind(this, 'payload')}
 							readOnly={false}
-							value={this.state.payload}	
+							value={this.state.payload}
 						/>
 
 						<Button
@@ -195,7 +197,7 @@ class Home extends Component {
 
 						{demo.payload &&
 							<SyntaxHighlighter
-								title={'Api response payload'}
+								title={'API response payload'}
 								maxLines={40}
 								value={JSON.stringify(demo.payload, null, '  ')}
 							/>
