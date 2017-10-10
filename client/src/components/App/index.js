@@ -6,8 +6,8 @@ import {
 	NavbarToggler,
 	Nav,
 	NavItem,
-	NavLink,
 } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import propTypes from 'prop-types';
@@ -52,13 +52,29 @@ class App extends Component {
 							navbar
 						>
 							<NavItem>
-								<NavLink href={'/'}>Home</NavLink>
+								<NavLink
+									className={'nav-link nav-link'}
+									exact
+									to={'/'}
+								>
+									Home
+								</NavLink>
 							</NavItem>
 							<NavItem>
-								<NavLink href={'/docs'}>Docs</NavLink>
+								<NavLink
+									className={'nav-link nav-link'}
+									to={'/docs'}
+								>
+									Docs
+								</NavLink>
 							</NavItem>
 							<NavItem>
-								<NavLink href={'/about'}>About</NavLink>
+								<NavLink
+									className={'nav-link nav-link'}
+									to={'/about'}
+								>
+									About
+								</NavLink>
 							</NavItem>
 						</Nav>
 					</Collapse>
